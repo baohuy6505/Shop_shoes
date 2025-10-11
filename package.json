@@ -1,0 +1,23 @@
+{
+  "name": "shop-shoes",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^17.2.3",
+    "express": "~4.16.1",
+    "hbs": "~4.0.4",
+    "http-errors": "~1.6.3",
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.19.1",
+    "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
