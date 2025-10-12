@@ -1,6 +1,6 @@
 class UserController {
     index(req, res){
-        res.send('NEW DETAIL!!!')
+        res.render('../views/index.hbs');
     }
 }
 module.exports = new UserController;

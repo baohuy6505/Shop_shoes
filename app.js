@@ -18,7 +18,7 @@ mongoose.connect(process.env.MONGODB_URI)
 // --- KẾT THÚC PHẦN KẾT NỐI DATABASE ---
 
 
-var mainRouter  = require('./routes/main');
+var mainRoute  = require('./routes/mainRoute');
 var app = express();
 
 // view engine setup
@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', mainRouter);
+app.use('/', mainRoute);
 // router(app);
 
 // catch 404 and forward to error handler
