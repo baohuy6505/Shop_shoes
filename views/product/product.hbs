@@ -1,0 +1,212 @@
+{{! File: views/product.hbs }}
+
+<div class="container mt-4">
+  <h1 class="mb-4">Quản Lý Sản Phẩm</h1>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">Thêm Sản Phẩm Mới</h5>
+    </div>
+    <div class="card-body">
+      <form id="add-product-form" method="POST" action="/product/createProduct">
+        <div class="mb-3">
+          <label for="productName" class="form-label">Tên Sản Phẩm</label>
+          <input
+            type="text"
+            id="productName"
+            name="productName"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6 mb-3">
+            <label for="category" class="form-label">Loại Sản Phẩm</label>
+            <select id="category" name="category" class="form-select" required>
+              <option value="">-- Chọn loại --</option>
+              {{#each categories}}
+                <option value="{{this._id}}">{{this.name}}</option>
+              {{/each}}
+            </select>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="price" class="form-label">Giá (VNĐ)</label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="imageUrl" class="form-label">Link Hình Ảnh</label>
+          <input
+            type="text"
+            id="imageUrl"
+            name="imageUrl"
+            class="form-control"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">Mô Tả</label>
+          <textarea
+            id="description"
+            name="description"
+            rows="3"
+            class="form-control"
+          ></textarea>
+        </div>
+
+        <div>
+          <button type="submit" class="btn btn-primary">Thêm Sản Phẩm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h5 class="mb-0">Danh Sách Sản Phẩm</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th scope="col">Hình Ảnh</th>
+              <th scope="col">Tên Sản Phẩm</th>
+              <th scope="col">Loại SP</th>
+              <th scope="col">Giá</th>
+              <th scope="col" class="text-end">Hành Động</th>
+            </tr>
+          </thead>
+          <tbody id="product-table-body">
+            {{#each products}}
+              <tr data-id="{{this._id}}">
+                <td>
+                  <img
+                    src="{{this.imageUrl}}"
+                    alt="{{this.productName}}"
+                    style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;"
+                  />
+                </td>
+                <td>{{this.productName}}</td>
+                <td>{{this.category.name}}</td>
+                <td>{{this.price}} VNĐ</td>
+                <td class="text-end">
+                  <button
+                    data-id="{{this._id}}"
+                    class="btn btn-warning btn-sm edit-btn me-2"
+                  >Sửa</button>
+                  <button
+                    data-id="{{this._id}}"
+                    class="btn btn-danger btn-sm delete-btn"
+                  >Xóa</button>
+                </td>
+              </tr>
+            {{else}}
+              <tr>
+                <td colspan="5" class="text-center text-muted">Chưa có sản phẩm
+                  nào.</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="edit-modal"
+  tabindex="-1"
+  aria-labelledby="editModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="edit-product-form">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Chỉnh Sửa Sản Phẩm</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="edit-product-id" name="id" />
+
+          <div class="mb-3">
+            <label for="edit-productName" class="form-label">Tên Sản Phẩm</label>
+            <input
+              type="text"
+              id="edit-productName"
+              name="productName"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="edit-category" class="form-label">Loại Sản Phẩm</label>
+            <select
+              id="edit-category"
+              name="category"
+              class="form-select"
+              required
+            >
+              <option value="">-- Chọn loại --</option>
+              <option value="giay">Giày</option>
+              <option value="dep">Dép</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="edit-price" class="form-label">Giá (VNĐ)</label>
+            <input
+              type="number"
+              id="edit-price"
+              name="price"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="edit-imageUrl" class="form-label">Link Hình Ảnh</label>
+            <input
+              type="text"
+              id="edit-imageUrl"
+              name="imageUrl"
+              class="form-control"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="edit-description" class="form-label">Mô Tả</label>
+            <textarea
+              id="edit-description"
+              name="description"
+              rows="3"
+              class="form-control"
+            ></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >Hủy</button>
+          <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

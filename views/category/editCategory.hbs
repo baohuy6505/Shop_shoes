@@ -1,0 +1,94 @@
+{{! File: views/category.hbs }}
+
+<div class="container mt-4">
+  <h1 class="mb-4">Quản Lý Loại Sản Phẩm</h1>
+
+  {{#if message}}
+    <div class="alert alert-success">{{message}}</div>
+  {{/if}}
+  {{#if error}}
+    <div class="alert alert-danger">{{error}}</div>
+  {{/if}}
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">Thêm Loại Mới</h5>
+    </div>
+    <div class="card-body">
+      <form id="add-category-form" method="POST" action="/category/create">
+        <div class="mb-3">
+          <label for="categoryName" class="form-label">Tên Loại Sản Phẩm</label>
+          <input
+            type="text"
+            id="categoryName"
+            name="categoryName"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Mô Tả</label>
+          <textarea
+            id="description"
+            name="description"
+            rows="2"
+            class="form-control"
+          ></textarea>
+        </div>
+        <div>
+          <button type="submit" class="btn btn-primary">Thêm Loại</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h5 class="mb-0">Danh Sách Loại Sản Phẩm</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th scope="col">Tên Loại</th>
+              <th scope="col">Mô Tả</th>
+              <th scope="col" class="text-end">Hành Động</th>
+            </tr>
+          </thead>
+          <tbody id="category-table-body">
+            {{#each categories}}
+              <tr data-id="{{this._id}}">
+                <td>{{this.categoryName}}</td>
+                <td class="text-truncate">{{this.description}}</td>
+                <td class="text-end">
+                  <a
+                    href="/category/edit/{{this._id}}"
+                    class="btn btn-warning btn-sm me-2"
+                  >Sửa</a>
+
+                  <form
+                    action="/category/delete/{{this._id}}"
+                    method="POST"
+                    class="d-inline"
+                    onsubmit="return confirm('Bạn có chắc chắn muốn xóa?');"
+                  >
+                    <button
+                      type="submit"
+                      class="btn btn-danger btn-sm"
+                    >Xóa</button>
+                  </form>
+                </td>
+              </tr>
+            {{else}}
+              <tr>
+                <td colspan="3" class="text-center text-muted">Chưa có loại sản
+                  phẩm nào.</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

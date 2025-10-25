@@ -1,0 +1,339 @@
+<html lang="vi" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bảng Quản Trị | Cửa Hàng Giày Dép - Pro Version</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+      primary: { 50: "#eff6ff", 500: "#3b82f6", 900: "#1e3a8a" }, }, }, }, };
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body
+    class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans min-h-screen transition-colors"
+  >
+    <!-- Auth Modal (Hidden by default) -->
+    <div
+      id="auth-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+    >
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-96">
+        <h2 class="text-2xl font-bold mb-4">🔐 Đăng Nhập Admin</h2>
+        <input
+          id="login-email"
+          type="email"
+          placeholder="Email"
+          class="w-full border p-2 mb-2 rounded dark:bg-gray-700"
+        />
+        <input
+          id="login-password"
+          type="password"
+          placeholder="Mật khẩu"
+          class="w-full border p-2 mb-2 rounded dark:bg-gray-700"
+        />
+        <button
+          id="login-btn"
+          class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+        >
+          Đăng Nhập
+        </button>
+        <button id="close-auth" class="mt-2 text-gray-500 hover:text-gray-700">
+          Đóng
+        </button>
+      </div>
+    </div>
+
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <aside
+        class="w-64 bg-gray-900 dark:bg-gray-800 text-white flex flex-col p-5 shadow-lg"
+      >
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold flex items-center gap-2">
+            🧩 Admin Pro
+          </h2>
+          <button id="dark-toggle" class="p-2 rounded hover:bg-gray-700">
+            <i class="fas fa-moon"></i>
+          </button>
+        </div>
+        <nav class="flex-1">
+          <ul class="space-y-2">
+            <li>
+              <a
+                href="#"
+                data-target="users"
+                class="block p-2 rounded hover:bg-gray-700 transition flex items-center gap-2"
+              ><i class="fas fa-users"></i> Người dùng</a>
+            </li>
+            <li>
+              <a
+                href="#"
+                data-target="categories"
+                class="block p-2 rounded hover:bg-gray-700 transition flex items-center gap-2"
+              ><i class="fas fa-folder"></i> Phân loại</a>
+            </li>
+            <li>
+              <a
+                href="#"
+                data-target="products"
+                class="block p-2 rounded hover:bg-gray-700 transition flex items-center gap-2"
+              ><i class="fas fa-shoe-prints"></i> Sản phẩm</a>
+            </li>
+            <li>
+              <a
+                href="#"
+                data-target="warehouse"
+                class="block p-2 rounded hover:bg-gray-700 transition flex items-center gap-2"
+              ><i class="fas fa-warehouse"></i> Kho</a>
+            </li>
+            <li>
+              <a
+                href="#"
+                data-target="cart"
+                class="block p-2 rounded hover:bg-gray-700 transition flex items-center gap-2"
+              ><i class="fas fa-shopping-cart"></i> Giỏ hàng</a>
+            </li>
+            <li>
+              <a
+                href="#"
+                id="logout-btn"
+                class="block p-2 mt-4 text-red-400 hover:bg-red-700 rounded transition flex items-center gap-2"
+              ><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Main content -->
+      <main class="flex-1 overflow-y-auto p-8">
+        <header class="flex justify-between items-center mb-6">
+          <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200">
+            Bảng Điều Khiển Quản Trị Pro
+          </h1>
+          <div class="flex items-center gap-4">
+            <input
+              id="global-search"
+              placeholder="Tìm kiếm toàn cục..."
+              class="border p-2 rounded dark:bg-gray-700"
+            />
+            <button
+              id="export-csv"
+              class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            >
+              <i class="fas fa-download"></i>
+              Export CSV
+            </button>
+          </div>
+        </header>
+
+        <!-- Loading Spinner -->
+        <div
+          id="loading"
+          class="fixed inset-0 bg-white dark:bg-gray-900 bg-opacity-50 flex items-center justify-center z-40 hidden"
+        >
+          <div
+            class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"
+          ></div>
+        </div>
+
+        <!-- USERS -->
+        <section id="users" class="content-section mb-12 hidden">
+          <h2
+            class="text-2xl font-semibold mb-4 text-blue-700 dark:text-blue-300 flex items-center gap-2"
+          >
+            <i class="fas fa-users"></i>
+            Quản lý Người dùng
+          </h2>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div class="lg:col-span-1">
+              <button
+                id="add-user-btn"
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-4"
+              >
+                <i class="fas fa-plus"></i>
+                Thêm User
+              </button>
+              <input
+                id="user-search"
+                placeholder="Tìm user..."
+                class="w-full border p-2 rounded dark:bg-gray-700 mb-4"
+              />
+            </div>
+            <div class="lg:col-span-2">
+              <div
+                class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow overflow-x-auto"
+              >
+                <table class="w-full text-sm" id="user-table">
+                  <thead class="bg-gray-100 dark:bg-gray-700">
+                    <tr>
+                      <th class="p-2">ID</th>
+                      <th class="p-2">Tên</th>
+                      <th class="p-2">Email</th>
+                      <th class="p-2">Vai trò</th>
+                      <th class="p-2">Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody id="user-table-body"></tbody>
+                </table>
+                <div
+                  id="user-pagination"
+                  class="mt-4 flex justify-center gap-2"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CATEGORIES -->
+        <section id="categories" class="content-section mb-12 hidden">
+          <h2
+            class="text-2xl font-semibold mb-4 text-green-700 dark:text-green-300 flex items-center gap-2"
+          >
+            <i class="fas fa-folder"></i>
+            Quản lý Phân loại
+          </h2>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div class="lg:col-span-1">
+              <button
+                id="add-category-btn"
+                class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-4"
+              >
+                <i class="fas fa-plus"></i>
+                Thêm Category
+              </button>
+              <input
+                id="category-search"
+                placeholder="Tìm category..."
+                class="w-full border p-2 rounded dark:bg-gray-700"
+              />
+            </div>
+            <div
+              class="lg:col-span-2 bg-white dark:bg-gray-800 p-4 rounded-lg shadow overflow-y-auto max-h-96"
+            >
+              <div id="category-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PRODUCTS -->
+        <section id="products" class="content-section mb-12">
+          <h2
+            class="text-2xl font-semibold mb-4 text-purple-700 dark:text-purple-300 flex items-center gap-2"
+          >
+            <i class="fas fa-shoe-prints"></i>
+            Quản lý Sản phẩm
+          </h2>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div
+              class="lg:col-span-1 bg-white dark:bg-gray-800 p-4 rounded-lg shadow"
+            >
+              <button
+                id="add-product-btn"
+                class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 mb-4 w-full"
+              >
+                <i class="fas fa-plus"></i>
+                Thêm Sản phẩm
+              </button>
+              <input
+                id="product-search"
+                placeholder="Tìm sản phẩm..."
+                class="w-full border p-2 rounded dark:bg-gray-700 mb-4"
+              />
+            </div>
+            <div
+              class="lg:col-span-2 bg-white dark:bg-gray-800 p-4 rounded-lg shadow overflow-y-auto max-h-[500px]"
+            >
+              <div id="product-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- WAREHOUSE (Variants - With UI Config for Size/Color) -->
+        <section id="warehouse" class="content-section mb-12 hidden">
+          <h2
+            class="text-2xl font-semibold mb-4 text-orange-700 dark:text-orange-300 flex items-center gap-2"
+          >
+            <i class="fas fa-warehouse"></i>
+            Quản lý Kho
+          </h2>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div class="lg:col-span-1">
+              <button
+                id="add-variant-btn"
+                class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 mb-4 w-full"
+              >
+                <i class="fas fa-plus"></i>
+                Thêm Variant
+              </button>
+              <input
+                id="variant-search"
+                placeholder="Tìm kho..."
+                class="w-full border p-2 rounded dark:bg-gray-700"
+              />
+            </div>
+            <div
+              class="lg:col-span-2 bg-white dark:bg-gray-800 p-4 rounded-lg shadow overflow-y-auto max-h-[500px]"
+            >
+              <div id="variant-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CART -->
+        <section id="cart" class="content-section mb-12 hidden">
+          <h2
+            class="text-2xl font-semibold mb-4 text-pink-700 dark:text-pink-300 flex items-center gap-2"
+          >
+            <i class="fas fa-shopping-cart"></i>
+            Quản lý Giỏ hàng
+          </h2>
+          <div
+            class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow overflow-y-auto max-h-[600px]"
+          >
+            <div id="cart-list"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div
+      id="toast-container"
+      class="fixed bottom-4 right-4 space-y-2 z-50"
+    ></div>
+
+    <!-- Modal Template (Cloned dynamically - Updated for Variant UI Config) -->
+    <div
+      id="modal-template"
+      class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    >
+      <div
+        class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-96 max-h-96 overflow-y-auto"
+      >
+        <h3 class="text-xl font-bold mb-4"></h3>
+        <!-- Form fields will be inserted here -->
+        <div class="space-y-2"></div>
+        <div class="flex justify-end gap-2 mt-4">
+          <button
+            id="modal-cancel"
+            class="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+          >
+            Hủy
+          </button>
+          <button
+            id="modal-save"
+            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Lưu
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="admin.js"></script>
+  </body>
+</html>
