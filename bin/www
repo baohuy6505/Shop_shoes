@@ -3,36 +3,57 @@
 /**
  * Module dependencies.
  */
+var app = require("../app");
+var debug = require("debug")("shop-shoes:server");
+var http = require("http");
 
-var app = require('../app');
-var debug = require('debug')('shop-shoes:server');
-var http = require('http');
+// --- THÊM MỚI LOGIC KẾT NỐI CSDL ---
+var path = require("path"); // Cần để .env hoạt động chính xác
+// Nạp .env từ thư mục gốc (vì file www nằm trong /bin)
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
+const mongoose = require("mongoose");
+const MONGODB_URI = process.env.MONGODB_URI;
+// --- KẾT THÚC THÊM MỚI ---
 
 /**
  * Get port from environment and store in Express.
  */
-
-var port = normalizePort(process.env.PORT || '5000');
-app.set('port', port);
+var port = normalizePort(process.env.PORT || "5000"); // Giữ nguyên cổng 5000 của bạn
+app.set("port", port);
 
 /**
  * Create HTTP server.
  */
-
 var server = http.createServer(app);
 
 /**
- * Listen on provided port, on all network interfaces.
+ * KẾT NỐI CSDL TRƯỚC KHI KHỞI ĐỘNG SERVER
  */
+console.log("Đang kết nối đến MongoDB Atlas...");
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => {
+    console.log("✅ Kết nối MongoDB Atlas thành công!");
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+    // CHỈ KHỞI ĐỘNG SERVER SAU KHI KẾT NỐI THÀNH CÔNG
+    server.listen(port);
+    server.on("error", onError);
+    server.on("listening", onListening);
+
+    // Thêm dòng này để bạn biết server đang chạy ở đâu
+    console.log(`Server đang chạy tại http://localhost:${port}`);
+  })
+  .catch((err) => {
+    // Nếu kết nối CSDL thất bại, server sẽ không chạy
+    console.error("❌ Lỗi kết nối MongoDB, server không khởi động:", err);
+    process.exit(1);
+  });
+
+// --- DÒNG server.listen(port); GỐC ĐÃ BỊ XÓA KHỎI ĐÂY ---
 
 /**
  * Normalize a port into a number, string, or false.
  */
-
 function normalizePort(val) {
   var port = parseInt(val, 10);
 
@@ -52,24 +73,21 @@ function normalizePort(val) {
 /**
  * Event listener for HTTP server "error" event.
  */
-
 function onError(error) {
-  if (error.syscall !== 'listen') {
+  if (error.syscall !== "listen") {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
+    case "EACCES":
+      console.error(bind + " requires elevated privileges");
       process.exit(1);
       break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
+    case "EADDRINUSE":
+      console.error(bind + " is already in use");
       process.exit(1);
       break;
     default:
@@ -80,11 +98,8 @@ function onError(error) {
 /**
  * Event listener for HTTP server "listening" event.
  */
-
 function onListening() {
   var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+  debug("Listening on " + bind);
 }

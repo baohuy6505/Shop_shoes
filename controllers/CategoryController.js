@@ -6,11 +6,10 @@ class CategoryController {
       const categories = await Category.find().sort({ createdAt: -1 }).lean();
       const message = req.query.message || null;
       const error = req.query.error || null;
-
       res.render("../views/category/editCategory.hbs", {
         categories: categories,
-        message: message, // Thông báo thành công
-        error: error, // Thông báo lỗi
+        message: message,
+        error: error,
       });
     } catch (err) {
       res.status(500).send("Lỗi tải trang: " + err.message);
@@ -20,7 +19,8 @@ class CategoryController {
     try {
       const newCategory = new Category(req.body);
       await newCategory.save();
-      res.redirect("/category/editCategory");
+
+      res.redirect("/category?message=Thêm%20mới%20thành%20công");
     } catch (err) {
       let errorMsg = "Lỗi%20tạo%20mới:%20" + err.message;
       if (err.code === 11000) {
@@ -37,8 +37,10 @@ class CategoryController {
           "/category?error=Không%20tìm%20thấy%20loại%20sản%20phẩm"
         );
       }
+
       res.render("editCategory", {
         category: category,
+        error: req.query.error || null, // Lấy lỗi nếu update thất bại
       });
     } catch (err) {
       res.redirect("/category?error=" + err.message);
@@ -46,21 +48,19 @@ class CategoryController {
   }
 
   async updateCategory(req, res) {
+    const categoryId = req.params.id;
     try {
-      const categoryId = req.params.id;
-      // req.body chứa { categoryName, description }
       await Category.findByIdAndUpdate(categoryId, req.body, {
         runValidators: true,
       });
 
-      res.redirect("/category/editCategory");
+      res.redirect("/category?message=Cập%20nhật%20thành%20công");
     } catch (err) {
       let errorMsg = "Lỗi%20cập%20nhật:%20" + err.message;
       if (err.code === 11000) {
         errorMsg = "Lỗi:%20Tên%20loại%20sản%20phẩm%20đã%20tồn%20tại.";
       }
-      // Chuyển hướng ngược lại trang Sửa với thông báo lỗi
-      res.redirect(`/category/edit/${req.params.id}?error=` + errorMsg);
+      res.redirect(`/category/edit/${categoryId}?error=` + errorMsg);
     }
   }
 
@@ -78,10 +78,12 @@ class CategoryController {
       }
 
       await Category.findByIdAndDelete(categoryId);
-      res.redirect("/category/editCategory");
+
+      res.redirect("/category?message=Xóa%20thành%20công");
     } catch (err) {
-      res.redirect("/category/editCategory?error=" + err.message);
+      res.redirect("/category?error=" + err.message);
     }
   }
 }
+
 module.exports = new CategoryController();

@@ -1,0 +1,86 @@
+{{! File: views/product/editProduct.hbs }}
+
+<div class="container mt-4">
+  <h1 class="mb-4">Chỉnh Sửa Sản Phẩm</h1>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">Thông tin: {{product.productName}}</h5>
+    </div>
+    <div class="card-body">
+
+      {{#if error}}
+        <div class="alert alert-danger">{{error}}</div>
+      {{/if}}
+
+      <form method="POST" action="/product/update/{{product._id}}">
+        
+        <div class="mb-3">
+          <label for="productName" class="form-label">Tên Sản Phẩm</label>
+          <input
+            type="text"
+            id="productName"
+            name="productName"
+            class="form-control"
+            value="{{product.productName}}"
+            required
+          />
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6 mb-3">
+            <label for="category" class="form-label">Loại Sản Phẩm</label>
+            <select id="category" name="category" class="form-select" required>
+              <option value="">-- Chọn loại --</option>
+              {{#each categories}}
+                <option
+                  value="{{this._id}}"
+                  {{#if this.isSelected}}selected{{/if}}
+                >
+                  {{this.categoryName}}
+                </option>
+              {{/each}}
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="price" class="form-label">Giá (VNĐ)</label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              class="form-control"
+              value="{{product.price}}"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="imageUrl" class="form-label">Link Hình Ảnh</label>
+          <input
+            type="text"
+            id="imageUrl"
+            name="imageUrl"
+            class="form-control"
+            value="{{product.imageUrl}}"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">Mô Tả</label>
+          <textarea
+            id="description"
+            name="description"
+            rows="3"
+            class="form-control"
+          >{{product.description}}</textarea>
+        </div>
+
+        <div>
+          <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+          <a href="/product" class="btn btn-secondary">Hủy</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

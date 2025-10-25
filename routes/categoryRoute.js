@@ -7,7 +7,7 @@ const categoryController = require("../controllers/CategoryController");
 // === CÁC ROUTE XỬ LÝ FORM VÀ REDIRECT ===
 
 // GET /category -> Hiển thị trang chính
-router.get("/editCategory", categoryController.renderCategoryPage);
+router.get("/", categoryController.renderCategoryPage);
 
 // POST /category/create -> Xử lý tạo mới
 router.post("/create", categoryController.createCategory);
