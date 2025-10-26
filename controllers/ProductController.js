@@ -1,17 +1,19 @@
-const Product = require("../models/productModel");
 const Category = require("../models/categoryModel");
+const Product = require("../models/productModel");
+
 class ProductController {
   async renderProductPage(req, res) {
     try {
-      // Lấy thông báo (nếu có) từ query URL
+      console.log("renderProductPage được gọi");
+      const products = await Product.find()
+        .populate("category")
+        .sort({ createdAt: -1 })
+        .lean();
+      console.log("Products:", products);
+      const categories = await Category.find().lean();
+      console.log("Categories:", categories);
       const message = req.query.message || null;
       const error = req.query.error || null;
-
-      // Lấy đồng thời products và categories
-      const [products, categories] = await Promise.all([
-        Product.find().populate("category").sort({ createdAt: -1 }).lean(),
-        Category.find().lean(), // Bắt buộc phải có cho dropdown
-      ]);
 
       res.render("../views/product/editProduct.hbs", {
         products: products,
@@ -20,83 +22,114 @@ class ProductController {
         error: error,
       });
     } catch (err) {
+      console.error("Lỗi renderProductPage:", err);
+      console.error("Stack:", err.stack);
       res.status(500).send("Lỗi tải trang: " + err.message);
     }
   }
 
   async createProduct(req, res) {
     try {
-      const newProduct = new Product(req.body);
-      await newProduct.save();
+      const { productName, description, price, category, imageUrl } = req.body;
 
-      // Sửa redirect: Về trang /product (không phải /product/product)
-      res.redirect("/product?message=Thêm%20sản%20phẩm%20thành%20công");
+      // Kiểm tra dữ liệu bắt buộc
+      if (!productName || !price || !category) {
+        return res.redirect(
+          "/product?error=Vui%20lòng%20điền%20đầy%20đủ%20thông%20tin%20bắt%20buộc"
+        );
+      }
+
+      const newProduct = new Product({
+        productName: productName.trim(),
+        description: description ? description.trim() : "",
+        price: parseFloat(price),
+        category: category,
+        imageUrl: imageUrl ? imageUrl.trim() : "",
+      });
+
+      await newProduct.save();
+      res.redirect("/product?message=Thêm%20mới%20sản%20phẩm%20thành%20công");
     } catch (err) {
-      console.error("Lỗi khi tạo sản phẩm:", err.message);
-      // Gửi lỗi validation về trang /product
-      const errorMsg = "Lỗi%20tạo%20sản%20phẩm:%20" + err.message;
+      console.error("Lỗi createProduct:", err);
+      let errorMsg = "Lỗi%20tạo%20mới:%20" + err.message;
       res.redirect("/product?error=" + errorMsg);
     }
   }
+
   async renderEditPage(req, res) {
     try {
-      const [product, allCategories] = await Promise.all([
-        Product.findById(req.params.id).populate("category").lean(),
-        Category.find().lean(),
-      ]);
+      const product = await Product.findById(req.params.id)
+        .populate("category")
+        .lean();
+      const categories = await Category.find().lean();
 
       if (!product) {
         return res.redirect("/product?error=Không%20tìm%20thấy%20sản%20phẩm");
       }
 
-      // Xử lý để tự động "chọn" đúng category trong dropdown
-      const categories = allCategories.map((cat) => {
-        // === BẮT ĐẦU SỬA LỖI ===
-        // 1. Kiểm tra xem 'product.category' có tồn tại (không phải null) hay không
-        const isCurrentlySelected =
-          product.category && // <-- DÒNG KIỂM TRA QUAN TRỌNG
-          cat._id.toString() === product.category._id.toString();
+      // Thêm flag isSelected để Handlebars dễ so sánh category
+      const categoriesWithSelected = categories.map((cat) => ({
+        ...cat,
+        isSelected: cat._id.toString() === product.category._id.toString(),
+      }));
 
-        // 2. Trả về đối tượng
-        return {
-          ...cat,
-          isSelected: isCurrentlySelected, // Trả về kết quả (true/false)
-        };
-        // === KẾT THÚC SỬA LỖI ===
-      });
-
-      // Render file 'editProduct.hbs'
-      res.render("product/editProduct", {
+      res.render("../views/product/editProduct.hbs", {
         product: product,
-        categories: categories,
+        categories: categoriesWithSelected,
         error: req.query.error || null,
       });
     } catch (err) {
-      // Bắt lỗi nếu ngay cả .populate() cũng thất bại
+      console.error("Lỗi renderEditPage:", err);
       res.redirect("/product?error=" + err.message);
     }
   }
+
   async updateProduct(req, res) {
     const productId = req.params.id;
     try {
-      await Product.findByIdAndUpdate(productId, req.body, {
-        runValidators: true,
-      });
-      res.redirect("/product?message=Cập%20nhật%20thành%20công");
+      const { productName, description, price, category, imageUrl } = req.body;
+
+      // Kiểm tra dữ liệu bắt buộc
+      if (!productName || !price || !category) {
+        return res.redirect(
+          `/product/edit/${productId}?error=Vui%20lòng%20điền%20đầy%20đủ%20thông%20tin%20bắt%20buộc`
+        );
+      }
+
+      await Product.findByIdAndUpdate(
+        productId,
+        {
+          productName: productName.trim(),
+          description: description ? description.trim() : "",
+          price: parseFloat(price),
+          category: category,
+          imageUrl: imageUrl ? imageUrl.trim() : "",
+        },
+        { runValidators: true }
+      );
+
+      res.redirect("/product?message=Cập%20nhật%20sản%20phẩm%20thành%20công");
     } catch (err) {
-      // Nếu lỗi, quay lại trang Sửa
-      const errorMsg = "Lỗi%20cập%20nhật:%20" + err.message;
+      console.error("Lỗi updateProduct:", err);
+      let errorMsg = "Lỗi%20cập%20nhật:%20" + err.message;
       res.redirect(`/product/edit/${productId}?error=` + errorMsg);
     }
   }
 
   async deleteProduct(req, res) {
     try {
-      await Product.findByIdAndDelete(req.params.id);
+      const productId = req.params.id;
+
+      const product = await Product.findById(productId);
+      if (!product) {
+        return res.redirect("/product?error=Không%20tìm%20thấy%20sản%20phẩm");
+      }
+
+      await Product.findByIdAndDelete(productId);
       res.redirect("/product?message=Xóa%20sản%20phẩm%20thành%20công");
     } catch (err) {
-      const errorMsg = "Lỗi%20xóa:%20" + err.message;
-      res.redirect("/product?error=" + errorMsg);
+      console.error("Lỗi deleteProduct:", err);
+      res.redirect("/product?error=" + err.message);
     }
   }
 }

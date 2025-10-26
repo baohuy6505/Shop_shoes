@@ -49,5 +49,8 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
-
+app.use((err, req, res, next) => {
+  console.error("Chi tiết lỗi:", err);
+  res.status(500).send("Lỗi: " + err.message);
+});
 module.exports = app;

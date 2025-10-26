@@ -1,5 +1,6 @@
 const Category = require("../models/categoryModel");
 const Product = require("../models/productModel");
+
 class CategoryController {
   async renderCategoryPage(req, res) {
     try {
@@ -12,9 +13,11 @@ class CategoryController {
         error: error,
       });
     } catch (err) {
+      console.error("Lỗi renderCategoryPage:", err);
       res.status(500).send("Lỗi tải trang: " + err.message);
     }
   }
+
   async createCategory(req, res) {
     try {
       const newCategory = new Category(req.body);
@@ -22,6 +25,7 @@ class CategoryController {
 
       res.redirect("/category?message=Thêm%20mới%20thành%20công");
     } catch (err) {
+      console.error("Lỗi createCategory:", err);
       let errorMsg = "Lỗi%20tạo%20mới:%20" + err.message;
       if (err.code === 11000) {
         errorMsg = "Lỗi:%20Tên%20loại%20sản%20phẩm%20đã%20tồn%20tại.";
@@ -29,6 +33,7 @@ class CategoryController {
       res.redirect("/category?error=" + errorMsg);
     }
   }
+
   async renderEditPage(req, res) {
     try {
       const category = await Category.findById(req.params.id).lean();
@@ -38,11 +43,12 @@ class CategoryController {
         );
       }
 
-      res.render("editCategory", {
+      res.render("../views/category/editCategory.hbs", {
         category: category,
-        error: req.query.error || null, // Lấy lỗi nếu update thất bại
+        error: req.query.error || null,
       });
     } catch (err) {
+      console.error("Lỗi renderEditPage:", err);
       res.redirect("/category?error=" + err.message);
     }
   }
@@ -56,6 +62,7 @@ class CategoryController {
 
       res.redirect("/category?message=Cập%20nhật%20thành%20công");
     } catch (err) {
+      console.error("Lỗi updateCategory:", err);
       let errorMsg = "Lỗi%20cập%20nhật:%20" + err.message;
       if (err.code === 11000) {
         errorMsg = "Lỗi:%20Tên%20loại%20sản%20phẩm%20đã%20tồn%20tại.";
@@ -81,6 +88,7 @@ class CategoryController {
 
       res.redirect("/category?message=Xóa%20thành%20công");
     } catch (err) {
+      console.error("Lỗi deleteCategory:", err);
       res.redirect("/category?error=" + err.message);
     }
   }
