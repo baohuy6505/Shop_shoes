@@ -1,13 +1,5 @@
-{{! File: views/product/editProduct.hbs (Gộp Thêm Mới, Chỉnh Sửa, và Danh Sách) }}
-
 <div class="container mt-4">
   <div class="row">
-
-    <!-- 
-      CỘT 1: FORM (Luôn hiển thị)
-      - Nếu là trang "Sửa" (có product._id), cột này chiếm 12/12
-      - Nếu là trang "Thêm" (không có product._id), cột này chiếm 4/12
-    -->
     <div class="{{#if product._id}}col-lg-12{{else}}col-lg-4{{/if}}">
       
       <!-- 1. Tiêu đề thay đổi dựa trên logic -->
@@ -21,11 +13,6 @@
           </h5>
         </div>
         <div class="card-body">
-
-          <!-- 
-            Hiển thị lỗi của FORM (chỉ khi ở trang Sửa, 
-            vì lỗi trang Thêm đã hiển thị ở Cột 2)
-          -->
           {{#if error}}
             {{#unless products}}
               <div class="alert alert-danger">{{error}}</div>
@@ -119,13 +106,6 @@
         </div>
       </div>
     </div> <!-- Kết thúc Cột 1 -->
-
-
-    <!-- 
-      CỘT 2: DANH SÁCH SẢN PHẨM
-      - Chỉ hiển thị khi 'products' (danh sách) được truyền vào
-      - (Tức là chỉ hiển thị ở trang GET /product)
-    -->
     {{#if products}}
       <div class="col-lg-8">
         <h3 class="mb-3">Danh Sách Sản Phẩm</h3>

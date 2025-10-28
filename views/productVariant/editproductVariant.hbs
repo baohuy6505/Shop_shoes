@@ -1,0 +1,173 @@
+{{! File: views/variant/editProductVariant.hbs (Gộp Thêm/Sửa/Xem + Ảnh SP) }}
+
+<div class="container mt-4">
+  <h1 class="mb-4">Quản Lý Biến Thể Sản Phẩm (Kho)</h1>
+
+  {{#if message}}
+    <div class="alert alert-success">{{message}}</div>
+  {{/if}}
+  {{#if error}}
+    <div class="alert alert-danger">{{error}}</div>
+  {{/if}}
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">Thêm Biến Thể Mới vào Kho</h5>
+    </div>
+    <div class="card-body">
+      <form method="POST" action="/variant/create">
+        <div class="mb-3">
+          <label for="add-product" class="form-label">Chọn Sản Phẩm</label>
+          <select id="add-product" name="product" class="form-select" required>
+            <option value="">-- Chọn Sản Phẩm --</option>
+            {{#each products}}
+              <option value="{{this._id}}">{{this.productName}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="row g-3">
+          <div class="col-md-4 mb-3">
+            <label for="add-size" class="form-label">Size</label>
+            <select id="add-size" name="size" class="form-select" required>
+              <option value="">-- Chọn Size --</option>
+              {{#each (array 38 39 40 41 42 43)}}
+                <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="add-color" class="form-label">Màu Sắc</label>
+            <select id="add-color" name="color" class="form-select" required>
+              <option value="">-- Chọn Màu --</option>
+              {{#each (array "Đen" "Trắng" "Xám" "Xanh Navy" "Đỏ" "Be")}}
+                 <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="add-stockQuantity" class="form-label">Số Lượng Nhập</label>
+            <input type="number" id="add-stockQuantity" name="stockQuantity" class="form-control" min="0" required placeholder="Nhập số lượng"/>
+          </div>
+        </div>
+        <div class="mt-3">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i> Thêm Biến Thể
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">Danh Sách Biến Thể Trong Kho</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th scope="col" style="min-width: 250px;">Sản Phẩm</th> <th scope="col">Size</th>
+              <th scope="col">Màu Sắc</th>
+              <th scope="col">Số Lượng Tồn</th>
+              <th scope="col" class="text-end">Hành Động</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each variants}}
+              <tr data-id="{{this._id}}">
+                <td>
+                  <div class="d-flex align-items-center">
+                    {{#if this.product.imageUrl}}
+                      <img src="{{this.product.imageUrl}}" alt="{{this.product.productName}}" class="me-2 rounded" style="width: 40px; height: 40px; object-fit: cover;">
+                    {{else}}
+                      <div class="me-2 rounded bg-secondary" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-image text-white"></i>
+                      </div>
+                    {{/if}}
+                    <span>{{this.product.productName}}</span>
+                  </div>
+                </td>
+                <td>{{this.size}}</td>
+                <td>{{this.color}}</td>
+                <td>{{this.stockQuantity}}</td>
+                <td class="text-end">
+                  <a href="/variant?editId={{this._id}}" class="btn btn-warning btn-sm me-2">
+                    <i class="fas fa-edit"></i> Sửa
+                  </a>
+                  <form action="/variant/delete/{{this._id}}" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa?');">
+                    <button type="submit" class="btn btn-danger btn-sm">
+                      <i class="fas fa-trash"></i> Xóa
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            {{else}}
+              <tr><td colspan="5" class="text-center text-muted">Chưa có biến thể nào.</td></tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  {{#if variantToEdit}}
+    <div class="card shadow-sm mb-4 border-warning">
+      <div class="card-header bg-warning text-dark">
+         <h5 class="mb-0 d-flex align-items-center">
+            <i class="fas fa-edit me-2"></i>
+            Chỉnh Sửa Biến Thể của:
+            {{#if variantToEdit.product.imageUrl}}
+               <img src="{{variantToEdit.product.imageUrl}}" alt="{{variantToEdit.product.productName}}" class="mx-2 rounded" style="width: 30px; height: 30px; object-fit: cover;">
+            {{/if}}
+            <strong>{{variantToEdit.product.productName}}</strong>
+            <span class="ms-2">(Size: {{variantToEdit.size}}, Màu: {{variantToEdit.color}})</span>
+         </h5>
+         </div>
+      <div class="card-body">
+        <form method="POST" action="/variant/update/{{variantToEdit._id}}">
+          <div class="mb-3">
+            <label for="edit-product" class="form-label">Sản Phẩm</label>
+            <select id="edit-product" name="product" class="form-select" required>
+              <option value="">-- Chọn Sản Phẩm --</option>
+              {{#each editProductsDropdown}}
+                <option value="{{this._id}}" {{#if this.isSelected}}selected{{/if}}>
+                  {{this.productName}}
+                </option>
+              {{/each}}
+            </select>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-4 mb-3">
+              <label for="edit-size" class="form-label">Size</label>
+              <select id="edit-size" name="size" class="form-select" required>
+                <option value="">-- Chọn Size --</option>
+                {{#each (array 38 39 40 41 42 43)}}
+                  <option value="{{this}}" {{#ifeq this ../variantToEdit.size}}selected{{/ifeq}}>{{this}}</option>
+                {{/each}}
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="edit-color" class="form-label">Màu Sắc</label>
+              <select id="edit-color" name="color" class="form-select" required>
+                <option value="">-- Chọn Màu --</option>
+                {{#each (array "Đen" "Trắng" "Xám" "Xanh Navy" "Đỏ" "Be")}}
+                   <option value="{{this}}" {{#ifeq this ../variantToEdit.color}}selected{{/ifeq}}>{{this}}</option>
+                {{/each}}
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="edit-stockQuantity" class="form-label">Số Lượng Tồn</label>
+              <input type="number" id="edit-stockQuantity" name="stockQuantity" class="form-control" value="{{variantToEdit.stockQuantity}}" min="0" required />
+            </div>
+          </div>
+          <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+            <a href="/variant" class="btn btn-secondary">Hủy Sửa</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  {{/if}}
+
+</div>
