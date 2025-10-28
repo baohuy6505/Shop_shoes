@@ -1,3 +1,229 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
-<h1>uong</h1>
+<html lang="vi" data-bs-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cửa Hàng Giày XYZ</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body { background-color: #ffffff; /* Nền trắng */ } .navbar {
+      border-bottom: 1px solid #e9ecef; /* Viền mỏng dưới navbar */ }
+      .navbar-brand img, .navbar-brand svg { /* Style cho logo */ height: 30px;
+      } .form-control-search { /* Style riêng cho ô tìm kiếm */ border-radius:
+      20px; background-color: #f8f9fa; border: none; } .nav-icons .nav-link {
+      font-size: 1.25rem; /* Icon to hơn */ color: #212529; /* Màu đen */ }
+      .carousel-inner img { height: 60vh; /* Chiều cao banner */ object-fit:
+      cover; border-radius: 1rem; /* Bo góc banner */ } .product-section-header
+      { display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1.5rem; } .product-card { border: none; background-color:
+      transparent; text-align: center; margin-bottom: 1.5rem; transition:
+      transform 0.2s ease; } .product-card:hover { transform: translateY(-5px);
+      } .product-card img { background-color: #f8f9fa; /* Nền xám nhạt cho ảnh
+      */ border-radius: 0.75rem; /* Bo góc ảnh */ aspect-ratio: 1 / 1;
+      object-fit: contain; /* Contain để thấy rõ giày */ padding: 1rem; /*
+      Khoảng cách quanh ảnh */ margin-bottom: 0.5rem; } .product-card
+      .card-title { font-size: 0.9rem; font-weight: 500; margin-bottom: 0.25rem;
+      } .product-card .card-text { font-size: 0.85rem; color: #6c757d; /* Màu
+      xám */ } .footer-custom { border-top: 1px solid #e9ecef; padding-top:
+      2rem; padding-bottom: 2rem; font-size: 0.9rem; color: #6c757d; }
+      .footer-custom h6 { color: #212529; font-weight: 600; margin-bottom: 1rem;
+      } .footer-custom a { color: #6c757d; text-decoration: none; }
+      .footer-custom a:hover { color: #212529; text-decoration: underline; }
+      .filter-btn { font-size: 0.9rem; }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-white sticky-top py-3">
+      <div class="container">
+        <a class="navbar-brand" href="/">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="1em"
+            viewBox="0 0 640 512"
+          >
+            <path
+              fill="#0d6efd"
+              d="M192 128c0-17.7 14.3-32 32-32h192c17.7 0 32 14.3 32 32V256H310.4c-9.1 0-17.9 3.6-24.4 9.9l-26.9 26.9C250 301.9 241.1 308.2 232 312V128zM32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H608c17.7 0 32-14.3 32-32s-14.3-32-32-32H32zM368 416V312c6.1-2.9 11.4-6.6 15.9-11l26.9-26.9c16.3-16.3 39.4-25.9 63.2-25.9H576V256c0-79.5-64.5-144-144-144H208C128.5 112 64 176.5 64 256v44.5c-.3 1.1-.5 2.2-.5 3.4V416H368z"
+            /></svg>
+        </a>
+
+        <div class="mx-auto" style="max-width: 400px; width: 100%;">
+          <form class="d-flex" role="search" action="/search">
+            <div class="input-group">
+              <span
+                class="input-group-text bg-light border-0"
+                id="basic-addon1"
+              ><i class="fas fa-search"></i></span>
+              <input
+                class="form-control form-control-search me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+                name="query"
+              />
+            </div>
+          </form>
+        </div>
+
+        <ul class="navbar-nav nav-icons flex-row">
+          <li class="nav-item me-3">
+            <a class="nav-link" href="/users" title="Tài khoản">
+              <i class="fas fa-user"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/cart" title="Giỏ hàng">
+              <i class="fas fa-shopping-cart"></i>
+              <span
+                class="badge rounded-pill bg-danger ms-1 position-absolute top-0 start-100 translate-middle"
+                style="font-size: 0.6em;"
+              >0</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container my-4">
+      <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img
+              src="https://placehold.co/1200x500/F5A623/FFF?text=Banner+Giày+1"
+              class="d-block w-100"
+              alt="Banner 1"
+            />
+          </div>
+          <div class="carousel-item">
+            <img
+              src="https://placehold.co/1200x500/4A90E2/FFF?text=Banner+Giày+2"
+              class="d-block w-100"
+              alt="Banner 2"
+            />
+          </div>
+          <div class="carousel-item">
+            <img
+              src="https://placehold.co/1200x500/7ED321/FFF?text=Banner+Giày+3"
+              class="d-block w-100"
+              alt="Banner 3"
+            />
+          </div>
+        </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#heroCarousel"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#heroCarousel"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+
+    <section class="container my-5">
+      <div class="product-section-header">
+        <h2 class="fw-bold fs-4 mb-0">Sản phẩm</h2>
+        <button class="btn btn-outline-secondary btn-sm filter-btn">
+          <i class="fas fa-filter me-1"></i>
+          Bộ lọc
+        </button>
+      </div>
+
+      <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-3">
+        {{#each featuredProducts}}
+          <div class="col">
+            <div class="product-card">
+              <a
+                href="/product/detail/{{this._id}}"
+                class="text-decoration-none"
+              >
+                <img
+                  src="{{this.imageUrl}}"
+                  class="img-fluid"
+                  alt="{{this.productName}}"
+                  onerror="this.onerror=null; this.src='https://placehold.co/300x300/eee/666?text=N/A';"
+                />
+              </a>
+              <div class="card-body px-0 py-2">
+                <h3 class="card-title">
+                  <a
+                    href="/product/detail/{{this._id}}"
+                    class="text-dark text-decoration-none stretched-link"
+                  >{{this.productName}}</a>
+                </h3>
+                <p class="card-text">{{this.price}} VNĐ</p>
+              </div>
+            </div>
+          </div>
+        {{else}}
+          <p class="text-center text-muted col-12">Chưa có sản phẩm nào.</p>
+        {{/each}}
+      </div>
+      <div class="text-center mt-4">
+        <a href="/product" class="btn btn-outline-dark">Xem tất cả sản phẩm</a>
+      </div>
+    </section>
+
+    <footer class="footer-custom mt-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <h6>Hotline</h6>
+            <p><a href="tel:0357273766">0357 273 766</a></p>
+            <p><a href="tel:0937640187">Mua hàng: 0937 640 187</a></p>
+          </div>
+          <div class="col-md-3 mb-3">
+            <h6>Chính sách</h6>
+            <ul class="list-unstyled">
+              <li><a href="/policy/return">Chính sách đổi trả</a></li>
+              <li><a href="/policy/warranty">Chính sách bảo hành</a></li>
+              <li><a href="/policy/shipping">Chính sách giao hàng</a></li>
+            </ul>
+          </div>
+          <div class="col-md-3 mb-3">
+            <h6>Hệ thống cửa hàng</h6>
+            <ul class="list-unstyled">
+              <li><a href="/stores">Xem danh sách cửa hàng</a></li>
+              <li><a href="/contact">Liên hệ hợp tác</a></li>
+            </ul>
+          </div>
+          <div class="col-md-3 mb-3">
+            <h6>Kết nối</h6>
+            <a href="#" class="me-3 fs-5"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="me-3 fs-5"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="fs-5"><i class="fab fa-tiktok"></i></a>
+          </div>
+        </div>
+        <hr />
+        <p class="text-center text-muted">&copy; 2025 Cửa Hàng Giày XYZ. All
+          Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    ></script>
+    <script>
+      // Kích hoạt Carousel const heroCarousel =
+      document.getElementById('heroCarousel'); if(heroCarousel) { const carousel
+      = new bootstrap.Carousel(heroCarousel, { interval: 5000, // Tự chuyển ảnh
+      sau 5 giây wrap: true }); }
+    </script>
+  </body>
+</html>

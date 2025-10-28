@@ -1,102 +1,45 @@
+// File: controllers/UserController.js (ĐÃ SỬA LẠI)
+
+const Category = require("../models/categoryModel");
+const Product = require("../models/productModel");
 const User = require("../models/userModel");
+// Sửa require nếu tên file model là productVariantsModel.js
+const ProductVariant = require("../models/productVariantsModel");
 
 class UserController {
-  // (Hàm 'index' và 'admin' giữ nguyên)
-  index(req, res) {
-    res.render("index");
+  async index(req, res) {
+    try {
+      const [categories, featuredProducts] = await Promise.all([
+        Category.find().lean(),
+        Product.find()
+          .populate("category")
+          .sort({ createdAt: -1 })
+          .limit(8)
+          .lean(),
+      ]);
+
+      // SỬA LỖI: Đường dẫn render đúng
+      res.render("index", {
+        // Render views/index.hbs
+        categories: categories,
+        featuredProducts: featuredProducts,
+      });
+    } catch (err) {
+      console.error("Lỗi tải trang chủ:", err);
+      res.status(500).send("Lỗi server khi tải trang chủ.");
+    }
   }
+
   admin(req, res) {
-    res.render("../views/admin/admin.hbs");
+    // SỬA LỖI: Đường dẫn render đúng
+    res.render("admin/admin"); // Render views/admin/admin.hbs
   }
 
-  async register(req, res) {
-    try {
-      const { username, email, password, role } = req.body;
-
-      // KHÔNG CẦN MÃ HÓA
-      const newUser = new User({
-        username,
-        email,
-        password: password, // <-- Lưu mật khẩu thô
-        role: role || "customer",
-      });
-
-      await newUser.save();
-      res
-        .status(201)
-        .json({ success: true, message: "Tạo người dùng thành công" });
-    } catch (err) {
-      if (err.code === 11000) {
-        return res
-          .status(400)
-          .json({ success: false, message: "Email đã tồn tại" });
-      }
-      res
-        .status(500)
-        .json({ success: false, message: "Lỗi server: " + err.message });
-    }
-  }
-
-  /**
-   * 4. (POST /login) - API Đăng nhập (So sánh mật khẩu thô)
-   */
-  async login(req, res) {
-    try {
-      const { email, password } = req.body;
-
-      // 1. Tìm user VÀ LẤY mật khẩu
-      // Phải dùng .select('+password') vì model có 'select: false'
-      const user = await User.findOne({ email }).select("+password");
-      if (!user) {
-        return res
-          .status(401)
-          .json({ success: false, message: "Email không tồn tại" });
-      }
-
-      // 2. So sánh mật khẩu thô (string vs string)
-      if (user.password !== password) {
-        return res
-          .status(401)
-          .json({ success: false, message: "Sai mật khẩu" });
-      }
-
-      // 3. Kiểm tra vai trò
-      if (user.role !== "admin") {
-        return res
-          .status(403)
-          .json({ success: false, message: "Bạn không có quyền Admin" });
-      }
-
-      // 4. KHÔNG TẠO TOKEN
-      // Chỉ trả về thông báo thành công.
-      // File admin.js của bạn sẽ nhận được cái này và tự chuyển trang
-      res.status(200).json({
-        success: true,
-        message: "Đăng nhập thành công",
-        user: { username: user.username, role: user.role },
-      });
-    } catch (err) {
-      res
-        .status(500)
-        .json({ success: false, message: "Lỗi server: " + err.message });
-    }
-  }
-
-  /**
-   * 5. (GET /api/users) - API lấy danh sách người dùng
-   * (Hàm này giữ nguyên, nó vẫn an toàn vì 'select: false'
-   * trong model sẽ không trả về mật khẩu)
-   */
-  async getUsers(req, res) {
-    try {
-      const users = await User.find().sort({ createdAt: -1 });
-      res.status(200).json({ success: true, users: users });
-    } catch (err) {
-      res
-        .status(500)
-        .json({ success: false, message: "Lỗi server: " + err.message });
-    }
-  }
+  // === XÓA CÁC HÀM API KHÔNG DÙNG ===
+  // async register(...) { ... }
+  // async login(...) { ... }
+  // async getUsers(...) { ... }
+  // === KẾT THÚC XÓA ===
 }
 
 module.exports = new UserController();
