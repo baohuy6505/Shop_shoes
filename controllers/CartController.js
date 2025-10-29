@@ -5,7 +5,9 @@ class CartController {
     return res.render("../views/cart/index.hbs");
   }
   async addToCart(req, res) {
-    const { productId, quantity } = req.body;
+    const userId = req.session.userId;
+    
+    // const { productId, quantity } = req.body;
   }
 
 }

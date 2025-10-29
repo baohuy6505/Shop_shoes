@@ -2,7 +2,7 @@
 
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
+const bcrypt = require("bcryptjs"); 
 const userSchema = new Schema(
   {
     username: {
@@ -41,7 +41,7 @@ const userSchema = new Schema(
 );
 // Middleware mã hóa mật khẩu trước khi lưu
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();zv
+  if (!this.isModified("password")) return next();
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
