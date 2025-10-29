@@ -39,6 +39,22 @@ const userSchema = new Schema(
     timestamps: true,
   }
 );
+// Middleware mã hóa mật khẩu trước khi lưu
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();zv
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Thêm method để so sánh mật khẩu khi đăng nhập
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password);
+};
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

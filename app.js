@@ -5,7 +5,8 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var mainRoute = require("./routes/mainRoute");
 var app = express();
-
+var flash = require("connect-flash");
+var session = require("express-session");
 // ...
 const hbs = require("hbs"); // Đảm bảo đã import hbs
 
@@ -31,8 +32,26 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-app.use("/", mainRoute);
+app.use(
+  session({
+    secret: "chukicuatrangweb", //đổi thành chuỗi ngẫu nhiên khó đoán
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24, // cookie tồn tại 1 ngày
+    },
+  })
+);
+app.use(flash());
+// Cho phép gửi biến flash sang view (ví dụ với Handlebars, EJS,...)
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success');
+  res.locals.error_msg = req.flash('error');
+    res.locals.currentUser = req.session.user || null; // để hiển thị user đang login
+  next();
+});
 // router(app);
+app.use("/", mainRoute);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -40,7 +59,7 @@ app.use(function (req, res, next) {
 });
 
 // === SỬA LỖI: GỘP 2 TRÌNH XỬ LÝ LỖI LẠI ===
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res, next) {  
   // 1. Thêm dòng log chi tiết lỗi vào đây
   console.error("Chi tiết lỗi:", err.message, err.stack); // Ghi lại cả stack trace
 

@@ -2,16 +2,13 @@
 
 var express = require("express");
 var router = express.Router();
-const UserController = require("../controllers/UserController");
+const AccountController = require("../controllers/AccountController");
 
 // --- SỬA LẠI HOÀN TOÀN ---
 
 // GET / -> Trang chủ (sẽ được gọi bởi http://localhost:5000/)
-router.get("/", UserController.index);
-
-// GET /admin -> Trang admin (sẽ được gọi bởi http://localhost:5000/admin)
-router.get("/admin", UserController.admin);
-
-// (Bỏ các route API vì không dùng admin.js)
-
+router.get("/Login", AccountController.Login);
+router.get("/Register", AccountController.Register);
+router.post("/LoginUser", AccountController.LoginUser);
+router.post("/RegisterUser", AccountController.RegisterUser);
 module.exports = router;
