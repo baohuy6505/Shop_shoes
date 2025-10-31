@@ -1,21 +1,14 @@
 {{! File: views/category.hbs }}
 
-<div class="container mt-4">
+<div class="mt-4">
   <h1 class="mb-4">Quản Lý Loại Sản Phẩm</h1>
-
-  {{#if message}}
-    <div class="alert alert-success">{{message}}</div>
-  {{/if}}
-  {{#if error}}
-    <div class="alert alert-danger">{{error}}</div>
-  {{/if}}
 
   <div class="card shadow-sm mb-4">
     <div class="card-header">
       <h5 class="mb-0">Thêm Loại Mới</h5>
     </div>
     <div class="card-body">
-      <form id="add-category-form" method="POST" action="/category/create">
+      <form id="add-category-form" method="POST" action="/Admin/Category/create">
         <div class="mb-3">
           <label for="categoryName" class="form-label">Tên Loại Sản Phẩm</label>
           <input
@@ -63,12 +56,12 @@
                 <td class="text-truncate">{{this.description}}</td>
                 <td class="text-end">
                   <a
-                    href="/category/edit/{{this._id}}"
+                    href="/Admin/Category/edit/{{this._id}}"
                     class="btn btn-warning btn-sm me-2"
                   >Sửa</a>
 
                   <form
-                    action="/category/delete/{{this._id}}"
+                    action="/Admin/Category/delete/{{this._id}}"
                     method="POST"
                     class="d-inline"
                     onsubmit="return confirm('Bạn có chắc chắn muốn xóa?');"

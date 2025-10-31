@@ -4,25 +4,54 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var mainRoute = require("./routes/mainRoute");
+var adminRoute = require("./routes/admin/adminRoute");
 var app = express();
 var flash = require("connect-flash");
+var exphbs = require("express-handlebars");
 var session = require("express-session");
-// ...
+
 const hbs = require("hbs"); // Đảm bảo đã import hbs
 
-// Đăng ký helpers
-hbs.registerHelper("array", function (...args) {
-  args.pop(); // Loại bỏ đối tượng options cuối cùng
-  return args;
-});
+// // Đăng ký helpers
+// hbs.registerHelper("array", function (...args) {
+//   args.pop(); // Loại bỏ đối tượng options cuối cùng
+//   return args;
+// });
 
-hbs.registerHelper("ifeq", function (a, b, options) {
-  // Chuyển đổi sang chuỗi để so sánh an toàn
-  if (String(a) === String(b)) {
-    return options.fn(this);
-  }
-  return options.inverse(this);
-});
+// hbs.registerHelper("ifeq", function (a, b, options) {
+//   // Chuyển đổi sang chuỗi để so sánh an toàn
+//   if (String(a) === String(b)) {
+//     return options.fn(this);
+//   }
+//   return options.inverse(this);
+// });
+
+// ====== CẤU HÌNH HANDLEBARS ======
+app.engine('hbs', exphbs.engine({
+  extname: 'hbs',
+  defaultLayout: 'userLayout', // layout mặc định
+  layoutsDir: path.join(__dirname, 'views', 'layouts'),
+   // THÊM KHỐI helpers VÀO ĐÂY
+  helpers: {
+    // Helper array
+    eq: (a, b) => a === b,
+      toString: (value) => String(value),
+    array: function (...args) {
+      // Loại bỏ đối tượng options cuối cùng
+      args.pop();
+      return args;
+    },
+
+    // Helper ifeq (Đã chuyển từ global hbs.registerHelper)
+    ifeq: function (a, b, options) {
+      // Chuyển đổi sang chuỗi để so sánh an toàn
+      if (String(a) === String(b)) {
+        return options.fn(this);
+      }
+      return options.inverse(this);
+    }
+  }
+}));
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
@@ -45,18 +74,19 @@ app.use(
 app.use(flash());
 // Cho phép gửi biến flash sang view (ví dụ với Handlebars, EJS,...)
 app.use((req, res, next) => {
-  res.locals.success_msg = req.flash('success');
-  res.locals.error_msg = req.flash('error');
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
     res.locals.currentUser = req.session.user || null; // để hiển thị user đang login
   next();
 });
 // router(app);
 app.use("/", mainRoute);
+app.use("/Admin", adminRoute);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
-});
+// app.use(function (req, res, next) {
+//   next(createError(404));
+// });
 
 // === SỬA LỖI: GỘP 2 TRÌNH XỬ LÝ LỖI LẠI ===
 app.use(function (err, req, res, next) {  
