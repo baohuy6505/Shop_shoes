@@ -1,0 +1,33 @@
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">Chỉnh sửa</h5>
+    </div>
+    <div class="card-body">
+      <form id="add-category-form" method="POST" action="/Admin/Category/edit/{{category._id}}">
+        <div class="mb-3">
+          <label for="categoryName" class="form-label">Tên Loại Sản Phẩm</label>
+          <input
+            type="text"
+            id="categoryName"
+            name="categoryName"
+            class="form-control"
+            value="{{category.categoryName}}"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Mô Tả</label>
+          <textarea
+            id="description"
+            name="description"
+            rows="2"
+            class="form-control"
+            required
+          >{{category.description}}</textarea>
+        </div>
+        <div>
+          <button type="submit" class="btn btn-primary">Cập nhật</button>
+        </div>
+      </form>
+    </div>
+  </div>

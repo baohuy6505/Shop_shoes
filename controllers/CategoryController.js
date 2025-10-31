@@ -2,15 +2,13 @@ const Category = require("../models/categoryModel");
 const Product = require("../models/productModel");
 
 class CategoryController {
+  // Trang quản lý Category
   async renderCategoryPage(req, res) {
     try {
       const categories = await Category.find().sort({ createdAt: -1 }).lean();
-      const message = req.query.message || null;
-      const error = req.query.error || null;
-      res.render("../views/category/editCategory.hbs", {
-        categories: categories,
-        message: message,
-        error: error,
+      res.render("category/create", {
+        layout: "adminLayout",
+        categories,
       });
     } catch (err) {
       console.error("Lỗi renderCategoryPage:", err);
@@ -18,59 +16,55 @@ class CategoryController {
     }
   }
 
+  // Thêm mới Category
   async createCategory(req, res) {
     try {
       const newCategory = new Category(req.body);
       await newCategory.save();
-
-      res.redirect("/category?message=Thêm%20mới%20thành%20công");
+      req.flash("success", "Thêm sản phẩm thành công.");
+      return res.redirect("/Admin/Category");
     } catch (err) {
       console.error("Lỗi createCategory:", err);
-      let errorMsg = "Lỗi%20tạo%20mới:%20" + err.message;
+      let errorMsg = "Lỗi tạo mới: " + err.message;
       if (err.code === 11000) {
-        errorMsg = "Lỗi:%20Tên%20loại%20sản%20phẩm%20đã%20tồn%20tại.";
+        errorMsg = "Tên loại sản phẩm đã tồn tại.";
       }
-      res.redirect("/category?error=" + errorMsg);
+      req.flash("error", errorMsg);
+      return res.redirect("/Admin/Category");
     }
   }
 
-  async renderEditPage(req, res) {
-    try {
-      const category = await Category.findById(req.params.id).lean();
-      if (!category) {
-        return res.redirect(
-          "/category?error=Không%20tìm%20thấy%20loại%20sản%20phẩm"
-        );
-      }
 
-      res.render("../views/category/editCategory.hbs", {
-        category: category,
-        error: req.query.error || null,
-      });
-    } catch (err) {
-      console.error("Lỗi renderEditPage:", err);
-      res.redirect("/category?error=" + err.message);
+  async renderEditPage(req, res) { 
+    const editId = await req.params.id;
+    if (!editId) {
+      return res.render("category/create", { layout: "adminLayout" });
     }
+    const category = await Category.findById(editId).lean();
+    return res.render("category/edit", { layout: "adminLayout", category });
   }
 
-  async updateCategory(req, res) {
+  // Cập nhật Category
+  async editCategory(req, res) {
     const categoryId = req.params.id;
     try {
       await Category.findByIdAndUpdate(categoryId, req.body, {
         runValidators: true,
       });
-
-      res.redirect("/category?message=Cập%20nhật%20thành%20công");
+      req.flash("success", "Cập nhật loại sản phẩm thành công.");
+      return res.redirect("/Admin/Category");
     } catch (err) {
       console.error("Lỗi updateCategory:", err);
-      let errorMsg = "Lỗi%20cập%20nhật:%20" + err.message;
+      let errorMsg = "Lỗi cập nhật: " + err.message;
       if (err.code === 11000) {
-        errorMsg = "Lỗi:%20Tên%20loại%20sản%20phẩm%20đã%20tồn%20tại.";
+        errorMsg = "Tên loại sản phẩm đã tồn tại.";
       }
-      res.redirect(`/category/edit/${categoryId}?error=` + errorMsg);
+      req.flash("error", errorMsg);
+      return res.redirect("/Admin/Category");
     }
   }
 
+  // Xóa Category
   async deleteCategory(req, res) {
     try {
       const categoryId = req.params.id;
@@ -78,18 +72,19 @@ class CategoryController {
       const productCount = await Product.countDocuments({
         category: categoryId,
       });
+
       if (productCount > 0) {
-        return res.redirect(
-          `/category?error=Không%20thể%20xóa.%20Đang%20có%20${productCount}%20sản%20phẩm%20thuộc%20loại%20này.`
-        );
+        req.flash("error", `Không thể xóa. Đang có ${productCount} sản phẩm thuộc loại này.`);
+        return res.redirect("/Admin/Category");
       }
 
       await Category.findByIdAndDelete(categoryId);
-
-      res.redirect("/category?message=Xóa%20thành%20công");
+      req.flash("success", "Xóa loại sản phẩm thành công.");
+      return res.redirect("/Admin/Category");
     } catch (err) {
       console.error("Lỗi deleteCategory:", err);
-      res.redirect("/category?error=" + err.message);
+      req.flash("error", err.message);
+      res.redirect("/Admin/Category");
     }
   }
 }
