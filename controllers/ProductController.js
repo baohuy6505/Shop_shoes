@@ -16,6 +16,7 @@ class ProductController {
       const error = req.query.error || null;
 
       res.render("../views/product/editProduct.hbs", {
+        layout: "adminLayout",
         products: products,
         categories: categories,
         message: message,
@@ -35,7 +36,7 @@ class ProductController {
       // Kiểm tra dữ liệu bắt buộc
       if (!productName || !price || !category) {
         return res.redirect(
-          "/product?error=Vui%20lòng%20điền%20đầy%20đủ%20thông%20tin%20bắt%20buộc"
+          "/Admin/Product?error=Vui%20lòng%20điền%20đầy%20đủ%20thông%20tin%20bắt%20buộc"
         );
       }
 
@@ -48,11 +49,11 @@ class ProductController {
       });
 
       await newProduct.save();
-      res.redirect("/product?message=Thêm%20mới%20sản%20phẩm%20thành%20công");
+      res.redirect("/Admin/Product?message=Thêm%20mới%20sản%20phẩm%20thành%20công");
     } catch (err) {
       console.error("Lỗi createProduct:", err);
       let errorMsg = "Lỗi%20tạo%20mới:%20" + err.message;
-      res.redirect("/product?error=" + errorMsg);
+      res.redirect("/Admin/Product?error=" + errorMsg);
     }
   }
 
@@ -74,6 +75,7 @@ class ProductController {
       }));
 
       res.render("../views/product/editProduct.hbs", {
+        layout: "adminLayout",
         product: product,
         categories: categoriesWithSelected,
         error: req.query.error || null,
@@ -92,7 +94,7 @@ class ProductController {
       // Kiểm tra dữ liệu bắt buộc
       if (!productName || !price || !category) {
         return res.redirect(
-          `/product/edit/${productId}?error=Vui%20lòng%20điền%20đầy%20đủ%20thông%20tin%20bắt%20buộc`
+          `/Admin/Product/edit/${productId}?error=Vui%20lòng%20điền%20đầy%20đủ%20thông%20tin%20bắt%20buộc`
         );
       }
 
@@ -108,11 +110,11 @@ class ProductController {
         { runValidators: true }
       );
 
-      res.redirect("/product?message=Cập%20nhật%20sản%20phẩm%20thành%20công");
+      res.redirect("/Admin/Product?message=Cập%20nhật%20sản%20phẩm%20thành%20công");
     } catch (err) {
       console.error("Lỗi updateProduct:", err);
       let errorMsg = "Lỗi%20cập%20nhật:%20" + err.message;
-      res.redirect(`/product/edit/${productId}?error=` + errorMsg);
+      res.redirect(`/Admin/Product/edit/${productId}?error=` + errorMsg);
     }
   }
 
@@ -122,14 +124,15 @@ class ProductController {
 
       const product = await Product.findById(productId);
       if (!product) {
-        return res.redirect("/product?error=Không%20tìm%20thấy%20sản%20phẩm");
+        return res.redirect("/Admin/Product?error=Không%20tìm%20thấy%20sản%20phẩm");
       }
 
       await Product.findByIdAndDelete(productId);
-      res.redirect("/product?message=Xóa%20sản%20phẩm%20thành%20công");
+      req.flash("success", "Xóa sản phẩm thành công.");
+      res.redirect("/Admin/Product");
     } catch (err) {
       console.error("Lỗi deleteProduct:", err);
-      res.redirect("/product?error=" + err.message);
+      res.redirect("/Admin/Product?error=" + err.message);
     }
   }
 }

@@ -44,6 +44,7 @@ class ProductVariantController {
 
       // Render trang HBS duy nhất, truyền tất cả dữ liệu cần thiết
       res.render("../views/productVariant/editproductVariant.hbs", {
+        layout: "adminLayout",
         // Render file HBS bạn yêu cầu
         variants: variants, // Cho bảng danh sách
         products: allProducts, // Cho dropdown form Thêm
@@ -54,7 +55,7 @@ class ProductVariantController {
       });
     } catch (err) {
       // Nếu có lỗi nghiêm trọng (vd: sai editId), quay về trang chính ko có editId
-      res.redirect("/variant?error=" + err.message);
+      res.redirect("/Admin/ProductVariant?error=" + err.message);
     }
   }
 
@@ -66,10 +67,10 @@ class ProductVariantController {
     try {
       const newVariant = new ProductVariant(req.body);
       await newVariant.save();
-      res.redirect("/variant?message=Thêm%20biến%20thể%20thành%20công");
+      res.redirect("/Admin/ProductVariant?message=Thêm%20biến%20thể%20thành%20công");
     } catch (err) {
       const errorMsg = "Lỗi%20tạo%20biến%20thể:%20" + err.message;
-      res.redirect("/variant?error=" + errorMsg);
+      res.redirect("/Admin/ProductVariant?error=" + errorMsg);
     }
   }
 
@@ -84,11 +85,11 @@ class ProductVariantController {
         runValidators: true,
       });
       // Redirect về trang chính sau khi sửa
-      res.redirect("/variant?message=Cập%20nhật%20biến%20thể%20thành%20công");
+      res.redirect("/Admin/ProductVariant?message=Cập%20nhật%20biến%20thể%20thành%20công");
     } catch (err) {
       // Nếu lỗi, quay lại trang chính VÀ giữ lại ID cần sửa trên URL
       const errorMsg = "Lỗi%20cập%20nhật:%20" + err.message;
-      res.redirect(`/variant?editId=${variantId}&error=` + errorMsg);
+      res.redirect(`/Admin/ProductVariant?editId=${variantId}&error=` + errorMsg);
     }
   }
 
@@ -99,10 +100,10 @@ class ProductVariantController {
   async deleteVariant(req, res) {
     try {
       await ProductVariant.findByIdAndDelete(req.params.id);
-      res.redirect("/variant?message=Xóa%20biến%20thể%20thành%20công");
+      res.redirect("/Admin/ProductVariant?message=Xóa%20biến%20thể%20thành%20công");
     } catch (err) {
       const errorMsg = "Lỗi%20xóa:%20" + err.message;
-      res.redirect("/variant?error=" + errorMsg);
+      res.redirect("/Admin/ProductVariant?error=" + errorMsg);
     }
   }
 

@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="mt-4">
   <div class="row">
     <div class="{{#if product._id}}col-lg-12{{else}}col-lg-4{{/if}}">
       
@@ -24,7 +24,7 @@
           -->
           <form
             method="POST"
-            action="{{#if product._id}}/product/update/{{product._id}}{{else}}/product/create{{/if}}"
+            action="{{#if product._id}}/Admin/Product/update/{{product._id}}{{else}}/Admin/Product/create{{/if}}"
           >
 
             <div class="mb-3">
@@ -100,7 +100,7 @@
               </button>
 
               <!-- 6. Nút Hủy (luôn quay về trang chủ '/product') -->
-              <a href="/product" class="btn btn-secondary">Hủy</a>
+              <a href="/Admin/Product" class="btn btn-secondary">Hủy</a>
             </div>
           </form>
         </div>
@@ -157,7 +157,7 @@
                       <td class="align-middle">
                         <!-- Nút Sửa (Edit) -->
                         <a
-                          href="/product/edit/{{this._id}}"
+                          href="/Admin/Product/edit/{{this._id}}"
                           class="btn btn-sm btn-outline-primary me-1"
                           title="Sửa"
                         >
@@ -167,7 +167,7 @@
                         <!-- Nút Xóa (Delete) -->
                         <form
                           method="POST"
-                          action="/product/delete/{{this._id}}"
+                          action="/Admin/Product/delete/{{this._id}}"
                           style="display: inline;"
                           onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này?');"
                         >
