@@ -55,64 +55,66 @@
           <div class="admin-card">
             <div class="admin-gradient-overlay admin-gradient-blue"></div>
             <div class="admin-card-header">
-              <h3 class="admin-card-title">Expenses</h3>
+              <h3 class="admin-card-title">Tổng Số Lượng Tồn Kho</h3>
               <div class="admin-card-icon admin-icon-product">
                 <span class="admin-icon admin-total-products-icon"></span>
               </div>
             </div>
-            <div class="admin-card-value">$5,325.00</div>
-            <div class="admin-card-change">
+            <div
+              class="admin-card-value"
+            >{{viewmodel.totalProductVariant}}</div>
+            {{!-- <div class="admin-card-change">
               <span class="admin-negative">↑ 1.8%</span>
               from last month
-            </div>
-          </div>
-        </div>
-         <div class="col-md-3">
-          <div class="admin-card">
-            <div class="admin-gradient-overlay admin-gradient-success"></div>
-            <div class="admin-card-header">
-              <h3 class="admin-card-title">Income</h3>
-              <div class="admin-card-icon admin-icon-success">
-                <span class="admin-icon admin-income-icon"></span>
-              </div>
-            </div>
-            <div class="admin-card-value">$8,942.00</div>
-            <div class="admin-card-change">
-              <span class="admin-positive">↑ 2.5%</span>
-              from last month
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="admin-card">
-            <div class="admin-gradient-overlay admin-gradient-primary"></div>
-            <div class="admin-card-header">
-              <h3 class="admin-card-title">Total Balance</h3>
-              <div class="admin-card-icon admin-icon-primary">
-                <span class="admin-icon admin-money-icon"></span>
-              </div>
-            </div>
-            <div class="admin-card-value">$24,562.00</div>
-            <div class="admin-card-change">
-              <span class="admin-positive">↑ 5.2%</span>
-              from last month
-            </div>
+            </div> --}}
           </div>
         </div>
         <div class="col-md-3">
           <div class="admin-card">
             <div class="admin-gradient-overlay admin-gradient-danger"></div>
             <div class="admin-card-header">
-              <h3 class="admin-card-title">Expenses</h3>
+              <h3 class="admin-card-title">Số Sản Phẩm Sắp Hết Hàng</h3>
               <div class="admin-card-icon admin-icon-danger">
+                <span class="admin-icon admin-income-icon"></span>
+              </div>
+            </div>
+            <div class="admin-card-value">{{viewmodel.lowStockVariants}}</div>
+            {{!-- <div class="admin-card-change">
+              <span class="admin-positive">↑ 2.5%</span>
+              from last month
+            </div> --}}
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="admin-card">
+            <div class="admin-gradient-overlay admin-gradient-primary"></div>
+            <div class="admin-card-header">
+              <h3 class="admin-card-title">Tổng Giá Trị Hàng Tồn Kho</h3>
+              <div class="admin-card-icon admin-icon-primary">
+                <span class="admin-icon admin-money-icon"></span>
+              </div>
+            </div>
+            <div class="admin-card-value">{{formatCurrency viewmodel.totalStockValue}}</div>
+            {{!-- <div class="admin-card-change">
+              <span class="admin-positive">↑ 5.2%</span>
+              from last month
+            </div> --}}
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="admin-card">
+            <div class="admin-gradient-overlay admin-gradient-success"></div>
+            <div class="admin-card-header">
+              <h3 class="admin-card-title">Số lương được thêm vào giỏ</h3>
+              <div class="admin-card-icon admin-icon-success">
                 <span class="admin-icon admin-expense-icon"></span>
               </div>
             </div>
-            <div class="admin-card-value">$5,325.00</div>
-            <div class="admin-card-change">
+            <div class="admin-card-value">{{viewmodel.totalCart}}</div>
+            {{!-- <div class="admin-card-change">
               <span class="admin-negative">↑ 1.8%</span>
               from last month
-            </div>
+            </div> --}}
           </div>
         </div>
       </div>
@@ -124,41 +126,22 @@
           <thead>
             <tr>
               <th>ID</th>
-              <th>Tên Danh Mục</th>
+              <th>Tên</th>
               <th>Mô Tả</th>
               <th>Số Sản Phẩm</th>
               <th>Trạng Thái</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>#CAT001</td>
-              <td><strong>Áo Thun</strong></td>
-              <td>Các loại áo thun nam nữ</td>
-              <td><span class="badge bg-primary">3</span></td>
-              <td><span class="badge bg-success">Hoạt động</span></td>
-            </tr>
-            <tr>
-              <td>#CAT002</td>
-              <td><strong>Quần Jeans</strong></td>
-              <td>Quần jeans thời trang</td>
-              <td><span class="badge bg-primary">2</span></td>
-              <td><span class="badge bg-success">Hoạt động</span></td>
-            </tr>
-            <tr>
-              <td>#CAT003</td>
-              <td><strong>Giày Dép</strong></td>
-              <td>Giày thể thao, giày da</td>
-              <td><span class="badge bg-primary">2</span></td>
-              <td><span class="badge bg-success">Hoạt động</span></td>
-            </tr>
-            <tr>
-              <td>#CAT004</td>
-              <td><strong>Phụ Kiện</strong></td>
-              <td>Túi xách, ví, thắt lưng</td>
-              <td><span class="badge bg-primary">1</span></td>
-              <td><span class="badge bg-success">Hoạt động</span></td>
-            </tr>
+            {{#each viewmodel.listCategory}}
+              <tr>
+                <td>###</td>
+                <td><strong>{{categoryName}}</strong></td>
+                <td>{{description}}</td>
+                <td><span class="badge bg-primary">{{productCount}}</span></td>
+                <td><span class="badge bg-success">Hoạt động</span></td>
+              </tr>
+            {{/each}}
           </tbody>
         </table>
       </div>
@@ -179,110 +162,35 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><img
-                  src=""
-                  alt="Product"
-                  class="product-img"
-                /></td>
-              <td><strong>Áo Thun Cotton Nam</strong></td>
-              <td>Áo Thun</td>
-              <td><strong>250,000 ₫</strong></td>
-              <td><span class="badge bg-info">3</span></td>
-              <td><strong>150</strong></td>
-              <td><span class="badge-stock-high">Còn Nhiều</span></td>
-            </tr>
-            <tr>
-              <td><img
-                  src=""
-                  alt="Product"
-                  class="product-img"
-                /></td>
-              <td><strong>Áo Polo Nữ</strong></td>
-              <td>Áo Thun</td>
-              <td><strong>320,000 ₫</strong></td>
-              <td><span class="badge bg-info">3</span></td>
-              <td><strong>85</strong></td>
-              <td><span class="badge-stock-high">Còn Nhiều</span></td>
-            </tr>
-            <tr>
-              <td><img
-                  src=""
-                  alt="Product"
-                  class="product-img"
-                /></td>
-              <td><strong>Áo Thun Oversize</strong></td>
-              <td>Áo Thun</td>
-              <td><strong>280,000 ₫</strong></td>
-              <td><span class="badge bg-info">3</span></td>
-              <td><strong>45</strong></td>
-              <td><span class="badge-stock-medium">Còn Ít</span></td>
-            </tr>
-            <tr>
-              <td><img
-                  src=""
-                  alt="Product"
-                  class="product-img"
-                /></td>
-              <td><strong>Quần Jeans Skinny</strong></td>
-              <td>Quần Jeans</td>
-              <td><strong>450,000 ₫</strong></td>
-              <td><span class="badge bg-info">3</span></td>
-              <td><strong>120</strong></td>
-              <td><span class="badge-stock-high">Còn Nhiều</span></td>
-            </tr>
-            <tr>
-              <td><img
-                  src=""
-                  alt="Product"
-                  class="product-img"
-                /></td>
-              <td><strong>Quần Jeans Baggy</strong></td>
-              <td>Quần Jeans</td>
-              <td><strong>480,000 ₫</strong></td>
-              <td><span class="badge bg-info">3</span></td>
-              <td><strong>15</strong></td>
-              <td><span class="badge-stock-low">Sắp Hết</span></td>
-            </tr>
-            <tr>
-              <td><img
-                  src=""
-                  alt="Product"
-                  class="product-img"
-                /></td>
-              <td><strong>Giày Thể Thao Nike</strong></td>
-              <td>Giày Dép</td>
-              <td><strong>1,200,000 ₫</strong></td>
-              <td><span class="badge bg-info">4</span></td>
-              <td><strong>8</strong></td>
-              <td><span class="badge-stock-low">Sắp Hết</span></td>
-            </tr>
-            <tr>
-              <td><img
-                  src=""
-                  alt="Product"
-                  class="product-img"
-                /></td>
-              <td><strong>Giày Da Công Sở</strong></td>
-              <td>Giày Dép</td>
-              <td><strong>850,000 ₫</strong></td>
-              <td><span class="badge bg-info">4</span></td>
-              <td><strong>32</strong></td>
-              <td><span class="badge-stock-medium">Còn Ít</span></td>
-            </tr>
-            <tr>
-              <td><img
-                  src=""
-                  alt="Product"
-                  class="product-img"
-                /></td>
-              <td><strong>Túi Xách Da Cao Cấp</strong></td>
-              <td>Phụ Kiện</td>
-              <td><strong>1,500,000 ₫</strong></td>
-              <td><span class="badge bg-info">2</span></td>
-              <td><strong>25</strong></td>
-              <td><span class="badge-stock-medium">Còn Ít</span></td>
-            </tr>
+            {{#each viewmodel.listProduct}}
+              <tr>
+                <td><img
+                    src="{{imageUrl}}"
+                    alt="Product"
+                    class="product-img"
+                  /></td>
+                <td><strong>{{productName}}</strong></td>
+                <td>{{categoryName}}</td>
+                <td><strong>{{formatCurrency price}}</strong></td>
+                <td><span class="badge bg-info">{{variantCount}}</span></td>
+                <td><strong>{{totalStock}}</strong></td>
+                <td>
+                  {{#ifeq status "Còn Nhiều"}}
+                    <span class="badge-stock-high">{{status}}</span>
+                  {{else}}
+                    {{#ifeq status "Còn Ít"}}
+                      <span class="badge-stock-medium">{{status}}</span>
+                    {{else}}
+                      {{#ifeq status "Sắp Hết"}}
+                        <span class="badge-stock-low">{{status}}</span>
+                      {{else}}
+                        <span class="badge bg-secondary">Không rõ</span>
+                      {{/ifeq}}
+                    {{/ifeq}}
+                  {{/ifeq}}
+                </td>
+              </tr>
+            {{/each}}
           </tbody>
         </table>
       </div>
@@ -302,68 +210,46 @@
               <th>Ghi Chú</th>
             </tr>
           </thead>
-          <tbody>
-            <tr class="table-danger">
-              <td>#VAR001</td>
-              <td>Áo Thun Oversize</td>
-              <td><span class="badge bg-secondary">M</span></td>
-              <td><span
-                  class="badge"
-                  style="background-color: #000;"
-                >Đen</span></td>
-              <td><strong class="text-danger">5</strong></td>
-              <td><span class="badge-stock-low">Nguy Cơ Hết</span></td>
-              <td><small class="text-danger">Cần nhập gấp!</small></td>
+         <tbody>
+    {{#each viewmodel.listProductVariants}}
+        {{#if (lt stockQuantity 20)}}
+            
+            <tr class="{{#if (lt stockQuantity 10)}}table-danger{{else}}table-warning{{/if}}">
+                <td>{{variantCode}}</td>
+                <td>{{productName}}</td>
+                <td><span class="badge bg-secondary">{{size}}</span></td>
+                <td>
+                    <span
+                        class="badge"
+                        style="background-color: {{colorHex}}; {{#ifeq colorHex '#fff'}}color: #000; border: 1px solid #ccc;{{/ifeq}}"
+                    >{{colorName}}</span>
+                </td>
+                
+                <td>
+                    <strong class="{{#if (lt stockQuantity 10)}}text-danger{{else}}text-warning{{/if}}">
+                        {{stockQuantity}}
+                    </strong>
+                </td>
+                
+                <td>
+                    {{#if (lt stockQuantity 10)}}
+                        <span class="badge-stock-low">Nguy Cơ Hết</span>
+                    {{else}}
+                        <span class="badge-stock-medium">Cần Nhập</span>
+                    {{/if}}
+                </td>
+                
+                <td>
+                    {{#if (lt stockQuantity 10)}}
+                        <small class="text-danger">Cần nhập gấp!</small>
+                    {{else}}
+                        <small>Theo dõi thêm</small>
+                    {{/if}}
+                </td>
             </tr>
-            <tr class="table-danger">
-              <td>#VAR002</td>
-              <td>Quần Jeans Baggy</td>
-              <td><span class="badge bg-secondary">30</span></td>
-              <td><span
-                  class="badge"
-                  style="background-color: #1e90ff;"
-                >Xanh</span></td>
-              <td><strong class="text-danger">3</strong></td>
-              <td><span class="badge-stock-low">Nguy Cơ Hết</span></td>
-              <td><small class="text-danger">Cần nhập gấp!</small></td>
-            </tr>
-            <tr class="table-danger">
-              <td>#VAR003</td>
-              <td>Giày Thể Thao Nike</td>
-              <td><span class="badge bg-secondary">42</span></td>
-              <td><span
-                  class="badge"
-                  style="background-color: #fff; color: #000; border: 1px solid #ccc;"
-                >Trắng</span></td>
-              <td><strong class="text-danger">2</strong></td>
-              <td><span class="badge-stock-low">Nguy Cơ Hết</span></td>
-              <td><small class="text-danger">Size hot - cần nhập gấp!</small></td>
-            </tr>
-            <tr class="table-warning">
-              <td>#VAR004</td>
-              <td>Áo Thun Oversize</td>
-              <td><span class="badge bg-secondary">L</span></td>
-              <td><span
-                  class="badge"
-                  style="background-color: #fff; color: #000; border: 1px solid #ccc;"
-                >Trắng</span></td>
-              <td><strong class="text-warning">12</strong></td>
-              <td><span class="badge-stock-medium">Cần Nhập</span></td>
-              <td><small>Theo dõi thêm</small></td>
-            </tr>
-            <tr class="table-warning">
-              <td>#VAR005</td>
-              <td>Giày Da Công Sở</td>
-              <td><span class="badge bg-secondary">41</span></td>
-              <td><span
-                  class="badge"
-                  style="background-color: #8b4513; color: #fff;"
-                >Nâu</span></td>
-              <td><strong class="text-warning">8</strong></td>
-              <td><span class="badge-stock-medium">Cần Nhập</span></td>
-              <td><small>Size phổ biến</small></td>
-            </tr>
-          </tbody>
+        {{/if}} 
+    {{/each}}
+    </tbody>
         </table>
       </div>
 

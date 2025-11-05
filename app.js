@@ -27,31 +27,49 @@ const hbs = require("hbs"); // Đảm bảo đã import hbs
 // });
 
 // ====== CẤU HÌNH HANDLEBARS ======
-app.engine('hbs', exphbs.engine({
-  extname: 'hbs',
-  defaultLayout: 'userLayout', // layout mặc định
-  layoutsDir: path.join(__dirname, 'views', 'layouts'),
-   // THÊM KHỐI helpers VÀO ĐÂY
-  helpers: {
-    // Helper array
-    eq: (a, b) => a === b,
+app.engine(
+  "hbs",
+  exphbs.engine({
+    extname: "hbs",
+    defaultLayout: "userLayout", // layout mặc định
+    layoutsDir: path.join(__dirname, "views", "layouts"),
+    // THÊM KHỐI helpers VÀO ĐÂY
+    helpers: {
+      // Helper array
+      eq: (a, b) => a === b,
       toString: (value) => String(value),
-    array: function (...args) {
-      // Loại bỏ đối tượng options cuối cùng
-      args.pop();
-      return args;
-    },
+      array: function (...args) {
+        // Loại bỏ đối tượng options cuối cùng
+        args.pop();
+        return args;
+      },
+      lt: function (a, b) {
+        // Trả về true nếu a nhỏ hơn b
+        return a < b;
+      }, // Helper ifeq (Đã chuyển từ global hbs.registerHelper)
+      ifeq: function (a, b, options) {
+        // Chuyển đổi sang chuỗi để so sánh an toàn
+        if (String(a) === String(b)) {
+          return options.fn(this);
+        }
+        return options.inverse(this);
+      },
+      formatCurrency: function(amount) {
+            // Kiểm tra và xử lý giá trị null/undefined
+            if (amount === undefined || amount === null || isNaN(amount)) {
+                return '0 ₫';
+            }
 
-    // Helper ifeq (Đã chuyển từ global hbs.registerHelper)
-    ifeq: function (a, b, options) {
-      // Chuyển đổi sang chuỗi để so sánh an toàn
-      if (String(a) === String(b)) {
-        return options.fn(this);
-      }
-      return options.inverse(this);
-    }
-  }
-}));
+            // Sử dụng toLocaleString với locale 'vi-VN' và style 'currency'
+            return Number(amount).toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+                minimumFractionDigits: 0 // Đảm bảo không có số thập phân
+            });
+        },
+    },
+  })
+);
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
@@ -74,9 +92,9 @@ app.use(
 app.use(flash());
 // Cho phép gửi biến flash sang view (ví dụ với Handlebars, EJS,...)
 app.use((req, res, next) => {
-  res.locals.success = req.flash('success');
-  res.locals.error = req.flash('error');
-    res.locals.currentUser = req.session.user || null; // để hiển thị user đang login
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  res.locals.currentUser = req.session.user || null; // để hiển thị user đang login
   next();
 });
 // router(app);
@@ -89,7 +107,7 @@ app.use("/Admin", adminRoute);
 // });
 
 // === SỬA LỖI: GỘP 2 TRÌNH XỬ LÝ LỖI LẠI ===
-app.use(function (err, req, res, next) {  
+app.use(function (err, req, res, next) {
   // 1. Thêm dòng log chi tiết lỗi vào đây
   console.error("Chi tiết lỗi:", err.message, err.stack); // Ghi lại cả stack trace
 
