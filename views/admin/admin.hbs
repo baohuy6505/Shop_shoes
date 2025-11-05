@@ -1,126 +1,419 @@
-    <style>
-     .hero-section { background:
-      linear-gradient( rgba(52, 73, 94, 0.8), rgba(52, 73, 94, 0.8) ),
-      url("https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80");
-      background-size: cover; background-position: center; color: white;
-      border-radius: 0.5rem; } .management-card { transition: transform 0.2s
-      ease-in-out, box-shadow 0.2s ease-in-out; border: none; height: 100%; /*
-      Make cards in the same row equal height */ } .management-card:hover {
-      transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); }
-      .management-card .card-icon i { font-size: 3.5rem; margin-bottom: 1rem;
-      transition: color 0.2s ease-in-out; } .management-card .btn { transition:
-      background-color 0.2s ease-in-out, color 0.2s ease-in-out; } .footer {
-      background-color: #343a40; }
-    </style>
-
-    <div class="container mt-4">
-      <div class="p-5 mb-4 hero-section shadow-sm">
-        <div class="container-fluid py-4">
-          <h1 class="display-4 fw-bold">Bảng Điều Khiển Admin</h1>
-          <p class="col-md-9 fs-5">
-            Quản lý tập trung sản phẩm, danh mục, kho hàng và các hoạt động khác
-            của cửa hàng.
-          </p>
+<style>
+  .sidebar { min-height: 100vh; background: linear-gradient(180deg, #2c3e50 0%,
+  #34495e 100%); box-shadow: 2px 0 10px rgba(0,0,0,0.1); } .sidebar .nav-link {
+  color: #ecf0f1; padding: 15px 20px; margin: 5px 0; border-radius: 8px;
+  transition: all 0.3s; } .sidebar .nav-link:hover, .sidebar .nav-link.active {
+  background-color: rgba(255,255,255,0.1); color: #fff; } .sidebar .nav-link i {
+  margin-right: 10px; font-size: 1.2rem; } .top-navbar { background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 15px 30px; } .stats-card {
+  background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px
+  rgba(0,0,0,0.08); margin-bottom: 20px; transition: transform 0.3s; }
+  .stats-card:hover { transform: translateY(-5px); box-shadow: 0 4px 15px
+  rgba(0,0,0,0.15); } .stats-card .icon { font-size: 2.5rem; margin-bottom:
+  10px; } .stats-card.blue { border-left: 4px solid #3498db; } .stats-card.green
+  { border-left: 4px solid #2ecc71; } .stats-card.orange { border-left: 4px
+  solid #f39c12; } .stats-card.red { border-left: 4px solid #e74c3c; }
+  .table-card { background: #fff; border-radius: 12px; padding: 25px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 30px; } .table-card h5
+  { color: #2c3e50; font-weight: 600; margin-bottom: 20px; padding-bottom: 10px;
+  border-bottom: 2px solid #ecf0f1; } .table thead { background-color: #34495e;
+  color: #fff; } .table thead th { border: none; padding: 12px; font-weight:
+  500; } .table tbody tr { transition: background-color 0.2s; } .table tbody
+  tr:hover { background-color: #f8f9fa; } .badge-stock-high { background-color:
+  #d4edda; color: #155724; padding: 5px 12px; border-radius: 12px; font-weight:
+  500; } .badge-stock-medium { background-color: #fff3cd; color: #856404;
+  padding: 5px 12px; border-radius: 12px; font-weight: 500; } .badge-stock-low {
+  background-color: #f8d7da; color: #721c24; padding: 5px 12px; border-radius:
+  12px; font-weight: 500; } .product-img { width: 50px; height: 50px;
+  object-fit: cover; border-radius: 8px; } .section-title { color: #2c3e50;
+  font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; }
+  .section-title i { margin-right: 10px; color: #3498db; }
+</style>
+<div class="row">
+  <!-- Main Content -->
+  <div class="col-md-12 p-0">
+    <!-- Top Navbar -->
+    <div class="top-navbar d-flex justify-content-between align-items-center">
+      <h3 class="mb-0"><i class="bi bi-clipboard-data"></i>
+        Quản Lý Kho Hàng</h3>
+      <div class="d-flex align-items-center">
+        <span class="me-3"><i class="bi bi-calendar3"></i> 03/11/2025</span>
+        <div class="dropdown">
+          <button class="btn btn-light dropdown-toggle" type="button">
+            <i class="bi bi-person-circle"></i>
+            Admin
+          </button>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="col-lg-4 col-md-6 mb-4">
-          <div class="card shadow-sm management-card">
-            <div class="card-body text-center d-flex flex-column p-4 p-lg-5">
-              <div class="card-icon text-primary">
-                <i class="fas fa-shoe-prints"></i>
-              </div>
-              <h3 class="card-title fw-bold mb-3">Quản lý Sản Phẩm</h3>
-              <p class="card-text text-muted mb-4">
-                Thêm mới, cập nhật thông tin, hình ảnh, giá cả và xem danh sách
-                sản phẩm.
-              </p>
-              <a href="/product" class="btn btn-primary btn-lg px-4 mt-auto">
-                Truy cập
-                <i class="fas fa-arrow-right ms-2"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 mb-4">
-          <div class="card shadow-sm management-card">
-            <div class="card-body text-center d-flex flex-column p-4 p-lg-5">
-              <div class="card-icon text-success">
-                <i class="fas fa-tags"></i>
-              </div>
-              <h3 class="card-title fw-bold mb-3">Quản lý Loại Sản Phẩm</h3>
-              <p class="card-text text-muted mb-4">
-                Tổ chức sản phẩm hiệu quả bằng cách tạo và quản lý các danh mục.
-              </p>
-              <a href="/category" class="btn btn-success btn-lg px-4 mt-auto">
-                Truy cập
-                <i class="fas fa-arrow-right ms-2"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 mb-4">
-          <div class="card shadow-sm management-card">
-            <div class="card-body text-center d-flex flex-column p-4 p-lg-5">
-              <div class="card-icon text-warning">
-                <i class="fas fa-boxes-stacked"></i>
-              </div>
-              <h3 class="card-title fw-bold mb-3">Quản lý Kho (Biến thể)</h3>
-              <p class="card-text text-muted mb-4">
-                Quản lý số lượng tồn kho theo size và màu sắc cho từng sản phẩm.
-              </p>
-              <a href="/variant" class="btn btn-warning btn-lg px-4 mt-auto">
-                Truy cập
-                <i class="fas fa-arrow-right ms-2"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 mb-4">
-          <div class="card shadow-sm management-card">
-            <div class="card-body text-center d-flex flex-column p-4 p-lg-5">
-              <div class="card-icon text-info">
-                <i class="fas fa-receipt"></i>
-              </div>
-              <h3 class="card-title fw-bold mb-3">Quản lý Đơn Hàng</h3>
-              <p class="card-text text-muted mb-4">
-                Xem và xử lý các đơn hàng đã được đặt bởi khách hàng.
-              </p>
-              <a
-                href="/orders"
-                class="btn btn-info btn-lg px-4 mt-auto text-white"
-              >
-                Truy cập
-                <i class="fas fa-arrow-right ms-2"></i>
-              </a>
-            </div>
-          </div>
-        </div>  
-
-        <div class="col-lg-4 col-md-6 mb-4">
-          <div class="card shadow-sm management-card">
-            <div class="card-body text-center d-flex flex-column p-4 p-lg-5">
-              <div class="card-icon text-secondary">
-                <i class="fas fa-users-cog"></i>
-              </div>
-              <h3 class="card-title fw-bold mb-3">Quản lý Người Dùng</h3>
-              <p class="card-text text-muted mb-4">
-                Xem danh sách người dùng, quản lý tài khoản và phân quyền.
-              </p>
-              <a
-                href="/users/list"
-                class="btn btn-secondary btn-lg px-4 mt-auto"
-              >
-                Truy cập
-                <i class="fas fa-arrow-right ms-2"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
+
+    <!-- Content -->
+    <div class="p-4">
+      <!-- Stats Cards -->
+      <div class="row mb-4">
+        <div class="col-md-3">
+          <div class="admin-card">
+            <div class="admin-gradient-overlay admin-gradient-blue"></div>
+            <div class="admin-card-header">
+              <h3 class="admin-card-title">Expenses</h3>
+              <div class="admin-card-icon admin-icon-product">
+                <span class="admin-icon admin-total-products-icon"></span>
+              </div>
+            </div>
+            <div class="admin-card-value">$5,325.00</div>
+            <div class="admin-card-change">
+              <span class="admin-negative">↑ 1.8%</span>
+              from last month
+            </div>
+          </div>
+        </div>
+         <div class="col-md-3">
+          <div class="admin-card">
+            <div class="admin-gradient-overlay admin-gradient-success"></div>
+            <div class="admin-card-header">
+              <h3 class="admin-card-title">Income</h3>
+              <div class="admin-card-icon admin-icon-success">
+                <span class="admin-icon admin-income-icon"></span>
+              </div>
+            </div>
+            <div class="admin-card-value">$8,942.00</div>
+            <div class="admin-card-change">
+              <span class="admin-positive">↑ 2.5%</span>
+              from last month
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="admin-card">
+            <div class="admin-gradient-overlay admin-gradient-primary"></div>
+            <div class="admin-card-header">
+              <h3 class="admin-card-title">Total Balance</h3>
+              <div class="admin-card-icon admin-icon-primary">
+                <span class="admin-icon admin-money-icon"></span>
+              </div>
+            </div>
+            <div class="admin-card-value">$24,562.00</div>
+            <div class="admin-card-change">
+              <span class="admin-positive">↑ 5.2%</span>
+              from last month
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="admin-card">
+            <div class="admin-gradient-overlay admin-gradient-danger"></div>
+            <div class="admin-card-header">
+              <h3 class="admin-card-title">Expenses</h3>
+              <div class="admin-card-icon admin-icon-danger">
+                <span class="admin-icon admin-expense-icon"></span>
+              </div>
+            </div>
+            <div class="admin-card-value">$5,325.00</div>
+            <div class="admin-card-change">
+              <span class="admin-negative">↑ 1.8%</span>
+              from last month
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Categories Overview -->
+      <div class="table-card">
+        <h5><i class="bi bi-tags"></i> Thống Kê Danh Mục</h5>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tên Danh Mục</th>
+              <th>Mô Tả</th>
+              <th>Số Sản Phẩm</th>
+              <th>Trạng Thái</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#CAT001</td>
+              <td><strong>Áo Thun</strong></td>
+              <td>Các loại áo thun nam nữ</td>
+              <td><span class="badge bg-primary">3</span></td>
+              <td><span class="badge bg-success">Hoạt động</span></td>
+            </tr>
+            <tr>
+              <td>#CAT002</td>
+              <td><strong>Quần Jeans</strong></td>
+              <td>Quần jeans thời trang</td>
+              <td><span class="badge bg-primary">2</span></td>
+              <td><span class="badge bg-success">Hoạt động</span></td>
+            </tr>
+            <tr>
+              <td>#CAT003</td>
+              <td><strong>Giày Dép</strong></td>
+              <td>Giày thể thao, giày da</td>
+              <td><span class="badge bg-primary">2</span></td>
+              <td><span class="badge bg-success">Hoạt động</span></td>
+            </tr>
+            <tr>
+              <td>#CAT004</td>
+              <td><strong>Phụ Kiện</strong></td>
+              <td>Túi xách, ví, thắt lưng</td>
+              <td><span class="badge bg-primary">1</span></td>
+              <td><span class="badge bg-success">Hoạt động</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Products with Stock -->
+      <div class="table-card">
+        <h5><i class="bi bi-box-seam"></i> Chi Tiết Tồn Kho Sản Phẩm</h5>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Hình Ảnh</th>
+              <th>Tên Sản Phẩm</th>
+              <th>Danh Mục</th>
+              <th>Giá</th>
+              <th>Số Biến Thể</th>
+              <th>Tổng Tồn Kho</th>
+              <th>Trạng Thái</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><img
+                  src=""
+                  alt="Product"
+                  class="product-img"
+                /></td>
+              <td><strong>Áo Thun Cotton Nam</strong></td>
+              <td>Áo Thun</td>
+              <td><strong>250,000 ₫</strong></td>
+              <td><span class="badge bg-info">3</span></td>
+              <td><strong>150</strong></td>
+              <td><span class="badge-stock-high">Còn Nhiều</span></td>
+            </tr>
+            <tr>
+              <td><img
+                  src=""
+                  alt="Product"
+                  class="product-img"
+                /></td>
+              <td><strong>Áo Polo Nữ</strong></td>
+              <td>Áo Thun</td>
+              <td><strong>320,000 ₫</strong></td>
+              <td><span class="badge bg-info">3</span></td>
+              <td><strong>85</strong></td>
+              <td><span class="badge-stock-high">Còn Nhiều</span></td>
+            </tr>
+            <tr>
+              <td><img
+                  src=""
+                  alt="Product"
+                  class="product-img"
+                /></td>
+              <td><strong>Áo Thun Oversize</strong></td>
+              <td>Áo Thun</td>
+              <td><strong>280,000 ₫</strong></td>
+              <td><span class="badge bg-info">3</span></td>
+              <td><strong>45</strong></td>
+              <td><span class="badge-stock-medium">Còn Ít</span></td>
+            </tr>
+            <tr>
+              <td><img
+                  src=""
+                  alt="Product"
+                  class="product-img"
+                /></td>
+              <td><strong>Quần Jeans Skinny</strong></td>
+              <td>Quần Jeans</td>
+              <td><strong>450,000 ₫</strong></td>
+              <td><span class="badge bg-info">3</span></td>
+              <td><strong>120</strong></td>
+              <td><span class="badge-stock-high">Còn Nhiều</span></td>
+            </tr>
+            <tr>
+              <td><img
+                  src=""
+                  alt="Product"
+                  class="product-img"
+                /></td>
+              <td><strong>Quần Jeans Baggy</strong></td>
+              <td>Quần Jeans</td>
+              <td><strong>480,000 ₫</strong></td>
+              <td><span class="badge bg-info">3</span></td>
+              <td><strong>15</strong></td>
+              <td><span class="badge-stock-low">Sắp Hết</span></td>
+            </tr>
+            <tr>
+              <td><img
+                  src=""
+                  alt="Product"
+                  class="product-img"
+                /></td>
+              <td><strong>Giày Thể Thao Nike</strong></td>
+              <td>Giày Dép</td>
+              <td><strong>1,200,000 ₫</strong></td>
+              <td><span class="badge bg-info">4</span></td>
+              <td><strong>8</strong></td>
+              <td><span class="badge-stock-low">Sắp Hết</span></td>
+            </tr>
+            <tr>
+              <td><img
+                  src=""
+                  alt="Product"
+                  class="product-img"
+                /></td>
+              <td><strong>Giày Da Công Sở</strong></td>
+              <td>Giày Dép</td>
+              <td><strong>850,000 ₫</strong></td>
+              <td><span class="badge bg-info">4</span></td>
+              <td><strong>32</strong></td>
+              <td><span class="badge-stock-medium">Còn Ít</span></td>
+            </tr>
+            <tr>
+              <td><img
+                  src=""
+                  alt="Product"
+                  class="product-img"
+                /></td>
+              <td><strong>Túi Xách Da Cao Cấp</strong></td>
+              <td>Phụ Kiện</td>
+              <td><strong>1,500,000 ₫</strong></td>
+              <td><span class="badge bg-info">2</span></td>
+              <td><strong>25</strong></td>
+              <td><span class="badge-stock-medium">Còn Ít</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Product Variants Detail -->
+      <div class="table-card">
+        <h5><i class="bi bi-palette"></i> Chi Tiết Biến Thể - Cần Nhập Thêm</h5>
+        <table class="table table-hover table-sm">
+          <thead>
+            <tr>
+              <th>Mã BT</th>
+              <th>Sản Phẩm</th>
+              <th>Size</th>
+              <th>Màu Sắc</th>
+              <th>Tồn Kho</th>
+              <th>Trạng Thái</th>
+              <th>Ghi Chú</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-danger">
+              <td>#VAR001</td>
+              <td>Áo Thun Oversize</td>
+              <td><span class="badge bg-secondary">M</span></td>
+              <td><span
+                  class="badge"
+                  style="background-color: #000;"
+                >Đen</span></td>
+              <td><strong class="text-danger">5</strong></td>
+              <td><span class="badge-stock-low">Nguy Cơ Hết</span></td>
+              <td><small class="text-danger">Cần nhập gấp!</small></td>
+            </tr>
+            <tr class="table-danger">
+              <td>#VAR002</td>
+              <td>Quần Jeans Baggy</td>
+              <td><span class="badge bg-secondary">30</span></td>
+              <td><span
+                  class="badge"
+                  style="background-color: #1e90ff;"
+                >Xanh</span></td>
+              <td><strong class="text-danger">3</strong></td>
+              <td><span class="badge-stock-low">Nguy Cơ Hết</span></td>
+              <td><small class="text-danger">Cần nhập gấp!</small></td>
+            </tr>
+            <tr class="table-danger">
+              <td>#VAR003</td>
+              <td>Giày Thể Thao Nike</td>
+              <td><span class="badge bg-secondary">42</span></td>
+              <td><span
+                  class="badge"
+                  style="background-color: #fff; color: #000; border: 1px solid #ccc;"
+                >Trắng</span></td>
+              <td><strong class="text-danger">2</strong></td>
+              <td><span class="badge-stock-low">Nguy Cơ Hết</span></td>
+              <td><small class="text-danger">Size hot - cần nhập gấp!</small></td>
+            </tr>
+            <tr class="table-warning">
+              <td>#VAR004</td>
+              <td>Áo Thun Oversize</td>
+              <td><span class="badge bg-secondary">L</span></td>
+              <td><span
+                  class="badge"
+                  style="background-color: #fff; color: #000; border: 1px solid #ccc;"
+                >Trắng</span></td>
+              <td><strong class="text-warning">12</strong></td>
+              <td><span class="badge-stock-medium">Cần Nhập</span></td>
+              <td><small>Theo dõi thêm</small></td>
+            </tr>
+            <tr class="table-warning">
+              <td>#VAR005</td>
+              <td>Giày Da Công Sở</td>
+              <td><span class="badge bg-secondary">41</span></td>
+              <td><span
+                  class="badge"
+                  style="background-color: #8b4513; color: #fff;"
+                >Nâu</span></td>
+              <td><strong class="text-warning">8</strong></td>
+              <td><span class="badge-stock-medium">Cần Nhập</span></td>
+              <td><small>Size phổ biến</small></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Users Summary -->
+      <div class="table-card">
+        <h5><i class="bi bi-people"></i> Thống Kê Người Dùng</h5>
+        <div class="row">
+          <div class="col-md-6">
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <td><i class="bi bi-people-fill text-primary"></i>
+                    Tổng người dùng:</td>
+                  <td><strong>1,247</strong></td>
+                </tr>
+                <tr>
+                  <td><i class="bi bi-person-badge text-success"></i>
+                    Admin:</td>
+                  <td><strong>5</strong></td>
+                </tr>
+                <tr>
+                  <td><i class="bi bi-person text-info"></i> Khách hàng:</td>
+                  <td><strong>1,242</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-6">
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <td><i class="bi bi-cart-fill text-warning"></i>
+                    Giỏ hàng đang hoạt động:</td>
+                  <td><strong>89</strong></td>
+                </tr>
+                <tr>
+                  <td><i class="bi bi-clock-history text-secondary"></i>
+                    Đăng ký mới hôm nay:</td>
+                  <td><strong>12</strong></td>
+                </tr>
+                <tr>
+                  <td><i class="bi bi-graph-up text-success"></i>
+                    Người dùng hoạt động:</td>
+                  <td><strong>234</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -32,7 +32,12 @@ body {
   line-height: 1.6;
   font-size: 14px;
 }
-
+.text-truncate {
+  white-space: normal !important;   /* Cho phép xuống hàng */
+  word-wrap: break-word;            /* Cắt từ nếu quá dài */
+  overflow-wrap: break-word;        /* Tương thích trình duyệt mới */
+  max-width: 300px;                 /* Giới hạn độ rộng cột (tùy chỉnh) */
+}
 .admin-container {
   display: grid;
   grid-template-columns: 280px 1fr;
@@ -351,6 +356,10 @@ body {
   transition: var(--transition);
 }
 
+.admin-gradient-blue {
+  background: linear-gradient(135deg, #3b82f6, #06b6d4);
+}
+
 .admin-gradient-primary {
   background: linear-gradient(135deg, transparent, var(--primary));
 }
@@ -402,6 +411,11 @@ body {
 
 .admin-icon-danger {
   background: linear-gradient(135deg, var(--danger), #dc2626);
+}
+
+.admin-icon-product {
+  background: linear-gradient(135deg, #3b82f6, #1e40af); /* xanh lam gradient */
+  color: white;
 }
 
 .admin-icon-warning {
@@ -822,6 +836,10 @@ body {
 
 .admin-money-icon:before {
   content: "💵";
+}
+
+.admin-total-products-icon::before {
+  content: "📦";
 }
 
 .admin-expense-icon:before {
