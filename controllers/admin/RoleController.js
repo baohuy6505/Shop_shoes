@@ -1,11 +1,11 @@
-const User = require("../../models/UserModel");
-
+const User = require("../../models/userModel");
 const RoleController = {
   // Hiển thị danh sách user và quyền
   index: async (req, res) => {
     try {
       const users = await User.find().lean(); // lấy tất cả user
-      res.render("admin/roleList", { users, layout: "adminLayout" });
+     res.render("admin/roleList", { users, layout: "adminLayout" });
+          //return res.json(users)
     } catch (err) {
       console.error(err);
       res.status(500).send("Lỗi khi tải danh sách người dùng");

@@ -10,7 +10,7 @@ const roleAdminRoute = require("./roleRoute"); // ✅ chỉ giữ dòng này, x�
 const { isManagerOrAdmin } = require("../../middlewares/authMiddleware");
 
 // === Bảo vệ route admin chung ===
-router.use(isManagerOrAdmin);
+//router.use(isManagerOrAdmin);
 
 // === CÁC ROUTE XỬ LÝ FORM VÀ REDIRECT ===
 router.get("/Home", adminController.index);

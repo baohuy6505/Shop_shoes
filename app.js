@@ -34,8 +34,9 @@ app.engine('hbs', exphbs.engine({
    // THÊM KHỐI helpers VÀO ĐÂY
   helpers: {
     // Helper array
-    eq: (a, b) => a === b,
-      toString: (value) => String(value),
+    // eq: (a, b) => a === b,
+    //   toString: (value) => String(value),
+    eq: (v1, v2) => v1 === v2,
     array: function (...args) {
       // Loại bỏ đối tượng options cuối cùng
       args.pop();
