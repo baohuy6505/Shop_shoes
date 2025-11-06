@@ -4,27 +4,14 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var mainRoute = require("./routes/mainRoute");
-var adminRoute = require("./routes/admin/adminRoute");
+var adminRoute = require("./routes/admin/adminRoute"); // thêm nếu bạn có router admin
+
 var app = express();
+
 var flash = require("connect-flash");
 var exphbs = require("express-handlebars");
 var session = require("express-session");
-
-const hbs = require("hbs"); // Đảm bảo đã import hbs
-
-// // Đăng ký helpers
-// hbs.registerHelper("array", function (...args) {
-//   args.pop(); // Loại bỏ đối tượng options cuối cùng
-//   return args;
-// });
-
-// hbs.registerHelper("ifeq", function (a, b, options) {
-//   // Chuyển đổi sang chuỗi để so sánh an toàn
-//   if (String(a) === String(b)) {
-//     return options.fn(this);
-//   }
-//   return options.inverse(this);
-// });
+const hbs = require("hbs");
 
 // ====== CẤU HÌNH HANDLEBARS ======
 app.engine(
@@ -33,91 +20,80 @@ app.engine(
     extname: "hbs",
     defaultLayout: "userLayout", // layout mặc định
     layoutsDir: path.join(__dirname, "views", "layouts"),
-    // THÊM KHỐI helpers VÀO ĐÂY
     helpers: {
-      // Helper array
       eq: (a, b) => a === b,
       toString: (value) => String(value),
       array: function (...args) {
-        // Loại bỏ đối tượng options cuối cùng
         args.pop();
         return args;
       },
       lt: function (a, b) {
-        // Trả về true nếu a nhỏ hơn b
         return a < b;
-      }, // Helper ifeq (Đã chuyển từ global hbs.registerHelper)
+      },
       ifeq: function (a, b, options) {
-        // Chuyển đổi sang chuỗi để so sánh an toàn
         if (String(a) === String(b)) {
           return options.fn(this);
         }
         return options.inverse(this);
       },
-      formatCurrency: function(amount) {
-            // Kiểm tra và xử lý giá trị null/undefined
-            if (amount === undefined || amount === null || isNaN(amount)) {
-                return '0 ₫';
-            }
-
-            // Sử dụng toLocaleString với locale 'vi-VN' và style 'currency'
-            return Number(amount).toLocaleString('vi-VN', {
-                style: 'currency',
-                currency: 'VND',
-                minimumFractionDigits: 0 // Đảm bảo không có số thập phân
-            });
-        },
+      formatCurrency: function (amount) {
+        if (amount === undefined || amount === null || isNaN(amount)) {
+          return "0 ₫";
+        }
+        return Number(amount).toLocaleString("vi-VN", {
+          style: "currency",
+          currency: "VND",
+          minimumFractionDigits: 0,
+        });
+      },
     },
   })
 );
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
 
+// middleware
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
 app.use(
   session({
-    secret: "chukicuatrangweb", //đổi thành chuỗi ngẫu nhiên khó đoán
+    secret: "chukicuatrangweb", // đổi thành chuỗi ngẫu nhiên
     resave: false,
     saveUninitialized: false,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24, // cookie tồn tại 1 ngày
-    },
+    cookie: { maxAge: 1000 * 60 * 60 * 24 }, // 1 ngày
   })
 );
+
 app.use(flash());
-// Cho phép gửi biến flash sang view (ví dụ với Handlebars, EJS,...)
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
-  res.locals.currentUser = req.session.user || null; // để hiển thị user đang login
+  res.locals.currentUser = req.session.user || null;
   next();
 });
-// router(app);
+
+// routes
 app.use("/", mainRoute);
-app.use("/Admin", adminRoute);
+app.use("/admin", adminRoute);
 
-// catch 404 and forward to error handler
-// app.use(function (req, res, next) {
-//   next(createError(404));
-// });
+// Xử lý lỗi 404
+app.use(function (req, res, next) {
+  next(createError(404));
+});
 
-// === SỬA LỖI: GỘP 2 TRÌNH XỬ LÝ LỖI LẠI ===
+// Xử lý lỗi chung
 app.use(function (err, req, res, next) {
-  // 1. Thêm dòng log chi tiết lỗi vào đây
-  console.error("Chi tiết lỗi:", err.message, err.stack); // Ghi lại cả stack trace
-
-  // 2. set locals, only providing error in development
+  console.error("Chi tiết lỗi:", err.message, err.stack);
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  // 3. render the error page
   res.status(err.status || 500);
-  res.render("error"); // Đảm bảo bạn có file 'views/error.hbs'
+  res.render("error");
 });
 
 module.exports = app;

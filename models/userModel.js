@@ -1,60 +1,47 @@
-// File: models/userModel.js
-
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 const Schema = mongoose.Schema;
-const bcrypt = require("bcryptjs"); 
+
 const userSchema = new Schema(
   {
     username: {
       type: String,
       required: [true, "Vui lòng nhập tên người dùng"],
       trim: true,
-      maxlength: 100,
     },
     email: {
       type: String,
       required: [true, "Vui lòng nhập email"],
       unique: true,
       lowercase: true,
-      trim: true,
-      maxlength: 100,
     },
-
-    // Đổi 'passwordHash' thành 'password'
     password: {
       type: String,
       required: [true, "Vui lòng nhập mật khẩu"],
-      select: false, // Vẫn giữ 'select: false' để không bị lộ khi query
+      select: false,
     },
-    // --- KẾT THÚC SỬA ---
-
     role: {
       type: String,
-      enum: ["admin", "customer"],
-      default: "customer",
+      enum: ["admin", "manager", "user"],
+      default: "user",
       required: true,
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
-// Middleware mã hóa mật khẩu trước khi lưu
+
+// Mã hoá mật khẩu trước khi lưu
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (err) {
-    next(err);
-  }
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
 
-// Thêm method để so sánh mật khẩu khi đăng nhập
+// So sánh mật khẩu khi đăng nhập
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-const User = mongoose.model("User", userSchema);
-module.exports = User;
+// ✅ Cách tránh lỗi OverwriteModelError:
+module.exports = mongoose.models.User || mongoose.model("User", userSchema);

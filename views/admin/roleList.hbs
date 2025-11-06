@@ -1,0 +1,123 @@
+  <style>
+    .role-card {
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      background: #fff;
+      padding: 20px;
+    }
+
+    .table th {
+      background-color: #f1f3f5;
+      text-align: center;
+    }
+
+    .badge {
+      text-transform: capitalize;
+      font-size: 0.85rem;
+    }
+
+    .btn-create {
+      background-color: #198754;
+      border: none;
+    }
+
+    .btn-create:hover {
+      background-color: #157347;
+    }
+
+    .page-header {
+      border-bottom: 3px solid #0d6efd;
+      display: inline-block;
+      padding-bottom: 4px;
+      margin-bottom: 20px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5 mb-5">
+    <h2 class="page-header">⚙️ Quản lý quyền người dùng</h2>
+
+    <!-- Form tạo Manager -->
+    <div class="role-card mb-4">
+      <h5 class="mb-3 text-success">➕ Tạo tài khoản Manager mới</h5>
+      <form action="/admin/manager/create" method="POST" class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Tên người dùng</label>
+          <input type="text" name="username" class="form-control" placeholder="Nhập tên..." required />
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Email</label>
+          <input type="email" name="email" class="form-control" placeholder="Nhập email..." required />
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Mật khẩu</label>
+          <input type="password" name="password" class="form-control" placeholder="Tạo mật khẩu..." required />
+        </div>
+        <div class="col-12 text-end">
+          <button type="submit" class="btn btn-create px-4 text-white">
+            Tạo Manager
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Bảng người dùng -->
+    <div class="role-card">
+      <table class="table table-bordered align-middle text-center">
+        <thead class="table-light">
+          <tr>
+            <th>Tên người dùng</th>
+            <th>Email</th>
+            <th>Quyền hiện tại</th>
+            <th>Thay đổi quyền</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each users}}
+          <tr>
+            <td>{{this.username}}</td>
+            <td>{{this.email}}</td>
+            <td>
+              <span class="badge
+                {{#if (eq this.role 'admin')}}bg-danger{{/if}}
+                {{#if (eq this.role 'manager')}}bg-warning text-dark{{/if}}
+                {{#if (eq this.role 'user')}}bg-secondary{{/if}}">
+                {{this.role}}
+              </span>
+            </td>
+            <td>
+              {{#if (eq this.role 'admin')}} <!-- Admin không tự sửa -->
+              <form
+                action="/admin/role/update"
+                method="POST"
+                class="d-flex justify-content-center align-items-center"
+              >
+                <input type="hidden" name="userId" value="{{this._id}}" />
+                {{#if (eq this.role 'admin')}}
+                          <select name="role" class="form-select form-select-sm w-auto me-2" disabled>
+                    <option value="admin" selected>Admin</option>
+                  </select>
+                {{else}}
+                         <select name="role" class="form-select form-select-sm w-auto me-2">
+                  <option value="user" {{#if (eq this.role 'user')}}selected{{/if}}>User</option>
+                  <option value="manager" {{#if (eq this.role 'manager')}}selected{{/if}}>Manager</option>
+                </select>
+                  {{/if}}
+                <button type="submit" class="btn btn-sm btn-primary">Cập nhật</button>
+              </form>
+              {{else}}
+              <span class="text-muted">Không thể chỉnh sửa</span>
+              {{/if}}
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
