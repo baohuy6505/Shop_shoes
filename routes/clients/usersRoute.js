@@ -2,7 +2,7 @@
 
 var express = require("express");
 var router = express.Router();
-const AccountController = require("../controllers/AccountController");
+const AccountController = require("../../controllers/clients/AccountController");
 
 // --- SỬA LẠI HOÀN TOÀN ---
 

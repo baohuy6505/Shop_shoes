@@ -2,7 +2,7 @@
 
 const express = require("express");
 const router = express.Router();
-const categoryController = require("../controllers/CategoryController");
+const categoryController = require("../../controllers/admin/CategoryController");
 
 // === CÁC ROUTE XỬ LÝ FORM VÀ REDIRECT ===
 

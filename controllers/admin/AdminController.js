@@ -128,7 +128,7 @@ class AdminController {
       listProduct: listProduct,
       listProductVariants: listProductVariants,
     };
-    return res.render("../views/admin/admin.hbs", {
+    return res.render("admin/admin", {
       layout: "adminLayout.hbs",
       viewmodel: viewmodel,
     });

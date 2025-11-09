@@ -1,12 +1,12 @@
-const Category = require("../models/categoryModel");
-const Product = require("../models/productModel");
+const Category = require("../../models/categoryModel");
+const Product = require("../../models/productModel");
 
 class CategoryController {
   // Trang quản lý Category
   async renderCategoryPage(req, res) {
     try {
       const categories = await Category.find().sort({ createdAt: -1 }).lean();
-      res.render("category/create", {
+      res.render("admin/category/create", {
         layout: "adminLayout",
         categories,
       });
@@ -38,10 +38,10 @@ class CategoryController {
   async renderEditPage(req, res) { 
     const editId = await req.params.id;
     if (!editId) {
-      return res.render("category/create", { layout: "adminLayout" });
+      return res.render("admin/category/create", { layout: "adminLayout" });
     }
     const category = await Category.findById(editId).lean();
-    return res.render("category/edit", { layout: "adminLayout", category });
+    return res.render("admin/category/edit", { layout: "adminLayout", category });
   }
 
   // Cập nhật Category

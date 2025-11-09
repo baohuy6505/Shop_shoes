@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const productController = require("../controllers/ProductController");
+const productController = require("../../controllers/admin/ProductController");
 
 // === CÁC ROUTE XỬ LÝ FORM VÀ REDIRECT ===
 

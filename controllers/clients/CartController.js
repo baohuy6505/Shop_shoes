@@ -1,5 +1,5 @@
-const User = require("../models/userModel");
-const Cart = require("../models/cartModel");
+const User = require("../../models/userModel");
+const Cart = require("../../models/cartModel");
 class CartController {
   async index(req, res) {
     const userId = req.session.userId;

@@ -1,5 +1,5 @@
-const Category = require("../models/categoryModel");
-const Product = require("../models/productModel");
+const Category = require("../../models/categoryModel");
+const Product = require("../../models/productModel");
 
 class ProductController {
   async renderProductPage(req, res) {
@@ -15,7 +15,7 @@ class ProductController {
       const message = req.query.message || null;
       const error = req.query.error || null;
 
-      res.render("../views/product/editProduct.hbs", {
+      res.render("admin/product/editProduct", {
         layout: "adminLayout",
         products: products,
         categories: categories,
@@ -74,7 +74,7 @@ class ProductController {
         isSelected: cat._id.toString() === product.category._id.toString(),
       }));
 
-      res.render("../views/product/editProduct.hbs", {
+      res.render("admin/product/editProduct", {
         layout: "adminLayout",
         product: product,
         categories: categoriesWithSelected,

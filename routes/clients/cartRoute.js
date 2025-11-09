@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const CartController = require("../controllers/CartController");
-const { requireLogin } = require("../middlewares/authMiddleware");
+const CartController = require("../../controllers/clients/CartController");
+const { requireLogin } = require("../../middlewares/authMiddleware");
 
 // === CÁC ROUTE XỬ LÝ FORM VÀ REDIRECT ===
 router.get("/", requireLogin, CartController.index);

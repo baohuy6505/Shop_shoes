@@ -3,7 +3,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-var mainRoute = require("./routes/mainRoute");
+var mainRoute = require("./routes/clients/mainRoute");
 var adminRoute = require("./routes/admin/adminRoute"); // thêm nếu bạn có router admin
 
 var app = express();

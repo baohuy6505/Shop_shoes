@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const adminController = require("../../controllers/admin/AdminController");
 
-const categoryAdminRoute = require("../categoryRoute");
-const productAdminRoute = require("../productRoute");
-const productVariantAdminRoute = require("../productvariantsRoute");
-const roleAdminRoute = require("./roleRoute"); // ✅ chỉ giữ dòng này, xóa dòng trùng bên trên
+const categoryAdminRoute = require("../admin/categoryRoute");
+const productAdminRoute = require("../admin/productRoute");
+const productVariantAdminRoute = require("../admin/productvariantsRoute");
+const roleAdminRoute = require("../admin/roleRoute"); // ✅ chỉ giữ dòng này, xóa dòng trùng bên trên
 
 const { isManagerOrAdmin } = require("../../middlewares/authMiddleware");
 

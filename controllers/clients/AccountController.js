@@ -1,11 +1,11 @@
-const User = require("../models/userModel");
+const User = require("../../models/userModel");
 
 class AccountController {
   async Login(req, res) {
-    return res.render("../views/account/Login.hbs");
+    return res.render("clients/account/login");
    }
   async Register(req, res) {
-    return res.render("../views/account/register.hbs");
+    return res.render("clients/account/register.hbs");
   }
   
   async RegisterUser(req, res) {

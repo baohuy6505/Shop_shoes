@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const ProductVariantController = require("../controllers/ProductVariantsController");
+const ProductVariantController = require("../../controllers/admin/ProductVariantsController");
 
 // 1. (GET /variant) -> Hiển thị trang quản lý tổng hợp
 router.get("/", ProductVariantController.manageVariantsPage);

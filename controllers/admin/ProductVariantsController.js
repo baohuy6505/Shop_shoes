@@ -1,7 +1,7 @@
 // File: controllers/ProductVariantController.js
 
-const ProductVariant = require("../models/productVariantsModel");
-const Product = require("../models/productModel");
+const ProductVariant = require("../../models/productvariantsModel");
+const Product = require("../../models/productModel");
 
 class ProductVariantController {
   /**
@@ -43,7 +43,7 @@ class ProductVariantController {
       }
 
       // Render trang HBS duy nhất, truyền tất cả dữ liệu cần thiết
-      res.render("../views/productVariant/editproductVariant.hbs", {
+      res.render("admin/productVariant/editproductVariant", {
         layout: "adminLayout",
         // Render file HBS bạn yêu cầu
         variants: variants, // Cho bảng danh sách
