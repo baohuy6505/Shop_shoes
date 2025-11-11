@@ -46,6 +46,23 @@ app.engine(
           minimumFractionDigits: 0,
         });
       },
+      formatDate: function(date) {
+        if (!date) return "";
+        const d = new Date(date);
+        return d.toLocaleDateString("vi-VN", { year: 'numeric', month: '2-digit', day: '2-digit' });
+      },
+      sumStock: function(variants) {
+        if (!variants || !Array.isArray(variants)) return 0;
+        return variants.reduce((sum, v) => sum + (v.stockQuantity || 0), 0);
+      },
+      gt: function(a, b, options) {
+        // Nếu gọi như block helper: {{#gt a b}} ... {{else}} ... {{/gt}}
+        if (typeof options === 'object' && typeof options.fn === 'function') {
+          return a > b ? options.fn(this) : options.inverse(this);
+        }
+        // Nếu gọi như inline helper: {{gt a b}}
+        return a > b;
+      },
     },
   })
 );

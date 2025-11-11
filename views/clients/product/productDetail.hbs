@@ -1,0 +1,220 @@
+{{!< userLayout}}
+
+<div class="container mt-4">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-nav">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="fas fa-home me-2"></i>Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{product.productName}}</li>
+        </ol>
+    </nav>
+    <!-- Product Main Section -->
+    <div class="product-container">
+        <div class="row g-5">
+            <!-- Gallery -->
+            <div class="col-lg-6">
+                <div class="gallery-section">
+                    <div class="main-image-wrapper">
+                        <img id="mainImage" class="main-image" src="{{product.imageUrl}}" alt="{{product.productName}}">
+                        {{#if product.isSale}}<span class="sale-badge">-{{product.salePercent}}%</span>{{/if}}
+                    </div>
+                    {{#if product.gallery}}
+                    <div class="thumbnail-gallery">
+                        {{#each product.gallery}}
+                        <img src="{{this.url}}" class="thumb-img {{#if @first}}active{{/if}}" onclick="changeImage(this, '{{this.url}}')">
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+            <!-- Product Info -->
+            <div class="col-lg-6">
+                <div class="product-info">
+                    <h1 class="product-title">{{product.productName}}</h1>
+                    <p class="product-category">{{category.description}}</p>
+                    <!-- Rating -->
+                    <div class="rating-section">
+                        <div class="stars">
+                            {{#if product.rating}}
+                            {{#each (starArray product.rating)}}<span>⭐</span>{{/each}} {{product.rating}}/5
+                            {{else}}
+                            Chưa có đánh giá
+                            {{/if}}
+                        </div>
+                        <div class="review-count">({{product.reviews.length}} đánh giá)</div>
+                    </div>
+                    <!-- Price -->
+                    <div class="price-section">
+                        <span class="current-price">{{formatCurrency product.price}}</span>
+                        {{#if product.oldPrice}}<span class="old-price">{{formatCurrency product.oldPrice}}</span>{{/if}}
+                        {{#if product.isSale}}<span class="discount-label"><i class="fas fa-tag me-1"></i>Tiết kiệm {{formatCurrency (subtract product.oldPrice product.price)}}</span>{{/if}}
+                    </div>
+                    <!-- Description -->
+                    <p class="description">
+                        <i class="fas fa-check-circle me-2"></i>
+                        {{product.description}}
+                    </p>
+                    <!-- Size Selector -->
+                    <div class="selector-group">
+                        <label class="selector-label"><i class="fas fa-ruler me-2"></i>Chọn kích cỡ</label>
+                        <div class="size-buttons">
+                            {{#each variants}}
+                            <button class="size-btn {{#if this.selected}}active{{/if}}" onclick="selectSize(this)">{{this.size}}</button>
+                            {{/each}}
+                        </div>
+                    </div>
+                    <!-- Color Selector -->
+                    <div class="selector-group">
+                        <label class="selector-label"><i class="fas fa-palette me-2"></i>Chọn màu sắc</label>
+                        <div class="color-selector">
+                            {{#each variants}}
+                            <div class="color-option" onclick="selectColor(this)">
+                                <div class="color-circle {{#if this.selected}}active{{/if}}" style="background: {{this.colorHex}};"></div>
+                                <span class="color-name">{{this.color}}</span>
+                            </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                    <!-- Stock Info -->
+                    <div class="stock-info">
+                        <span class="stock-label"><i class="fas fa-box me-2"></i>Tồn kho:</span>
+                        <span class="stock-badge">{{selectedVariant.stockQuantity}} sản phẩm</span>
+                    </div>
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button class="btn-custom btn-add-cart">
+                            <i class="fas fa-shopping-cart"></i>
+                            Thêm vào giỏ
+                        </button>
+                        <button class="btn-custom btn-buy-now">
+                            <i class="fas fa-bolt"></i>
+                            Mua ngay
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Tabs Section -->
+    <div class="tabs-section">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#description">
+                    <i class="fas fa-file-alt me-2"></i>Mô tả
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#specs">
+                    <i class="fas fa-cogs me-2"></i>Thông số kỹ thuật
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#care">
+                    <i class="fas fa-hand-holding-heart me-2"></i>Bảo quản
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#reviews">
+                    <i class="fas fa-star me-2"></i>Đánh giá <span class="badge bg-danger ms-2">{{product.reviews.length}}</span>
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <!-- Description Tab -->
+            <div class="tab-pane fade show active" id="description">
+                <h5 class="mb-3">Mô tả sản phẩm</h5>
+                <p>{{product.description}}</p>
+                {{#if product.features}}
+                <p class="mt-3"><strong>Đặc điểm nổi bật:</strong></p>
+                <ul class="mt-2">
+                    {{#each product.features}}
+                    <li>{{this}}</li>
+                    {{/each}}
+                </ul>
+                {{/if}}
+            </div>
+            <!-- Specs Tab -->
+            <div class="tab-pane fade" id="specs">
+                <h5 class="mb-4">Thông số kỹ thuật chi tiết</h5>
+                <div class="row">
+                    <div class="col-md-6 mb-3"><strong>Thương hiệu:</strong> <span class="text-muted">{{product.brand}}</span></div>
+                    <div class="col-md-6 mb-3"><strong>Xuất xứ:</strong> <span class="text-muted">{{product.origin}}</span></div>
+                    <div class="col-md-6 mb-3"><strong>Dòng sản phẩm:</strong> <span class="text-muted">{{product.series}}</span></div>
+                    <div class="col-md-6 mb-3"><strong>Loại sản phẩm:</strong> <span class="text-muted">{{product.type}}</span></div>
+                    <div class="col-md-6 mb-3"><strong>Chất liệu thân:</strong> <span class="text-muted">{{product.material}}</span></div>
+                    <div class="col-md-6 mb-3"><strong>Chất liệu đế:</strong> <span class="text-muted">{{product.sole}}</span></div>
+                    <div class="col-md-6 mb-3"><strong>Trọng lượng:</strong> <span class="text-muted">{{product.weight}}</span></div>
+                    <div class="col-md-6 mb-3"><strong>Kích thước:</strong> <span class="text-muted">{{product.sizeRange}}</span></div>
+                    {{#if product.technology}}<div class="col-md-6 mb-3"><strong>Công nghệ:</strong> <span class="text-muted">{{product.technology}}</span></div>{{/if}}
+                    {{#if product.warranty}}<div class="col-md-6 mb-3"><strong>Bảo hành:</strong> <span class="text-muted">{{product.warranty}}</span></div>{{/if}}
+                </div>
+            </div>
+            <!-- Care Tab -->
+            <div class="tab-pane fade" id="care">
+                <h5 class="mb-4">Hướng dẫn bảo quản giày</h5>
+                <div class="row">
+                    {{#each product.guide}}
+                    <div class="col-md-6 mb-4">
+                        <h6><i class="fas {{this.icon}} me-2"></i>{{this.title}}</h6>
+                        <p class="text-muted">{{this.text}}</p>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            <!-- Reviews Tab -->
+            <div class="tab-pane fade" id="reviews">
+                <h5 class="mb-4">Đánh giá từ khách hàng</h5>
+                {{#each product.reviews}}
+                <div class="review-card">
+                    <div class="reviewer-info">
+                        <img src="{{this.avatar}}" class="reviewer-avatar" alt="User">
+                        <div class="flex-grow-1">
+                            <div class="reviewer-name">{{this.name}}</div>
+                            <div class="review-date">{{this.date}}</div>
+                        </div>
+                        <div class="review-rating">⭐ {{this.rating}}/5</div>
+                    </div>
+                    <p class="review-text">{{this.text}}</p>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    <div class="related-section">
+        <h4 class="section-title">Sản phẩm tương tự</h4>
+        <div class="row g-4">
+            {{#each relatedProducts}}
+            <div class="col-md-6 col-lg-3">
+                <div class="product-card">
+                    <img src="{{#if this.imageUrl}}{{this.imageUrl}}{{else}}/images/placeholder-shoe.png{{/if}}" class="product-card-image" alt="{{this.productName}}">
+                    <div class="product-card-body">
+                        <h6 class="product-card-title">{{this.productName}}</h6>
+                        <p class="product-card-price">{{formatCurrency this.price}}</p>
+                        <a href="/product/{{this._id}}" class="btn-view-detail">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function changeImage(el) {
+        const mainImage = document.getElementById('mainImage');
+        mainImage.src = el.src.replace('w=200', 'w=800');
+        document.querySelectorAll('.thumb-img').forEach(img => img.classList.remove('active'));
+        el.classList.add('active');
+    }
+    function selectSize(el) {
+        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+        el.classList.add('active');
+    }
+    function selectColor(el) {
+        document.querySelectorAll('.color-option .color-circle').forEach(circle => {
+            circle.classList.remove('active');
+        });
+        el.querySelector('.color-circle').classList.add('active');
+    }
+</script>

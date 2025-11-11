@@ -7,4 +7,6 @@ const HomeController = require("../../controllers/clients/HomeController");
 // GET /product -> Hiển thị trang chính (danh sách + form)
 router.get("/", HomeController.index);
 
+router.get("/product/:id", HomeController.productDetail);
+
 module.exports = router;
