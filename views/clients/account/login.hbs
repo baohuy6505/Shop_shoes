@@ -7,13 +7,13 @@
             Vui lòng nhập thông tin để tiếp tục.
           </p>
 
-          <form class="auth__form" id="authForm" action="">
+          <form class="auth__form" id="authForm" action="/Account/SubmitForm" method="POST">
             <input type="hidden" name="mode" id="modeInput" value="login" />
 
             <input
               type="text"
-              name="fullname"
-              id="fullname"
+              name="username"
+              id="username"
               class="auth__input"
               placeholder="Họ và tên"
               style="display: none"
@@ -21,10 +21,10 @@
 
             <input
               type="text"
-              name="username"
-              id="username"
+              name="email"
+              id="email"
               class="auth__input"
-              placeholder="Email hoặc tên đăng nhập"
+              placeholder="Email "
               required
             />
 
@@ -57,3 +57,6 @@
         </div>
       </div>
     </div>
+    <script>
+
+    </script>

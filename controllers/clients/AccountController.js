@@ -1,6 +1,20 @@
 const User = require("../../models/userModel");
 
 class AccountController {
+  async SubmitForm(req, res) {
+    const mode = req.body.mode;
+    if(mode === "login"){
+      return this.LoginUser(req, res);
+    }
+    else if(mode === "register"){
+      return this.RegisterUser(req, res);
+    }
+    else{
+      req.flash("error", "Chế độ không hợp lệ.");
+      return res.redirect("/Account/Login");
+    }
+  }
+
   async Login(req, res) {
     return res.render("clients/account/login");
    }
@@ -19,7 +33,7 @@ class AccountController {
         }
       await newUser.save();
       req.flash("success", "Đăng kí thành công!");
-      return res.redirect("/Login");
+      return res.redirect("/Account/Login");
     } catch (error) {
       console.error("Lỗi đăng kí:", error);
       req.flash("error", "Đăng kí thất bại: " + error.message);
@@ -52,6 +66,19 @@ class AccountController {
       req.flash("error", "Đăng nhập thất bại: " + error.message);
       return res.redirect("/Login");
     }
+  }
+
+  async Logout(req, res) {
+    req.session.destroy((err) => {  //hủy session trên server 
+      if (err) {
+        console.error("Lỗi đăng xuất:", err);
+        req.flash("error", "Đăng xuất thất bại.");
+        return res.redirect("/");
+      }
+      res.clearCookie("connect.sid");
+      req.flash("success", "Đăng xuất thành công!");
+      return res.redirect("/Account/Login");
+    });
   }
 }
 

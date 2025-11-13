@@ -459,12 +459,12 @@ a {
   border-bottom-right-radius: 16px;
 }
 .auth__title {
-  font-size: 3.2rem;
+  font-size: 2.5rem;
   margin-bottom: 3.2rem;
   font-weight: bold;
 }
 .auth__subtitle {
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   color: rgba(0, 0, 0, 0.6);
   margin-bottom: 2.4rem;
 }
@@ -488,11 +488,11 @@ a {
 .auth__btn {
   position: relative;
   z-index: 4;
-  padding: 12px 20px;
+  padding: 10px 20px;
   border-radius: 0.5rem;
   border: 1px solid red;
   font-weight: 600;
-  font-size: 2.4rem;
+  font-size: 1.7rem;
   cursor: pointer;
   margin-top: 2.4rem;
   background-color: transparent;
@@ -535,11 +535,11 @@ a {
 .auth__switch-btn {
   position: relative;
   z-index: 4;
-  padding: 12px 20px;
+  padding: 10px 20px;
   border-radius: 0.5rem;
   border: 1px solid #fff;
   font-weight: 600;
-  font-size: 2.4rem;
+  font-size: 1.7rem;
   cursor: pointer;
   margin-top: 2.4rem;
   background-color: transparent;
@@ -576,12 +576,12 @@ a {
   left: 0;
 }
 .auth__side-title {
-  font-size: 3.2rem;
+  font-size: 2.5rem;
   margin-bottom: 1.4rem;
   font-weight: bold;
 }
 .auth__side-text {
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   margin-bottom: 2.4rem;
 }
 .auth--active .auth__panel--left {

@@ -6,7 +6,7 @@ const auth = document.getElementById("auth");
 const switchBtn = document.getElementById("switchBtn");
 const authForm = document.getElementById("authForm");
 const modeInput = document.getElementById("modeInput");
-const fullname = document.getElementById("fullname");
+const fullname = document.getElementById("username");
 const formTitle = document.getElementById("formTitle");
 const submitBtn = document.getElementById("submitBtn");
 const sideTitle = document.getElementById("sideTitle");
@@ -18,7 +18,7 @@ let mode = "login"; // login hoặc register
 function setMode(newMode) {
   mode = newMode;
   modeInput.value = mode;
-
+  console.log("Chế độ hiện tại:", mode);
   if (mode === "register") {
     fullname.style.display = "block";
     formTitle.textContent = "Đăng Ký";
