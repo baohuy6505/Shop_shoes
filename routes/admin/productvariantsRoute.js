@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const ProductVariantController = require("../../controllers/admin/ProductVariantsController");
+const { isManagerOrAdmin } = require("../../middlewares/authMiddleware");
 
+router.use(isManagerOrAdmin);
 // 1. (GET /variant) -> Hiển thị trang quản lý tổng hợp
 router.get("/", ProductVariantController.manageVariantsPage);
 

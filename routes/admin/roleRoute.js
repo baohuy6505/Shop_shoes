@@ -17,7 +17,7 @@ const router = express.Router();
 const roleController = require("../../controllers/admin/RoleController");
 
 const { isAdmin } = require("../../middlewares/authMiddleware");
-
+router.use(isAdmin);
 // router.get("/", isAdmin, roleController.index);
 
 // router.post("/update", isAdmin, roleController.updateRole);
