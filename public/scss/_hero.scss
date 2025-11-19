@@ -1,0 +1,151 @@
+// ===========================================================
+// HERO
+// ===========================================================
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+
+  .container {
+    position: relative;
+    max-width: 100%;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  &__list {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 1s ease-in-out;
+  }
+
+  &__banner {
+    position: relative;
+    flex: 0 0 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    transition: all 0.8s ease;
+
+    .hero__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .hero__content {
+      position: absolute;
+      top: 50%;
+      left: 30%;
+      transform: translate(-30%, -50%);
+      color: #fff;
+      max-width: 60%;
+      z-index: 2;
+
+      .hero__title {
+        font-size: clamp(3.2rem, 6vw, 7.2rem);
+        font-weight: bold;
+      }
+
+      .hero__desc {
+        margin-top: 0.8em;
+        font-size: clamp(1.8rem, 3vw, 3.2rem);
+        font-weight: 300;
+      }
+    }
+  }
+
+  &__banner.banner1 {
+    background-image: url(../../img/banner4.jpeg);
+  }
+  &__banner.banner2 {
+    background-image: url(../../img/1.png);
+  }
+  &__banner.banner3 {
+    background-image: url(../../img/2.png);
+  }
+
+  .hero__link {
+    margin-top: 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15rem;
+    height: 5rem;
+    background-color: transparent;
+    border: 1px solid #fff;
+    transition: all 0.3s linear;
+    color: #fff;
+    font-size: clamp(1.4rem, 2vw, 1.6rem);
+
+    &:hover {
+      background-color: $color-hover;
+    }
+  }
+
+  &__btn {
+    position: absolute;
+    top: 50%;
+    padding: 1.2rem;
+    font-size: clamp(2.4rem, 4vw, 4rem);
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: 0.3s;
+    z-index: 10;
+
+    &--prev {
+      left: 3rem;
+    }
+
+    &--next {
+      right: 3rem;
+    }
+  }
+
+  &__dots {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1rem;
+    z-index: 10;
+
+    .dot {
+      width: 1.2rem;
+      height: 1.2rem;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: background 0.3s ease;
+
+      &.active-dot {
+        background: #fff;
+      }
+    }
+  }
+}
+
+/* ========== MEDIA QUERY ========== */
+@media (max-width: 1024px) {
+  .hero {
+    height: 50vh;
+    margin-top: 8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 30vh;
+  }
+
+  .hero .hero__link {
+    width: 8rem;
+    height: 4rem;
+  }
+}

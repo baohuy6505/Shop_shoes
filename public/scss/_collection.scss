@@ -1,0 +1,77 @@
+// ========================== Collection =================
+.collection {
+  background-color: #f0ebeb;
+  padding: 8rem 2.4rem;
+  position: relative;
+
+  .container {
+    display: flex;
+    gap: 10rem;
+  }
+
+  &__left {
+    width: 100%;
+    max-width: 40rem;
+
+    &-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__right-title {
+    @include Title-style($text-light);
+  }
+
+  &__right-list {
+    display: grid;
+    gap: 3rem;
+    grid-template-columns: repeat(2, 1fr);
+
+    .collection__right-item {
+      max-width: 30rem;
+      height: 30rem;
+      position: relative;
+
+      .collection__right-link {
+        position: absolute;
+        bottom: 2rem;
+        left: 2rem;
+        color: #fff;
+      }
+
+      .collection__right-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+}
+
+/* ========== TABLET (<=1024px) ========== */
+@media (max-width: 1024px) {
+  .collection {
+    &__left {
+      display: none;
+    }
+
+    &__right-list .collection__right-item {
+      max-width: none;
+    }
+  }
+}
+
+/* ========== MOBILE (<=768px) ========== */
+@media (max-width: 768px) {
+  .collection {
+    &__left {
+      display: none;
+    }
+
+    &__right-list {
+      grid-template-columns: 1fr;
+    }
+  }
+}

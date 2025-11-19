@@ -1,0 +1,92 @@
+// =================== Variables ===================
+$featured-price: red;
+$featured-bg: #7e7b7b;
+$featured-bg-hover: #ebe6e6;
+
+// =================== Featured ===================
+.featured {
+  margin: 8rem 0;
+}
+
+.featured__title {
+  @include Title-style($text-light);
+}
+
+.featured__list {
+  display: grid;
+  gap: 3rem;
+  margin-bottom: 5rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.featured__image {
+  height: 20rem;
+}
+
+.featured__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.featured__card {
+  border-radius: 2.4rem;
+  text-align: center;
+  overflow: hidden;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+  transform: perspective(1000px) rotateX(0) rotateY(0);
+  transition: all 0.4s ease;
+
+  &:hover {
+    transform: perspective(1000px) translateY(-10px) rotateX(5deg)
+      rotateY(-5deg);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.featured__content {
+  padding: 1.6rem 0;
+}
+
+.featured__name {
+  font-size: clamp(1.8rem, 2.5vw, 2.4rem);
+  font-weight: bold;
+  margin-bottom: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.featured__desc {
+  font-size: clamp(1.2rem, 1.6vw, 1.4rem);
+  font-weight: 300;
+  margin-bottom: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.featured__price {
+  font-size: clamp(1.6rem, 2.2vw, 2rem);
+  font-weight: bold;
+  color: $featured-price;
+  margin-bottom: 1.5rem;
+}
+
+.featured__detail {
+  @include Button-style($color-sub-primary, $color-shadow, $color-hover);
+  padding: 1.2rem 3.2rem;
+}
+
+// Disable hover effect on mobile
+@media (max-width: 1024px) {
+  .featured__card {
+    transform: none;
+    transition: none;
+
+    &:hover {
+      transform: none;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+    }
+  }
+}

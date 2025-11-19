@@ -1,0 +1,101 @@
+/* ================== CONTACT ================= */
+.contact {
+  padding: 8rem 0;
+
+  &__title {
+    @include Title-style($text-light);
+  }
+
+  /* Layout chung */
+  &__body {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+
+  &__right {
+    max-width: 60rem;
+    width: 100%;
+  }
+  /* Map bên trái */
+  &__map {
+    width: 100%;
+    height: 100%;
+    iframe {
+      width: 100%;
+      height: 35rem;
+      border: 0;
+      border-radius: 12px;
+    }
+  }
+
+  /* Form bên phải */
+  &__left {
+    width: 100%;
+    max-width: 50rem;
+  }
+
+  /* Input + Textarea chung */
+  &__input,
+  &__textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    outline: none;
+    transition: 0.2s;
+
+    &:focus {
+      border-color: $color-sub-primary;
+      box-shadow: 0 0 5px $color-shadow;
+    }
+  }
+
+  /* Textarea riêng */
+  &__textarea {
+    height: 140px;
+    resize: none;
+  }
+
+  /* Button gửi */
+  &__btn {
+    width: 100%;
+    padding: 12px;
+    background-color: $color-sub-primary;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.25s;
+
+    &:hover {
+      background-color: rgb(54, 54, 165);
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .contact {
+    &__body {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: nowrap;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .contact {
+    &__body {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+  }
+}

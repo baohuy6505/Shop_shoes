@@ -1,0 +1,330 @@
+// ===========================================================
+// HEADER
+// ===========================================================
+.header {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  width: 100%;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid #fff;
+  transform: translateX(-50%) scale(1);
+  transition: all 0.3s ease;
+  z-index: 20;
+
+  &__body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__image {
+    width: 6rem;
+    height: 6rem;
+
+    .header__logo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .nav__list {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+
+    .nav__link {
+      color: #fff;
+      font-weight: bold;
+      font-size: clamp(1.2rem, 1.6vw, 1.6rem);
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: $color-sub-primary;
+      }
+    }
+  }
+
+  .header-products-btn {
+    border: none;
+    background-color: transparent;
+    font-size: clamp(1.4rem, 2vw, 1.8rem);
+  }
+
+  &__action {
+    display: flex;
+    gap: 1rem;
+
+    .header__login,
+    .header__register {
+      position: relative;
+      font-size: clamp(1.4rem, 2vw, 1.8rem);
+      font-weight: bold;
+      color: #fff;
+      padding: 0.6rem 0.8rem;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: $color-sub-primary;
+      }
+    }
+
+    .header__login::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -0.6rem;
+      width: 1px;
+      height: 20px;
+      background-color: #fff;
+      transform: translateY(-50%);
+      transition: background-color 0.3s ease;
+    }
+  }
+
+  &.scrolled {
+    top: 40px;
+    background-color: #fff;
+    // FIX CHỐNG RUNG
+    transform: translateX(-50%) scale(0.9);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+
+    .nav__link,
+    .header__login,
+    .header__register {
+      color: #000;
+    }
+
+    .header__login::after {
+      background-color: #000;
+    }
+  }
+}
+
+.header-products {
+  position: relative;
+
+  .header-products-modal {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 180px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    z-index: 10000;
+
+    ul {
+      li.header-product-option {
+        padding: 10px 15px;
+        cursor: pointer;
+        color: #333;
+        font-size: clamp(1.2rem, 1.6vw, 1.4rem);
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: #f2f2f2;
+        }
+      }
+    }
+  }
+
+  &:hover .header-products-modal {
+    display: block;
+  }
+}
+
+.header__body,
+.nav__list {
+  overflow: visible;
+}
+
+// ===========================================================
+// HEADER PRODUCTS PAGE STYLE
+// ===========================================================
+.header.header-pr {
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.05);
+  border: none;
+  background-color: #fff;
+
+  .nav-pr {
+    color: #000;
+  }
+}
+
+.header__login.nav-pr::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -0.6rem;
+  width: 1px;
+  height: 20px;
+  background-color: #000;
+  transform: translateY(-50%);
+  transition: background-color 0.3s ease;
+}
+
+// ===========================================================
+// NAV MODAL (MOBILE MENU)
+// ===========================================================
+.nav__modal {
+  background-color: $color-shadow;
+  width: 50%;
+  position: fixed;
+  z-index: 21; // FIX LỖI MODAL BỊ HEADER CHE
+  top: 0;
+  bottom: 0;
+  left: -100%;
+  color: $bg-light;
+  padding: 4.2rem 2.1rem;
+  transition: all 0.6s linear;
+
+  &.open {
+    left: 0;
+  }
+}
+
+.nav__modal-close {
+  position: absolute;
+  left: 2.1rem;
+  top: 3rem;
+  cursor: pointer;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  border: 1px solid $bg-light;
+  background-color: transparent;
+  color: $bg-light;
+  @include center-flex();
+
+  &:active {
+    background-color: $color-shadow;
+  }
+}
+
+.modal-action.header__action {
+  display: block;
+  a {
+    color: #fff;
+  }
+}
+
+.header__menu {
+  background-color: transparent;
+  border: 1px solid $bg-light;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  color: $bg-light;
+  display: none;
+  cursor: pointer;
+
+  &:active {
+    background-color: $color-sub-primary;
+    color: #fff;
+  }
+}
+
+.nav__modal-content {
+  margin-top: 7.2rem;
+}
+
+.logo {
+  color: #fff;
+}
+
+.nav__modal-item {
+  margin-top: 0.8rem;
+
+  .nav__modal-link {
+    color: #fff;
+    font-size: clamp(1.4rem, 2vw, 1.8rem);
+
+    &:active {
+      text-decoration: underline;
+    }
+  }
+}
+
+/* ========== MEDIA QUERY (Đã sửa xung đột) ========== */
+
+@media (max-width: 1024px) {
+  .header {
+    // Reset Header cho responsive
+    transform: none;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    .nav__list {
+      .nav__link {
+        color: #000;
+      }
+    }
+
+    .header__login::after {
+      background-color: #000;
+    }
+
+    &.scrolled {
+      top: 0;
+      transform: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .header__action {
+      .header__login,
+      .header__register {
+        color: #000;
+      }
+    }
+  }
+
+  .modal-action.header__action {
+    margin-top: 2.4rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    .nav {
+      display: none;
+    }
+
+    &__action {
+      display: none;
+    }
+
+    &__menu {
+      display: block;
+      border: 1px solid #000;
+      color: #000;
+    }
+
+    &.scrolled {
+      top: 0;
+      transform: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+      .header__login,
+      .header__register {
+        color: #fff;
+      }
+      .header__login::after {
+        background-color: #fff;
+      }
+    }
+
+    .modal-action {
+      .header__login::after {
+        background-color: #fff;
+      }
+      .header__login,
+      .header__register {
+        color: #fff;
+      }
+    }
+  }
+}
