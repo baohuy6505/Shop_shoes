@@ -1,12 +1,158 @@
 <html>
-  <head>
+ <head>
     <title>{{title}}</title>
-    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="/stylesheets/reset.css" />
+    <link rel="stylesheet" href="/stylesheets/styles.css" />
+    
     <link rel="icon" href="/images/logofile.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
   </head>
   <body>
+    <header class="header">
+      <div class="container">
+        <div class="header__body">
+          <div class="header__image">
+            <a href="/">
+            <img src="/images/logofile.png" alt="" class="header__logo" />
+            </a>          
+          </div>
+
+          <nav class="nav">
+            <ul class="nav__list">
+              <li class="nav__item">
+                <a href="./index.html" class="nav__link">Home</a>
+              </li>
+              <li class="nav__item header-products">
+                <button type="button" class="nav__link header-products-btn">
+                  Products
+                </button>
+                <div class="header-products-modal">
+                  <ul>
+                    <li class="header-product-option" data-category="tat-ca">
+                      Tất cả
+                    </li>
+                    <li class="header-product-option" data-category="giay">
+                      Giày
+                    </li>
+                    <li class="header-product-option" data-category="dep">
+                      Dép
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav__item">
+                <a href="" class="nav__link">About</a>
+              </li>
+              <li class="nav__item">
+                <a href="#contact__title" class="nav__link">Contact</a>
+              </li>
+            </ul>
+          </nav>
+
+          <div class="header__action">
+            <a href="./login.html" class="header__login">Login</a>
+            <a href="./register.html" class="header__register">Register</a>
+          </div>
+          <button class="header__menu"><i class="fa-solid fa-bars"></i></button>
+        </div>
+      </div>
+
+      <div class="nav__modal">
+        <button class="nav__modal-close">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="nav__modal-content">
+          <a href="./index.html" class="logo">Shop Shoes</a>
+          <nav class="nav__modal-nav">
+            <ul class="nav__modal-list">
+              <li class="nav__modal-item">
+                <a href="./index.html" class="nav__modal-link">Home</a>
+              </li>
+              <li class="nav__modal-item">
+                <a href="./products.html" class="nav__modal-link">Products</a>
+              </li>
+              <li class="nav__modal-item">
+                <a href="./about.html" class="nav__modal-link">About</a>
+              </li>
+              <li class="nav__modal-item">
+                <a href="./contact.html" class="nav__modal-link">Contact</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="header__action modal-action">
+          <a href="./login.html" class="header__login">Login</a>
+          <a href="./register.html" class="header__register">Register</a>
+        </div>
+      </div>
+    </header>
     {{{body}}}
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__col-1 footer__col">
+          <h3 class="footer__logo">Shop Shoes</h3>
+          <p class="footer__title">Step Forward, Own Your Style.</p>
+        </div>
+
+        <div class="footer__col-2 footer__col">
+          <h4 class="footer__title-link">Quick Links</h4>
+          <ul class="footer__list-item">
+            <li class="footer__item">
+              <a href="#" class="footer__item-link">Home</a>
+            </li>
+            <li class="footer__item">
+              <a href="#" class="footer__item-link">Shop</a>
+            </li>
+            <li class="footer__item">
+              <a href="#" class="footer__item-link">Promotions</a>
+            </li>
+            <li class="footer__item">
+              <a href="#" class="footer__item-link">Return Policy</a>
+            </li>
+            <li class="footer__item">
+              <a href="#" class="footer__item-link">Contact</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer__col-3 footer__col">
+          <h4 class="footer__title-link">Contact Us</h4>
+          <p class="footer__address">📍123 Sneaker Street, Ho Chi Minh City</p>
+          <p class="footer__phone">📞 0123 456 789</p>
+          <p class="footer__email">📧 support@stepupshoes.com</p>
+          <div class="footer__social-icons">
+            <a class="footer__social-face footer__social-item" href="#"
+              ><i class="fa-brands fa-facebook-f"></i
+            ></a>
+            <a class="footer__social-ins footer__social-item" href="#"
+              ><i class="fa-brands fa-instagram"></i
+            ></a>
+            <a class="footer__social-tik footer__social-item" href="#"
+              ><i class="fa-brands fa-tiktok"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <div class="copyright">© 2025 Shop Shoes. All rights reserved.</div>
+
   </body>
   <script src="/javascripts/lore.js"></script>
+  <script src="/javascripts/detail.js"></script>
+  <script src="/javascripts/main.js"></script>
+  <script src="/javascripts/modal.js"></script>
+  <script src="/javascripts/products.js"></script>
 </html>
