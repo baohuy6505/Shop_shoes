@@ -1029,7 +1029,7 @@ a {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #1e1e1e;
-  padding: 7.2rem 4.8rem;
+  padding: 6.8rem 4.8rem;
   border-radius: 1.2rem 4.5rem 1.2rem 4.5rem;
 }
 
@@ -1153,6 +1153,8 @@ a {
   background-color: transparent;
   border: 1px solid #ffffff;
   outline: none;
+  color: #fff;
+  font-size: 20px;
 }
 
 .login__submit {

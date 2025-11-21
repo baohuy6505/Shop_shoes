@@ -52,19 +52,21 @@
       <div class="container">
         <h2 class="featured__title">Sản phẩm nổi bật</h2>
         <div class="featured__list">
-          <div class="featured__card">
+         {{#each products}}
+              <div class="featured__card">
             <div class="featured__image">
-              <img src="/images/banner1.jpeg" alt="" class="featured__img" />
+              <img src="{{this.imageUrl}}" alt="" class="featured__img" />
             </div>
             <div class="featured__content">
-              <h3 class="featured__name">Nike</h3>
-              <p class="featured__desc">ha ngu si dan don</p>
-              <p class="featured__price">3000</p>
-              <a href="" class="featured__detail">Chi tiet</a>
+              <h3 class="featured__name">{{this.productName}}</h3>
+              {{!-- <p class="featured__desc">{{this.description}}</p> --}}
+              <p class="featured__price">{{formatCurrency this.price}}</p>
+              <a href="/Products/Detail/{{this._id}}" class="featured__detail">Chi tiet</a>
             </div>
           </div>
+         {{/each}}
 
-          <div class="featured__card">
+          {{!-- <div class="featured__card">
             <div class="featured__image">
               <img src="/images/banner1.jpeg" alt="" class="featured__img" />
             </div>
@@ -97,7 +99,7 @@
               <p class="featured__price">3000</p>
               <a href="" class="featured__detail">Chi tiet</a>
             </div>
-          </div>
+          </div> --}}
         </div>
       </div>
     </div>

@@ -9,13 +9,13 @@ const usersRouter = require("./usersRoute");
 // const productVariantRoutes = require("./productvariantsRoute");
 const homeRouter = require("./homeRoute");
 const cartRouter = require("./cartRoute");
-
+const productsRouter = require("./productRoute");
 // Các nhánh quản lý
 router.use("/Account", usersRouter); // <<< DÒNG QUAN TRỌNG NHẤT CHO TRANG CHỦ
 // Các nhánh quản lý khác
 router.use("/", homeRouter);
-router.use("/cart", cartRouter);
-
+router.use("/Cart", cartRouter);
+router.use("/Products", productsRouter);
 // router.use("/product", productsRouter);
 // router.use("/category", categoryRouter);
 // router.use("/variant", productVariantRoutes); // Sửa tên biến nếu cần

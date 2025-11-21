@@ -1,0 +1,213 @@
+<style>
+  /* 1. Container chứa các nút để canh lề */
+.custom-selection-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Khoảng cách giữa các nút */
+    margin-bottom: 20px;
+}
+
+/* 2. Label bao ngoài: biến con trỏ thành hình bàn tay */
+.custom-option-label {
+    cursor: pointer;
+    user-select: none; /* Chống bôi đen text khi click nhanh */
+    margin: 0; /* Reset margin mặc định */
+}
+
+/* 3. Ẩn cái nút tròn mặc định xấu xí của radio đi */
+.custom-radio-input {
+    display: none; 
+}
+
+/* 4. Style chung cho cái hộp hiển thị (Span) */
+.custom-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    border: 1px solid #e0e0e0; /* Viền xám nhạt */
+    background-color: #fff;
+    color: #333;
+    
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out; /* Hiệu ứng mượt khi hover/click */
+}
+
+/* --- Style Riêng cho SIZE (Hình vuông bo góc nhẹ) --- */
+.size-style {
+    min-width: 40px;
+    height: 40px;
+    padding: 0 5px;
+    border-radius: 8px;
+}
+
+/* --- Style Riêng cho COLOR (Hình viên thuốc / Pill shape) --- */
+.color-style {
+    padding: 8px 16px; /* Dài hơn 1 chút */
+    border-radius: 20px; /* Bo tròn hẳn */
+}
+
+/* 5. Hiệu ứng khi Hover chuột vào (Chưa click) */
+.custom-option-label:hover .custom-box {
+    border-color: #999;
+}
+
+/* 6. QUAN TRỌNG: Trạng thái KHI ĐÃ CHỌN (Checked) */
+/* Khi input được check, tìm thẻ .custom-box đứng ngay sau nó để đổi màu */
+.custom-radio-input:checked + .custom-box {
+    background-color: #000; /* Nền đen */
+    color: #fff;            /* Chữ trắng */
+    border-color: #000;     /* Viền đen */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* Đổ bóng nhẹ cho nổi bật */
+    transform: translateY(-2px); /* Nhảy lên 1 chút tạo cảm giác nhấn */
+}
+</style>
+<!-- Product Detail -->
+<section id="detail">
+  <div class="container">
+    <div class="detail__body">
+      <!-- Hình ảnh sản phẩm -->
+      <div class="detail__image">
+        <div class="detail__main-image">
+          <img
+            src="{{product.imageUrl}}"
+            alt="Ảnh chính sản phẩm"
+            class="detail__main-img"
+          />
+        </div>
+
+        <div class="detail__slider">
+          <button class="detail__thumb-prev">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+
+          <div class="detail__thumb-container">
+            <img
+              src="{{product.imageUrl}}"
+              alt=""
+              class="detail__thumb active"
+            />
+            <img src="./img/banner3.jpeg" alt="" class="detail__thumb" />
+            <img src="./img/banner2.jpeg" alt="" class="detail__thumb" />
+            <img src="./img/banner3.jpeg" alt="" class="detail__thumb" />
+            <img src="./img/banner1.jpeg" alt="" class="detail__thumb" />
+            <img src="./img/banner2.jpeg" alt="" class="detail__thumb" />
+            <img src="./img/banner1.jpeg" alt="" class="detail__thumb" />
+            <img src="./img/banner2.jpeg" alt="" class="detail__thumb" />
+            <img src="./img/banner1.jpeg" alt="" class="detail__thumb" />
+            <img src="./img/banner2.jpeg" alt="" class="detail__thumb" />
+          </div>
+
+          <button class="detail__thumb-next">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Thông tin sản phẩm -->
+      <div class="detail__info">
+        <h3 class="detail__info-title">{{product.productName}}</h3>
+        <p class="detail__info-price">{{formatCurrency product.price}}</p>
+
+        <form
+          action="/Cart/add-To-Cart"
+          method="post"
+          class="form-info"
+          id="form-info"
+        >
+          <input type="hidden" name="productId" value="{{product._id}}" />
+         <div class="detail__color" style="margin-bottom: 15px;">
+    <p style="margin-bottom: 5px;" class="detail__color-title">Màu sắc</p>
+    
+    <div class="custom-selection-group">
+        {{#each colors}}
+        <label class="custom-option-label">
+            <input type="radio" name="color" value="{{this}}" class="custom-radio-input" required />
+            <span class="custom-box color-style">{{this}}</span>
+        </label>
+        {{/each}}
+    </div>
+</div>
+
+<div class="detail__size" style="margin-bottom: 20px;">
+    <p style="margin-bottom: 5px;" class="detail__color-title">Kích thước</p>
+    
+    <div class="custom-selection-group">
+        {{#each sizes}}
+        <label class="custom-option-label">
+            <input type="radio" name="size" value="{{this}}" class="custom-radio-input" required />
+            <span class="custom-box size-style">{{this}}</span>
+        </label>
+        {{/each}}
+    </div>
+</div>
+
+          <div class="detail__quantity">
+            <label for="quantity">Số lượng:</label>
+            <div class="detail__quantity-control">
+              <button
+                type="button"
+                class="detail__quantity-btn"
+                id="decrease"
+                disabled
+              >
+                -
+              </button>
+              <input
+                type="text"
+                id="quantity"
+                name="quantity"
+                class="detail__quantity-inp"
+                value="1"
+              />
+              <button type="button" class="detail__quantity-btn" id="increase">
+                +
+              </button>
+            </div>
+          </div>
+
+          <button class="detail__pay">Mua ngay</button>
+          <button class="detail__add">Thêm vào giỏ hàng</button>
+        </form>
+      </div>
+    </div>
+    <!-- Mô tả sản phẩm -->
+    <div class="detail__desc">
+      <h3 class="detail__desc-title">Mô tả sản phẩm</h3>
+
+      <div class="detail__desc-content">
+        <!-- Bảng thông số -->
+        <div class="detail__specs">
+          <table class="detail__specs-table">
+            <tbody>
+              <tr class="detail__spec-row">
+                <th class="detail__spec-name">Thương hiệu</th>
+                <td class="detail__spec-value">Nike</td>
+              </tr>
+              <tr class="detail__spec-row">
+                <th class="detail__spec-name">Mẫu mã</th>
+                <td class="detail__spec-value">Air Max 270</td>
+              </tr>
+              <tr class="detail__spec-row">
+                <th class="detail__spec-name">Chất liệu</th>
+                <td class="detail__spec-value">Da tổng hợp + Lưới</td>
+              </tr>
+              <tr class="detail__spec-row">
+                <th class="detail__spec-name">Màu sắc</th>
+                <td class="detail__spec-value">Đỏ / Xanh / Đen</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Text mô tả bên cạnh bảng -->
+        <div class="detail__text">
+          <p>
+            {{product.description}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

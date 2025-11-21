@@ -1,1 +1,37 @@
-<h1>Trang Product User</h1>
+<div class="products">
+      <div class="container">
+        <h2 class="products__title">PRODUCTS</h2>
+        <div class="products__list">
+            {{#each products}} 
+            <div class="products__item">
+                    <div class="products__image">
+                        <img src="{{this.imageUrl}}" class="products__img" alt="{{this.naproductNameme}}" />
+                    </div>
+                    <div class="products__content">
+                        <h3 class="products__name">{{this.productName}}</h3>
+                        <p class="products__price">{{formatCurrency this.price}}</p>
+                        <a href="/Products/Detail/{{this._id}}" class="products__btn">Shop Now</a>
+                    </div>
+                </div>
+            {{else}}
+                <p>Không có sản phẩm nào.</p>
+            {{/each}}
+        </div>
+        <!-- Thanh chuyển trang -->
+        <div class="pagination">
+            {{#if pagination.hasPrev}}
+        <a href="?page={{pagination.prevPage}}" class="page-item">&lt;</a>
+      {{/if}}
+
+      {{#each pagination.pages}}
+        <a href="?page={{this.val}}" class="page-item {{#if this.isActive}}active{{/if}}">
+          {{this.val}}
+        </a>
+      {{/each}}
+
+      {{#if pagination.hasNext}}
+        <a href="?page={{pagination.nextPage}}" class="page-item">&gt;</a>
+      {{/if}}
+        </div>
+      </div>
+    </div>

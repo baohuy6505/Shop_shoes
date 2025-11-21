@@ -1,1 +1,264 @@
-<h1>Trang giao dien Gio Hang User</h1>
+<style>
+  /* --- CẤU TRÚC CHUNG --- */ #cart-wrapper { padding: 100px 0 60px 0;
+  font-family: sans-serif; /* Hoặc font web của bạn */ background-color: #fff; }
+  #cart-wrapper .page-title { font-size: 32px; font-weight: 800; margin-bottom:
+  40px; text-transform: uppercase; letter-spacing: 1px; } /* --- PHẦN SẢN PHẨM
+  (BÊN TRÁI) --- */ #cart-wrapper .cart-item { display: flex; /* Flexbox để dàn
+  hàng ngang */ padding-bottom: 40px; margin-bottom: 40px; border-bottom: 1px
+  solid #eee; /* Đường kẻ mờ ngăn cách */ } /* Ảnh giày TO ĐẸP */ #cart-wrapper
+  .img-box { width: 180px; /* Cố định chiều rộng */ height: 180px; flex-shrink:
+  0; /* Không cho ảnh bị bóp méo */ } #cart-wrapper .img-box img { width: 100%;
+  height: 100%; object-fit: cover; border-radius: 16px; /* Bo góc ảnh */
+  background-color: #f9f9f9; } /* Phần thông tin bên phải ảnh */ #cart-wrapper
+  .info-box { margin-left: 30px; flex-grow: 1; display: flex; flex-direction:
+  column; justify-content: space-between; /* Đẩy 2 hàng lên trên và xuống dưới
+  cùng */ } #cart-wrapper .top-row { display: flex; justify-content:
+  space-between; align-items: flex-start; } #cart-wrapper .prod-name {
+  font-size: 22px; font-weight: 700; color: #000; text-decoration: none;
+  display: block; margin-bottom: 8px; } #cart-wrapper .prod-specs { color: #666;
+  font-size: 16px; } #cart-wrapper .prod-price { font-size: 20px; font-weight:
+  700; color: #000; } #cart-wrapper .bottom-row { display: flex;
+  justify-content: space-between; align-items: flex-end; } /* Nút tăng giảm số
+  lượng Custom */ #cart-wrapper .qty-control { display: inline-flex; border: 2px
+  solid #eee; border-radius: 8px; overflow: hidden; } #cart-wrapper .qty-btn {
+  background: white; border: none; width: 40px; height: 40px; font-size: 18px;
+  cursor: pointer; transition: 0.2s; } #cart-wrapper .qty-btn:hover {
+  background-color: #f0f0f0; } #cart-wrapper .qty-control input { width: 50px;
+  border: none; text-align: center; font-weight: bold; font-size: 16px; outline:
+  none; } /* Link xóa */ #cart-wrapper .remove-link { color: #999;
+  text-decoration: underline; font-size: 16px; transition: 0.2s; } #cart-wrapper
+  .remove-link:hover { color: red; } /* --- PHẦN TÍNH TIỀN (BÊN PHẢI) --- */
+  #cart-wrapper .summary-box { background-color: #f8f8f8; /* Màu nền xám nhẹ */
+  padding: 40px; border-radius: 24px; position: sticky; /* Dính khi cuộn */ top:
+  30px; } #cart-wrapper .summary-title { font-size: 24px; font-weight: 700;
+  margin-bottom: 30px; } #cart-wrapper .summary-row { display: flex;
+  justify-content: space-between; margin-bottom: 15px; font-size: 18px; color:
+  #555; } #cart-wrapper .divider { height: 1px; background-color: #ddd; margin:
+  20px 0; } #cart-wrapper .summary-total { display: flex; justify-content:
+  space-between; font-size: 24px; font-weight: 800; color: #000; margin-bottom:
+  30px; } /* Nút thanh toán TO ĐÙNG */ #cart-wrapper .checkout-btn { width:
+  100%; background-color: #000; color: #fff; border: none; padding: 18px;
+  font-size: 18px; font-weight: 700; border-radius: 12px; cursor: pointer;
+  text-transform: uppercase; transition: 0.3s; } #cart-wrapper
+  .checkout-btn:hover { background-color: #333; transform: translateY(-2px); /*
+  Hiệu ứng nổi lên */ } @media (max-width: 768px) { #cart-wrapper { padding-top:
+  100px; /* Mobile thì padding ít hơn */ } #cart-wrapper .page-title {
+  font-size: 24px; /* Tiêu đề nhỏ lại */ margin-bottom: 20px; } /* Ảnh giày nhỏ
+  lại */ #cart-wrapper .img-box { width: 100px; height: 100px; } /* Chỉnh lại
+  font chữ cho vừa màn hình */ #cart-wrapper .prod-name { font-size: 16px; }
+  #cart-wrapper .prod-specs { font-size: 13px; } #cart-wrapper .prod-price {
+  font-size: 16px; } /* Nếu tên dài quá, đẩy giá xuống dòng dưới */
+  #cart-wrapper .top-row { flex-direction: column; /* Xếp dọc tên và giá */ }
+  #cart-wrapper .prod-price { margin-top: 5px; color: #ff4500; /* Đổi màu giá để
+  dễ nhìn hơn trên mobile */ } /* Phần tổng tiền: Bỏ sticky để không che màn
+  hình mobile */ #cart-wrapper .summary-box { position: static; margin-top:
+  30px; /* Cách xa phần sản phẩm */ } }
+</style>
+<div id="cart-wrapper">
+  <div class="container">
+    <div class="page-title">Giỏ hàng của bạn</div>
+
+    {{#if cart.items.length}}
+    <div class="row">
+
+      <div class="col-left">
+        
+        {{#each cart.items}}
+        <div class="cart-item">
+          
+          <div class="img-box">
+             <img 
+              src="{{#if this.variantId.product.imageUrl}}{{this.variantId.product.imageUrl}}{{else}}https://via.placeholder.com/180{{/if}}" 
+              alt="Giày"
+            />
+          </div>
+
+          <div class="info-box">
+            <div class="top-row">
+              <div>
+                <a href="/products/{{this.variantId.product._id}}" class="prod-name">
+                    {{this.variantId.product.productName}}
+                </a>
+                
+                <div class="prod-specs">
+                    Size: <span>{{this.variantId.size}}</span>
+                    &bull; Màu: <span>{{this.variantId.color}}</span>
+                </div>
+              </div>
+              
+              <div class="prod-price format-price">{{this.totalLine}}</div>
+            </div>
+
+            <div class="bottom-row">
+              <div class="qty-control">
+                <form action="/cart/update" method="POST" style="margin:0;">
+                    <input type="hidden" name="variantId" value="{{this.variantId._id}}">
+                    <input type="hidden" name="action" value="decrease">
+                    <button type="submit" class="qty-btn">-</button>
+                </form>
+                
+                <input type="text" value="{{this.quantity}}" readonly />
+                
+                <form action="/cart/update" method="POST" style="margin:0;">
+                     <input type="hidden" name="variantId" value="{{this.variantId._id}}">
+                     <input type="hidden" name="action" value="increase">
+                    <button type="submit" class="qty-btn">+</button>
+                </form>
+              </div>
+
+              <a href="/cart/remove/{{this.variantId._id}}" 
+                 class="remove-link"
+                 onclick="return confirm('Bạn có chắc muốn xóa không?')">
+                 Xóa
+              </a>
+            </div>
+          </div>
+        </div>
+        {{/each}}
+
+      </div>
+
+      <div class="col-right">
+        <div class="summary-box">
+          <div class="summary-title">Tổng đơn hàng</div>
+
+          <div class="summary-row">
+            <span>Tạm tính</span>
+            <span class="format-price">{{totalPrice}}</span>
+          </div>
+          <div class="summary-row">
+            <span>Vận chuyển</span>
+            <span style="color: green;">Miễn phí</span>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="summary-total">
+            <span>Thành tiền</span>
+            <span class="format-price">{{totalPrice}}</span>
+          </div>
+
+          <a href="/checkout" class="checkout-btn">THANH TOÁN NGAY</a>
+        </div>
+      </div>
+
+    </div>
+    {{else}}
+        <div style="text-align: center; padding: 50px;">
+            <h3>Giỏ hàng trống!</h3>
+            <p>Bạn chưa thêm sản phẩm nào.</p>
+            <a href="/products" style="text-decoration: underline;">Quay lại mua sắm</a>
+        </div>
+    {{/if}}
+  </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const priceElements = document.querySelectorAll('.format-price');
+        priceElements.forEach(el => {
+            const price = parseInt(el.innerText);
+            if (!isNaN(price)) {
+                el.innerText = price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            }
+        });
+    });
+</script>
+{{!-- <div id="cart-wrapper">
+  <div class="container">
+    <div class="page-title">Giỏ hàng của bạn</div>
+
+    <div class="row">
+
+      <div class="col-lg-8">
+
+        <div class="cart-item">
+          <div class="img-box">
+            <img
+              src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+              alt="Giày"
+            />
+          </div>
+
+          <div class="info-box">
+            <div class="top-row">
+              <div>
+                <a href="#" class="prod-name">Nike Air Jordan High</a>
+                <div class="prod-specs">Size:
+                  <span>42</span>
+                  &bull; Màu:
+                  <span>Xanh/Trắng</span></div>
+              </div>
+              <div class="prod-price">4.500.000 ₫</div>
+            </div>
+
+            <div class="bottom-row">
+              <div class="qty-control">
+                <button class="qty-btn">-</button>
+                <input type="text" value="1" readonly />
+                <button class="qty-btn">+</button>
+              </div>
+              <a href="#" class="remove-link">Xóa</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="cart-item">
+          <div class="img-box">
+            <img
+              src="https://images.unsplash.com/photo-1560769629-975ec94e6a86?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+              alt="Giày"
+            />
+          </div>
+          <div class="info-box">
+            <div class="top-row">
+              <div>
+                <a href="#" class="prod-name">Dr. Martens 1461</a>
+                <div class="prod-specs">Size:
+                  <span>40</span>
+                  &bull; Màu:
+                  <span>Đen Bóng</span></div>
+              </div>
+              <div class="prod-price">3.200.000 ₫</div>
+            </div>
+
+            <div class="bottom-row">
+              <div class="qty-control">
+                <button class="qty-btn">-</button>
+                <input type="text" value="1" readonly />
+                <button class="qty-btn">+</button>
+              </div>
+              <a href="#" class="remove-link">Xóa</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-lg-4">
+        <div class="summary-box">
+          <div class="summary-title">Tổng đơn hàng</div>
+
+          <div class="summary-row">
+            <span>Tạm tính</span>
+            <span>7.700.000 ₫</span>
+          </div>
+          <div class="summary-row">
+            <span>Vận chuyển</span>
+            <span style="color: green;">Miễn phí</span>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="summary-total">
+            <span>Thành tiền</span>
+            <span>7.700.000 ₫</span>
+          </div>
+
+          <button class="checkout-btn">THANH TOÁN NGAY</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div> --}}

@@ -3,7 +3,13 @@ const Product = require("../../models/productModel");
 
 class HomeController {
     async index(req, res) { 
-        return res.render("clients/index");
+        const getProducts = await Product.find({})
+            .sort({ createdAt: -1 })
+            .limit(4)
+            .lean();
+        return res.render("clients/index", {
+            products: getProducts
+        });
     }
 }
 

@@ -19,6 +19,95 @@
       referrerpolicy="no-referrer"
     />
   </head>
+  <style>
+    /* --- CẤU HÌNH TOAST NOTIFICATION --- */
+    .alert {
+        position: fixed;          /* Nổi lên trên cùng, không ảnh hưởng layout */
+        top: 100px;               /* Cách đỉnh trang 100px (để tránh header) */
+        right: 20px;              /* Cách lề phải 20px */
+        z-index: 9999;            /* Luôn nằm trên các thành phần khác */
+        
+        min-width: 300px;         /* Chiều rộng tối thiểu */
+        max-width: 400px;
+        padding: 16px 20px;
+        padding-left: 50px;       /* Chừa chỗ cho Icon */
+        
+        background: #fff;         /* Nền trắng sạch */
+        border-left: 5px solid;   /* Viền màu bên trái tạo điểm nhấn */
+        border-radius: 4px;       /* Bo góc nhẹ */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Đổ bóng mềm mại */
+        
+        font-family: 'Roboto', sans-serif;
+        font-size: 15px;
+        line-height: 1.5;
+        color: #333;
+        
+        /* Animation trượt vào */
+        animation: slideInRight 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        transition: opacity 0.5s ease, transform 0.5s ease; /* Hiệu ứng khi ẩn */
+    }
+
+    /* --- THÀNH CÔNG (SUCCESS) --- */
+    .alert-success {
+        border-left-color: #28a745; /* Màu xanh lá chuẩn */
+    }
+    /* Tạo icon Check bằng CSS (Giả lập FontAwesome) */
+    .alert-success::before {
+        content: "\f00c";          /* Mã icon Check */
+        font-family: "Font Awesome 6 Free"; /* Hoặc FontAwesome 5 Free */
+        font-weight: 900;
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #28a745;
+        font-size: 20px;
+    }
+
+    /* --- LỖI (ERROR/DANGER) --- */
+    .alert-danger {
+        border-left-color: #dc3545; /* Màu đỏ chuẩn */
+    }
+    /* Tạo icon Cảnh báo bằng CSS */
+    .alert-danger::before {
+        content: "\f071";          /* Mã icon Warning */
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #dc3545;
+        font-size: 20px;
+    }
+
+    /* --- ANIMATION KEYFRAMES --- */
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%); /* Bắt đầu từ ngoài màn hình phải */
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    /* Responsive cho mobile: Hiện ở giữa phía trên */
+    @media (max-width: 576px) {
+        .alert {
+            left: 50%;
+            transform: translateX(-50%);
+            right: auto;
+            width: 90%;
+            animation: slideInTop 0.5s ease;
+        }
+        @keyframes slideInTop {
+            from { transform: translate(-50%, -100%); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+    }
+</style>
   <body>
     <header class="header">
       <div class="container">
@@ -32,7 +121,7 @@
           <nav class="nav">
             <ul class="nav__list">
               <li class="nav__item">
-                <a href="./index.html" class="nav__link">Home</a>
+                <a href="/" class="nav__link">Home</a>
               </li>
               <li class="nav__item header-products">
                 <button type="button" class="nav__link header-products-btn">
@@ -41,7 +130,7 @@
                 <div class="header-products-modal">
                   <ul>
                     <li class="header-product-option" data-category="tat-ca">
-                      Tất cả
+                      <a href="/Products">Tất cả</a>
                     </li>
                     <li class="header-product-option" data-category="giay">
                       Giày
@@ -61,10 +150,18 @@
             </ul>
           </nav>
 
-          <div class="header__action">
-            <a href="./login.html" class="header__login">Login</a>
-            <a href="./register.html" class="header__register">Register</a>
+          {{#if user}}
+                <div class="header__action">
+                  <a href="/Cart" class="header__logout"><i class="fa-solid fa-basket-shopping"></i></a>
+            <span class="header__username" style="font-weight: bold; font-size: 18px;"
+            >{{user.username}}</span>
+            <a href="/Account/Logout" class="header__logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+          {{else}}
+                <div class="header__action">
+            <a href="/Account/Login" class="header__login">Login</a>
+            <a href="/Account/Register" class="header__register">Register</a>
           </div>
+          {{/if}}
           <button class="header__menu"><i class="fa-solid fa-bars"></i></button>
         </div>
       </div>
@@ -78,10 +175,10 @@
           <nav class="nav__modal-nav">
             <ul class="nav__modal-list">
               <li class="nav__modal-item">
-                <a href="./index.html" class="nav__modal-link">Home</a>
+                <a href="/" class="nav__modal-link">Home</a>
               </li>
               <li class="nav__modal-item">
-                <a href="./products.html" class="nav__modal-link">Products</a>
+                <a href="/Products" class="nav__modal-link">Products</a>
               </li>
               <li class="nav__modal-item">
                 <a href="./about.html" class="nav__modal-link">About</a>
@@ -92,12 +189,27 @@
             </ul>
           </nav>
         </div>
-        <div class="header__action modal-action">
-          <a href="./login.html" class="header__login">Login</a>
-          <a href="./register.html" class="header__register">Register</a>
+         {{#if user}}
+                <div class="header__action">
+            <span class="header__username" style="font-weight: bold; font-size: 18px;"
+            >Hello, {{user.username}}</span>
+            <a href="/Account/Logout" class="header__logout">Logout</a>
+          {{else}}
+               <div class="header__action modal-action">
+          <a href="/Account/Login" class="header__login">Login</a>
+          <a href="/Account/Register" class="header__register">Register</a>
         </div>
+          {{/if}}
+        
       </div>
     </header>
+    {{#if success}}
+          <div class="alert alert-success text-center">{{success}}</div>
+        {{/if}}
+
+        {{#if error}}
+          <div class="alert alert-danger text-center">{{error}}</div>
+        {{/if}}
     {{{body}}}
     <footer class="footer">
       <div class="container">
@@ -155,4 +267,25 @@
   <script src="/javascripts/main.js"></script>
   <script src="/javascripts/modal.js"></script>
   <script src="/javascripts/products.js"></script>
+  <script>
+    // Đợi trang tải xong sẽ kích hoạt
+    document.addEventListener("DOMContentLoaded", function() {
+        const alerts = document.querySelectorAll('.alert');
+
+        if (alerts.length > 0) {
+            // Đợi 3 giây (3000ms)
+            setTimeout(function() {
+                alerts.forEach(function(alert) {
+                    // 1. Giảm độ mờ xuống 0 (kích hoạt transition CSS)
+                    alert.style.opacity = '0';
+                    
+                    // 2. Sau khi mờ xong (0.5s) thì ẩn hoàn toàn khỏi giao diện để không chiếm chỗ
+                    setTimeout(function() {
+                        alert.style.display = 'none';
+                    }, 500); 
+                });
+            }, 3000);
+        }
+    });
+</script>
 </html>
