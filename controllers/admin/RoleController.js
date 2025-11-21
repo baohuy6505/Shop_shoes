@@ -3,7 +3,8 @@ const RoleController = {
   // Hiển thị danh sách user và quyền
   index: async (req, res) => {
     try {
-      const users = await User.find().lean(); // lấy tất cả user
+      const allUsers = await User.find().lean(); // lấy tất cả user
+      const users = allUsers.filter(user => user.role !== 'user')
      res.render("admin/role/roleList", { users, layout: "adminLayout" });
           //return res.json(users)
     } catch (err) {

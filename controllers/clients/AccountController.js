@@ -1,20 +1,6 @@
 const User = require("../../models/userModel");
 
 class AccountController {
-  async SubmitForm(req, res) {
-    const mode = req.body.mode;
-    if(mode === "login"){
-      return this.LoginUser(req, res);
-    }
-    else if(mode === "register"){
-      return this.RegisterUser(req, res);
-    }
-    else{
-      req.flash("error", "Chế độ không hợp lệ.");
-      return res.redirect("/Account/Login");
-    }
-  }
-
   async Login(req, res) {
     return res.render("clients/account/login");
    }
@@ -76,7 +62,6 @@ class AccountController {
         return res.redirect("/");
       }
       res.clearCookie("connect.sid");
-      req.flash("success", "Đăng xuất thành công!");
       return res.redirect("/Account/Login");
     });
   }

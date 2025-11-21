@@ -77,7 +77,14 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.session.user || null;
   next();
 });
-
+app.use((req, res, next) => {
+    if (req.session.user) {
+        res.locals.user = req.session.user;
+    } else {
+        res.locals.user = null;
+    }
+    next();
+});
 // routes
 app.use("/", mainRoute);
 app.use("/admin", adminRoute);

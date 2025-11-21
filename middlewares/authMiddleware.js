@@ -1,4 +1,12 @@
 module.exports = {
+//   nameLogin: (req, res, next) => {
+//     if (req.session.user) {
+//         res.locals.user = req.session.user; 
+//     } else {
+//         res.locals.user = null;
+//     }
+//     next();
+// },
   requireLogOut: (req, res, next) => {
     if (req.session.user) {
       req.flash("error", "Bạn đã đăng nhập rồi.");
