@@ -149,6 +149,7 @@
               </li>
             </ul>
           </nav>
+          <button class="header__menu"><i class="fa-solid fa-bars"></i></button>
 
           {{#if user}}
                 <div class="header__action">
@@ -162,7 +163,6 @@
             <a href="/Account/Register" class="header__register">Register</a>
           </div>
           {{/if}}
-          <button class="header__menu"><i class="fa-solid fa-bars"></i></button>
         </div>
       </div>
 
@@ -187,11 +187,10 @@
                 <a href="./contact.html" class="nav__modal-link">Contact</a>
               </li>
             </ul>
-          </nav>
-        </div>
-         {{#if user}}
-                <div class="header__action">
-            <span class="header__username" style="font-weight: bold; font-size: 18px;"
+
+             {{#if user}}
+                <div class="header__action success">
+            <span class="header__username"
             >Hello, {{user.username}}</span>
             <a href="/Account/Logout" class="header__logout">Logout</a>
           {{else}}
@@ -200,6 +199,9 @@
           <a href="/Account/Register" class="header__register">Register</a>
         </div>
           {{/if}}
+          </nav>
+      </div>
+        
         
       </div>
     </header>

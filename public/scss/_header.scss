@@ -4,11 +4,11 @@
 .header {
   position: fixed;
   top: 0;
-  left: 50%;
+  left: 0;
   width: 100%;
   padding: 1.2rem 0;
-  border-bottom: 1px solid #fff;
-  transform: translateX(-50%) scale(1);
+  border-bottom: 1px solid #000;
+  background-color: transparent;
   transition: all 0.3s ease;
   z-index: 20;
 
@@ -35,7 +35,7 @@
     align-items: center;
 
     .nav__link {
-      color: #fff;
+      color: #000;
       font-weight: bold;
       font-size: clamp(1.2rem, 1.6vw, 1.6rem);
       transition: color 0.3s ease;
@@ -44,6 +44,10 @@
         color: $color-sub-primary;
       }
     }
+  }
+
+  .header__logout {
+    color: #000;
   }
 
   .header-products-btn {
@@ -61,7 +65,7 @@
       position: relative;
       font-size: clamp(1.4rem, 2vw, 1.8rem);
       font-weight: bold;
-      color: #fff;
+      color: #000;
       padding: 0.6rem 0.8rem;
       transition: color 0.3s ease;
 
@@ -77,18 +81,17 @@
       right: -0.6rem;
       width: 1px;
       height: 20px;
-      background-color: #fff;
+      background-color: #000;
       transform: translateY(-50%);
       transition: background-color 0.3s ease;
     }
   }
 
+  // ========== Header Scroll ==========
   &.scrolled {
-    top: 40px;
     background-color: #fff;
-    // FIX CHỐNG RUNG
-    transform: translateX(-50%) scale(0.9);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    border-bottom: none;
 
     .nav__link,
     .header__login,
@@ -102,6 +105,9 @@
   }
 }
 
+// ===========================================================
+// DROPDOWN MENU
+// ===========================================================
 .header-products {
   position: relative;
 
@@ -143,38 +149,13 @@
 }
 
 // ===========================================================
-// HEADER PRODUCTS PAGE STYLE
-// ===========================================================
-.header.header-pr {
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.05);
-  border: none;
-  background-color: #fff;
-
-  .nav-pr {
-    color: #000;
-  }
-}
-
-.header__login.nav-pr::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: -0.6rem;
-  width: 1px;
-  height: 20px;
-  background-color: #000;
-  transform: translateY(-50%);
-  transition: background-color 0.3s ease;
-}
-
-// ===========================================================
 // NAV MODAL (MOBILE MENU)
 // ===========================================================
 .nav__modal {
   background-color: $color-shadow;
   width: 50%;
   position: fixed;
-  z-index: 21; // FIX LỖI MODAL BỊ HEADER CHE
+  z-index: 21;
   top: 0;
   bottom: 0;
   left: -100%;
@@ -207,6 +188,7 @@
 
 .modal-action.header__action {
   display: block;
+
   a {
     color: #fff;
   }
@@ -249,36 +231,30 @@
   }
 }
 
-/* ========== MEDIA QUERY (Đã sửa xung đột) ========== */
+// ===========================================================
+// MEDIA QUERIES
+// ===========================================================
 
+// Tablet
 @media (max-width: 1024px) {
   .header {
-    // Reset Header cho responsive
-    transform: none;
-    left: 0;
+    border: none;
     background-color: #fff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    .nav__list {
-      .nav__link {
-        color: #000;
-      }
+    transform: none;
+    left: 0;
+
+    .nav__list .nav__link {
+      color: #000;
     }
 
     .header__login::after {
       background-color: #000;
     }
 
-    &.scrolled {
-      top: 0;
-      transform: none;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .header__action {
-      .header__login,
-      .header__register {
-        color: #000;
-      }
+    .header__action .header__login,
+    .header__register {
+      color: #000;
     }
   }
 
@@ -287,40 +263,49 @@
   }
 }
 
+// Mobile
 @media (max-width: 768px) {
+  .nav__modal.open .modal-action {
+    display: block;
+  }
+
+  .nav__modal .header__action.success {
+    position: absolute;
+    bottom: 2rem;
+
+    .header__username {
+      font-size: 1.4rem;
+    }
+
+    .header__logout {
+      color: #fff;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
   .header {
     .nav {
       display: none;
     }
 
-    &__action {
+    .header__body .header__action {
       display: none;
     }
 
     &__menu {
-      display: block;
+      display: inline-block;
       border: 1px solid #000;
       color: #000;
-    }
-
-    &.scrolled {
-      top: 0;
-      transform: none;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-      .header__login,
-      .header__register {
-        color: #fff;
-      }
-      .header__login::after {
-        background-color: #fff;
-      }
     }
 
     .modal-action {
       .header__login::after {
         background-color: #fff;
       }
+
       .header__login,
       .header__register {
         color: #fff;

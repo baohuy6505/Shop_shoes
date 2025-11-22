@@ -53,7 +53,7 @@ a {
   align-items: center;
 }
 .header .nav__list .nav__link {
-  color: #fff;
+  color: #000;
   font-weight: bold;
   font-size: clamp(1.2rem, 1.6vw, 1.6rem);
   transition: color 0.3s ease;
@@ -141,27 +141,6 @@ a {
 .header__body,
 .nav__list {
   overflow: visible;
-}
-
-.header.header-pr {
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.05);
-  border: none;
-  background-color: #fff;
-}
-.header.header-pr .nav-pr {
-  color: #000;
-}
-
-.header__login.nav-pr::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: -0.6rem;
-  width: 1px;
-  height: 20px;
-  background-color: #000;
-  transform: translateY(-50%);
-  transition: background-color 0.3s ease;
 }
 
 .nav__modal {
@@ -507,13 +486,11 @@ a {
   box-shadow: 0 0 20px rgb(96, 96, 226);
   transition: all 0.3s linear;
   margin-top: 2.4rem;
+  padding: 1.2rem 3.2rem;
 }
 .products .products__btn:hover {
   opacity: 0.8;
   background-color: rgb(54, 54, 165);
-}
-.products .products__btn {
-  padding: 1.2rem 3.2rem;
 }
 
 .pagination {
@@ -708,13 +685,11 @@ a {
   box-shadow: 0 0 20px rgb(96, 96, 226);
   transition: all 0.3s linear;
   margin-top: 2.4rem;
+  padding: 1.2rem 3.2rem;
 }
 .featured__detail:hover {
   opacity: 0.8;
   background-color: rgb(54, 54, 165);
-}
-.featured__detail {
-  padding: 1.2rem 3.2rem;
 }
 
 @media (max-width: 1024px) {
@@ -1069,14 +1044,12 @@ a {
   box-shadow: 0 0 20px rgb(96, 96, 226);
   transition: all 0.3s linear;
   margin-top: 2.4rem;
+  align-self: center;
+  padding: 0.8rem 4.8rem;
 }
 .register__submit:hover {
   opacity: 0.8;
   background-color: rgb(54, 54, 165);
-}
-.register__submit {
-  align-self: center;
-  padding: 0.8rem 4.8rem;
 }
 
 .register__signup-text {
@@ -1171,14 +1144,12 @@ a {
   box-shadow: 0 0 20px rgb(96, 96, 226);
   transition: all 0.3s linear;
   margin-top: 2.4rem;
+  align-self: center;
+  padding: 0.8rem 4.8rem;
 }
 .login__submit:hover {
   opacity: 0.8;
   background-color: rgb(54, 54, 165);
-}
-.login__submit {
-  align-self: center;
-  padding: 0.8rem 4.8rem;
 }
 
 .login__signup-text {
@@ -1222,6 +1193,12 @@ a {
   padding: 16rem 0;
   display: flex;
   flex-direction: column;
+  /* SLIDER THUMB */
+  /* PRODUCT INFO */
+  /* COLOR & SIZE */
+  /* QUANTITY */
+  /* PAY & ADD */
+  /* DETAIL DESCRIPTION */
 }
 #detail .detail__body {
   display: flex;
@@ -1248,9 +1225,6 @@ a {
   height: 100%;
   object-fit: cover;
   border-radius: 1rem;
-}
-#detail {
-  /* SLIDER THUMB */
 }
 #detail .detail__slider {
   position: relative;
@@ -1303,9 +1277,6 @@ a {
 #detail .detail__thumb-next {
   right: -2rem;
 }
-#detail {
-  /* PRODUCT INFO */
-}
 #detail .detail__info-title {
   font-size: 2.4rem;
   font-weight: bold;
@@ -1318,9 +1289,6 @@ a {
   font-size: 3.2rem;
   margin-top: 1.8rem;
   color: rgb(68, 68, 228);
-}
-#detail {
-  /* COLOR & SIZE */
 }
 #detail .detail__color,
 #detail .detail__size-options {
@@ -1404,9 +1372,6 @@ a {
   background-color: blue;
   border-color: #000;
 }
-#detail {
-  /* QUANTITY */
-}
 #detail .detail__quantity {
   margin-top: 1.2rem;
   display: flex;
@@ -1452,9 +1417,6 @@ a {
   border-radius: 4px;
   font-size: 18px;
 }
-#detail {
-  /* PAY & ADD */
-}
 #detail .detail__pay,
 #detail .detail__add {
   margin-top: 2.8rem;
@@ -1472,9 +1434,6 @@ a {
 #detail .detail__add {
   background-color: transparent;
   color: #000;
-}
-#detail {
-  /* DETAIL DESCRIPTION */
 }
 #detail .detail__desc {
   margin: 20px auto;
@@ -1616,6 +1575,12 @@ a {
 /* ================== CONTACT ================= */
 .contact {
   padding: 8rem 0;
+  /* Layout chung */
+  /* Map bên trái */
+  /* Form bên phải */
+  /* Input + Textarea chung */
+  /* Textarea riêng */
+  /* Button gửi */
 }
 .contact__title {
   font-size: 3.2rem;
@@ -1633,9 +1598,6 @@ a {
   height: 100%;
   background-color: rgb(68, 68, 228);
 }
-.contact {
-  /* Layout chung */
-}
 .contact__body {
   display: flex;
   justify-content: center;
@@ -1645,9 +1607,6 @@ a {
 .contact__right {
   max-width: 60rem;
   width: 100%;
-}
-.contact {
-  /* Map bên trái */
 }
 .contact__map {
   width: 100%;
@@ -1659,15 +1618,9 @@ a {
   border: 0;
   border-radius: 12px;
 }
-.contact {
-  /* Form bên phải */
-}
 .contact__left {
   width: 100%;
   max-width: 50rem;
-}
-.contact {
-  /* Input + Textarea chung */
 }
 .contact__input, .contact__textarea {
   width: 100%;
@@ -1683,15 +1636,9 @@ a {
   border-color: rgb(68, 68, 228);
   box-shadow: 0 0 5px rgb(96, 96, 226);
 }
-.contact {
-  /* Textarea riêng */
-}
 .contact__textarea {
   height: 140px;
   resize: none;
-}
-.contact {
-  /* Button gửi */
 }
 .contact__btn {
   width: 100%;
