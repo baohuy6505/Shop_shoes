@@ -89,7 +89,7 @@ class CartController {
       });
   
       if (!variant) {
-        req.flash("error", "Sản phẩm với kích thước và màu sắc này không tồn tại.");
+        req.flash("error", "Sản phẩm với kích thước và màu sắc đã hết hàng.");
         return res.redirect("back");
       }
       
@@ -136,6 +136,26 @@ class CartController {
       console.error("Lỗi khi thêm vào giỏ hàng:", err);
       req.flash("error", "Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.");
       return res.redirect("back"); // Dùng "back" để quay lại trang chi tiết thay vì về trang cart ngay
+    }
+  }
+  async removeFromCart(req, res) {
+    try {
+      const userId = req.session.user.id;
+      const { variantId } = req.body;
+      let cart = await Cart.findOne
+        ({ userId: userId });
+      if (cart) {
+        cart.items = cart.items.filter(
+          (item) => item.variantId.toString() !== variantId
+        );
+        await cart.save();
+      }
+      req.flash("success", "Đã xóa sản phẩm khỏi giỏ hàng.");
+      return res.redirect("/cart");
+    } catch (err) {
+      console.error("Lỗi khi xóa khỏi giỏ hàng:", err);
+      req.flash("error", "Có lỗi xảy ra khi xóa sản phẩm khỏi giỏ hàng.");
+      return res.redirect("/cart");
     }
   }
 }

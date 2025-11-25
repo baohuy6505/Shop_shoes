@@ -32,12 +32,12 @@ class AccountController {
       const user = await User.findOne({ email }).select("+password");
       if (!user) {
         req.flash("error", "Email không tồn tại.");
-        return res.redirect("/Login");
+        return res.redirect("/Account/Login");
       }
       const checkPassword = await user.comparePassword(password);
       if (!checkPassword) {
         req.flash("error", "Mật khẩu không đúng.");
-        return res.redirect("/Login");
+        return res.redirect("/Account/Login");
       }
       req.session.user = {
         id: user._id,
@@ -50,7 +50,7 @@ class AccountController {
     } catch (error) {
       console.error("Lỗi đăng nhập:", error);
       req.flash("error", "Đăng nhập thất bại: " + error.message);
-      return res.redirect("/Login");
+      return res.redirect("/Account/Login");
     }
   }
 
