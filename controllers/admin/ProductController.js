@@ -4,14 +4,11 @@ const Product = require("../../models/productModel");
 class ProductController {
   async renderProductPage(req, res) {
     try {
-      console.log("renderProductPage được gọi");
       const products = await Product.find()
         .populate("category")
         .sort({ createdAt: -1 })
         .lean();
-      console.log("Products:", products);
       const categories = await Category.find().lean();
-      console.log("Categories:", categories);
       const message = req.query.message || null;
       const error = req.query.error || null;
 
@@ -31,9 +28,14 @@ class ProductController {
 
   async createProduct(req, res) {
     try {
-      const { productName, description, price, category, imageUrl } = req.body;
+      const { productName, description, price, category } = req.body;
+      const file = req.file;
+      let imageUrl = null;
 
-      // Kiểm tra dữ liệu bắt buộc
+      if (file) {
+        imageUrl = "/images/products/" + file.filename;
+      }
+      //Kiểm tra dữ liệu bắt buộc
       if (!productName || !price || !category) {
         return res.redirect(
           "/Admin/Product?error=Vui%20lòng%20điền%20đầy%20đủ%20thông%20tin%20bắt%20buộc"
@@ -45,7 +47,7 @@ class ProductController {
         description: description ? description.trim() : "",
         price: parseFloat(price),
         category: category,
-        imageUrl: imageUrl ? imageUrl.trim() : "",
+        imageUrl: imageUrl,
       });
 
       await newProduct.save();
@@ -88,8 +90,18 @@ class ProductController {
 
   async updateProduct(req, res) {
     const productId = req.params.id;
+    const { deleteFile } = require("../../middlewares/uploadMiddleware");
     try {
-      const { productName, description, price, category, imageUrl } = req.body;
+      const { productName, description, price, category } = req.body;
+      const existingProduct = await Product.findById(productId).lean();
+      const file = req.file;
+      let imageUrl = null;
+      if (file) {
+        deleteFile(existingProduct.imageUrl);
+        imageUrl = "/images/products/" + file.filename;
+      } else {
+        imageUrl = existingProduct.imageUrl;
+      }
 
       // Kiểm tra dữ liệu bắt buộc
       if (!productName || !price || !category) {
@@ -110,7 +122,9 @@ class ProductController {
         { runValidators: true }
       );
 
-      res.redirect("/Admin/Product?message=Cập%20nhật%20sản%20phẩm%20thành%20công");
+      res.redirect(
+        "/Admin/Product?message=Cập%20nhật%20sản%20phẩm%20thành%20công"
+      );
     } catch (err) {
       console.error("Lỗi updateProduct:", err);
       let errorMsg = "Lỗi%20cập%20nhật:%20" + err.message;
@@ -121,10 +135,16 @@ class ProductController {
   async deleteProduct(req, res) {
     try {
       const productId = req.params.id;
-
+        const { deleteFile } = require("../../middlewares/uploadMiddleware");
       const product = await Product.findById(productId);
       if (!product) {
-        return res.redirect("/Admin/Product?error=Không%20tìm%20thấy%20sản%20phẩm");
+        return res.redirect(
+          "/Admin/Product?error=Không%20tìm%20thấy%20sản%20phẩm"
+        );
+      }
+      if (product.imageUrl) {
+        console.log("Xoá file:", product.imageUrl);
+        deleteFile(product.imageUrl);
       }
 
       await Product.findByIdAndDelete(productId);

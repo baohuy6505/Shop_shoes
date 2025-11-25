@@ -2,12 +2,10 @@
   <div class="row">
     <div class="{{#if product._id}}col-lg-12{{else}}col-lg-4{{/if}}">
       
-      <!-- 1. Tiêu đề thay đổi dựa trên logic -->
       <h3 class="mb-3">{{#if product._id}}Chỉnh Sửa Sản Phẩm{{else}}Thêm Mới Sản Phẩm{{/if}}</h3>
 
       <div class="card shadow-sm mb-4">
         <div class="card-header">
-          <!-- 2. Tiêu đề thẻ thay đổi -->
           <h5 class="mb-0">
             {{#if product._id}}Thông tin: {{product.productName}}{{else}}Điền thông tin sản phẩm{{/if}}
           </h5>
@@ -19,12 +17,10 @@
             {{/unless}}
           {{/if}}
 
-          <!-- 
-            3. Form action thay đổi dựa trên logic 
-          -->
           <form
             method="POST"
             action="{{#if product._id}}/Admin/Product/update/{{product._id}}{{else}}/Admin/Product/create{{/if}}"
+            enctype="multipart/form-data"
           >
 
             <div class="mb-3">
@@ -73,15 +69,36 @@
             </div>
 
             <div class="mb-3">
-              <label for="imageUrl" class="form-label">Link Hình Ảnh</label>
+              <label for="imageUrl" class="form-label">Hình Ảnh Đại Diện</label>
               <input
-                type="text"
+                type="file"
                 id="imageUrl"
                 name="imageUrl"
                 class="form-control"
-                value="{{product.imageUrl}}"
+                
+                {{!-- ĐÃ XÓA thuộc tính 'multiple' --}}
+                
+                accept="image/*"
+                {{!-- ĐÃ SỬA TÊN HÀM gọi thành 'previewImage' --}}
+                onchange="previewImage(this)" 
               />
             </div>
+            
+            {{!-- ĐÃ XÓA THẺ DIV LẶP LẠI BÊN NGOÀI --}}
+            <div class="mt-2" id="image-preview-container" style="display: flex; gap: 10px; flex-wrap: wrap;">
+              
+              {{!-- LOGIC HIỂN THỊ ẢNH CŨ (CHỈ CÒN LÀ CHUỖI ĐƠN) --}}
+              {{#if product.imageUrl}}
+                  <div class="position-relative">
+                      <img 
+                          src="{{product.imageUrl}}" 
+                          style="width:100px; height:100px; object-fit:cover; border: 1px solid #ddd; border-radius: 5px;"
+                      >
+                  </div>
+              {{/if}} 
+              
+            </div>
+            {{!-- ĐÃ XÓA THẺ ĐÓNG THỪA --}}
 
             <div class="mb-3">
               <label for="description" class="form-label">Mô Tả</label>
@@ -94,23 +111,19 @@
             </div>
 
             <div>
-              <!-- 5. Text của nút bấm thay đổi -->
               <button type="submit" class="btn btn-primary">
                 {{#if product._id}}Lưu Thay Đổi{{else}}Thêm Mới{{/if}}
               </button>
 
-              <!-- 6. Nút Hủy (luôn quay về trang chủ '/product') -->
               <a href="/Admin/Product" class="btn btn-secondary">Hủy</a>
             </div>
           </form>
         </div>
       </div>
-    </div> <!-- Kết thúc Cột 1 -->
-    {{#if products}}
+    </div> {{#if products}}
       <div class="col-lg-8">
         <h3 class="mb-3">Danh Sách Sản Phẩm</h3>
 
-        <!-- Hiển thị thông báo (nếu có) -->
         {{#if message}}
           <div class="alert alert-success">{{message}}</div>
         {{/if}}
@@ -151,11 +164,10 @@
                           <span class="text-danger">N/A</span>
                         {{/if}}
                       </td>
-                      <td class="align-middle">
-                        {{this.price}}đ
+                      <td class="align-middle fw-bold" style="color: red;">
+                        {{formatCurrency this.price}}
                       </td>
                       <td class="align-middle">
-                        <!-- Nút Sửa (Edit) -->
                         <a
                           href="/Admin/Product/edit/{{this._id}}"
                           class="btn btn-sm btn-outline-primary me-1"
@@ -164,7 +176,6 @@
                           Sửa
                         </a>
 
-                        <!-- Nút Xóa (Delete) -->
                         <form
                           method="POST"
                           action="/Admin/Product/delete/{{this._id}}"
@@ -194,7 +205,43 @@
           </div>
         </div>
       </div>
-    {{/if}} <!-- Kết thúc Cột 2 -->
+    {{/if}} </div> </div> ---
 
-  </div> <!-- Kết thúc .row -->
-</div> <!-- Kết thúc .container -->
+
+<script>
+    function previewImage(input) {
+      var previewContainer = document.getElementById('image-preview-container');
+      
+      // Xóa tất cả ảnh xem trước cũ
+      previewContainer.innerHTML = ''; 
+
+      // Kiểm tra xem có file nào được chọn không
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function(event) {
+          // Tạo thẻ img mới
+          var imgElement = document.createElement('img');
+          imgElement.setAttribute('src', event.target.result);
+          
+          // Style cho ảnh xem trước
+          imgElement.style.width = '100px';
+          imgElement.style.height = '100px';
+          imgElement.style.objectFit = 'cover';
+          imgElement.style.border = '1px solid #ddd';
+          imgElement.style.borderRadius = '5px';
+
+          // Tạo div bọc để giữ style cũ
+          var imgWrapper = document.createElement('div');
+          imgWrapper.classList.add('position-relative');
+          imgWrapper.appendChild(imgElement);
+
+          // Chỉ hiển thị ảnh mới nhất
+          previewContainer.appendChild(imgWrapper);
+        }
+
+        // Đọc file đầu tiên (chỉ có 1 file)
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+</script>

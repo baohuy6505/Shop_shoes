@@ -93,7 +93,7 @@
               </span>
             </td>
             <td>
-              {{#if (eq this.role 'admin')}} <!-- Admin không tự sửa -->
+              {{#if (eq this.role 'manager')}} <!-- Admin không tự sửa -->
               <form
                 action="/admin/role/update"
                 method="POST"
