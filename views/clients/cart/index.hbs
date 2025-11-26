@@ -89,36 +89,50 @@
               <div class="prod-price format-price">{{this.totalLine}}</div>
             </div>
 
-            <div class="bottom-row">
-              <div class="qty-control">
-                <form action="/cart/update" method="POST" style="margin:0;">
-                    <input type="hidden" name="variantId" value="{{this.variantId._id}}">
-                    <input type="hidden" name="action" value="decrease">
-                    <button type="submit" class="qty-btn">-</button>
-                </form>
-                
-                <input type="text" value="{{this.quantity}}" readonly />
-                
-                <form action="/cart/update" method="POST" style="margin:0;">
-                     <input type="hidden" name="variantId" value="{{this.variantId._id}}">
-                     <input type="hidden" name="action" value="increase">
-                    <button type="submit" class="qty-btn">+</button>
-                </form>
-              </div>
-
-              <a href="/cart/remove/{{this.variantId._id}}" 
-                 class="remove-link"
-                 onclick="return confirm('Bạn có chắc muốn xóa không?')">
-                 Xóa
-              </a>
-            </div>
+          <div class="bottom-row">
+    <div class="qty-control">
+        
+        <form action="/cart/update-Item" method="POST" style="margin:0;">
+            <input type="hidden" name="variantId" value="{{this.variantId._id}}">
+            <input type="hidden" name="productId" value="{{this.variantId.product._id}}">
+            <input type="hidden" name="action" value="decrease">
+            <button type="submit" class="qty-btn">-</button>
+        </form>
+        
+        <input type="text" value="{{this.quantity}}" readonly />
+        
+        <form action="/cart/update-Item" method="POST" style="margin:0;">
+             <input type="hidden" name="variantId" value="{{this.variantId._id}}">
+             <input type="hidden" name="productId" value="{{this.variantId.product._id}}">
+             <input type="hidden" name="action" value="increase">
+             <button type="submit" class="qty-btn">+</button>
+        </form>
+        
+    </div>
+    
+   <form 
+  action="/cart/remove-Item/{{this.variantId._id}}" 
+  method="POST" 
+  style="display: inline;" 
+  onsubmit="return confirm('Bạn có chắc muốn xóa không?')"
+>
+  <button 
+    type="submit" 
+    class="remove-link"
+    style="background: none; border: none; padding: 0; margin: 0; cursor: pointer;"
+  >
+    Xóa
+  </button>
+</form>
+</div>
           </div>
         </div>
         {{/each}}
 
       </div>
 
-      <div class="col-right">
+      <form action="/cart/order-Product" method="post" class="col-right">
+        <input type="hidden" name="totalPrice" value="{{totalPrice}}">
         <div class="summary-box">
           <div class="summary-title">Tổng đơn hàng</div>
 
@@ -138,9 +152,9 @@
             <span class="format-price">{{totalPrice}}</span>
           </div>
 
-          <a href="/" class="checkout-btn">Đặt hàng</a>
+          <button class="checkout-btn">Đặt hàng</button>
         </div>
-      </div>
+      </form>
 
     </div>
     {{else}}

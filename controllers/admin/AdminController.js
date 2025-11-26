@@ -134,6 +134,19 @@ class AdminController {
     });
     //return res.json(viewmodel);
   }
+
+  async ListOder(req, res) {
+    const listOrder = await Cart.find({ status: "PLACED" }).populate("userId").sort({ createdAt: -1 }).lean();
+    // return res.send(listOrder);
+    const ordersToDisplay = listOrder.filter(
+      (order) => order.status === "PLACED"
+    );
+
+    return res.render("admin/order/listOrder", {
+      layout: "adminLayout.hbs",
+      orders: ordersToDisplay,
+    });
+  }
 }
 
 module.exports = new AdminController();

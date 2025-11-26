@@ -810,6 +810,10 @@ body {
   content: "📊";
 }
 
+.admin-order-list-icon:before {
+    content: "📋";
+}
+
 .admin-wallet-icon:before {
   content: "🛒";
 }

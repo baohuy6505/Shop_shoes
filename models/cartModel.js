@@ -22,6 +22,15 @@ const cartSchema = new Schema(
         },
       },
     ],
+    status: {
+            type: String,
+            enum: ['ACTIVE', 'PLACED', 'CONFIRMED'],
+            default: 'ACTIVE', 
+    },
+    totalPrice: {
+            type: Number,
+            default: 0,
+    },
   },
   {
     timestamps: true, // tạo createdAt, updatedAt
