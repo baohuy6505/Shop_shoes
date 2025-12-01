@@ -2,7 +2,7 @@
 const AccountController = require('../controllers/clients/AccountController');
 const User = require('../models/userModel');
 
-jest.mock('../models/userModel');
+jest.mock('../models/userModel');//tạo đối tượng model giả lập
 
 describe('AccountController', () => {
   let req, res;
@@ -13,11 +13,13 @@ describe('AccountController', () => {
   });
 
   afterEach(() => jest.clearAllMocks());
-
   describe('Login', () => {
     it('should render login view', () => {
       AccountController.Login(req, res);
       expect(res.render).toHaveBeenCalledWith('clients/account/login');
+      //expect(hàm) có công dụng là nhận vào hàm giả lập (Mock Function)
+      //sau đó sử dụng .toHaveBeenCalledWith(tham số) để kiểm tra hành vi
+      //dùng để kiểm tra xem hàm giả lập res.render có được gọi với tham số là tên view đó hay không.
     });
   });
 
@@ -32,7 +34,10 @@ describe('AccountController', () => {
     it('should register new user and redirect to login on success', async () => {
       req.body = { username: 'test', email: 'test@example.com', password: 'pass' };
       User.findOne.mockResolvedValue(null);
+
+      //được dùng để giả lập thành công quá trình lưu một người dùng mới vào cơ sở dữ liệu.
       const saveMock = jest.fn().mockResolvedValue({});
+      //Dòng code này là bước chuẩn bị để kiểm tra hành động lưu vào database mà không cần database thật
       User.mockImplementation(() => ({ save: saveMock }));
 
       await AccountController.RegisterUser(req, res);
