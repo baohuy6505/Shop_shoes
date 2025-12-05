@@ -45,6 +45,9 @@ class AccountController {
         email: user.email,
         role: user.role,
       };
+      if(user.role === 'ADMIN' || user.role === 'MANAGER'){
+        return res.redirect("/Admin/Home");
+      }
       req.flash("success", "Đăng nhập thành công!");
       return res.redirect("/");
     } catch (error) {

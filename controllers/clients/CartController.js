@@ -28,19 +28,15 @@ class CartController {
 
   async addToCart(req, res) {
     try {
-      // 1. Kiểm tra đăng nhập (Tránh crash nếu session hết hạn)
       if (!req.session.user) {
         req.flash("error", "Vui lòng đăng nhập.");
         return res.redirect("/Account/Login");
       }
       const userId = req.session.user.id;
 
-      // 2. Lấy dữ liệu
       const { productId, quantity, size, color } = req.body;
       const productQuantity = parseInt(quantity) || 1;
 
-      // 3. TÌM BIẾN THỂ (VARIANT)
-      // Bước này quan trọng nhất: Phải tìm ra ID của biến thể (VD: Giày Nike Size 40 Màu Đen là ID nào?)
       const variant = await ProductVariant.findOne({
         product: productId,
         size: size,
@@ -52,13 +48,11 @@ class CartController {
         return res.redirect("back");
       }
 
-      // Kiểm tra tồn kho (Optional)
       if (variant.stockQuantity < productQuantity) {
         req.flash("error", "Số lượng trong kho không đủ.");
         return res.redirect("back");
       }
 
-      // 4. XỬ LÝ GIỎ HÀNG
       let cart = await Cart.findOne({ userId: userId, status: 'ACTIVE' });
 
       if (cart) {

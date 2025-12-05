@@ -10,5 +10,7 @@ const { isManagerOrAdmin } = require("../../middlewares/authMiddleware");
 // GET /category -> Hiển thị trang chính
 router.get("/", adminController.index);
 router.get("/ListOder", adminController.ListOder);
+router.post("/orders/confirm/:id", adminController.ConfirmOrder);
+router.post("/orders/delete/:id", adminController.DeleteOrder);
 
 module.exports = router;

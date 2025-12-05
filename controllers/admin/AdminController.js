@@ -136,7 +136,10 @@ class AdminController {
   }
 
   async ListOder(req, res) {
-    const listOrder = await Cart.find({ status: "PLACED" }).populate("userId").sort({ createdAt: -1 }).lean();
+    const listOrder = await Cart.find({ status: "PLACED" })
+      .populate("userId")
+      .sort({ createdAt: -1 })
+      .lean();
     // return res.send(listOrder);
     const ordersToDisplay = listOrder.filter(
       (order) => order.status === "PLACED"
@@ -146,6 +149,54 @@ class AdminController {
       layout: "adminLayout.hbs",
       orders: ordersToDisplay,
     });
+  }
+
+  async ConfirmOrder(req, res) {
+    const orderId = req.params.id;
+    if (!orderId) {
+      req.flash("error", "ID đơn hàng không hợp lệ.");
+      return res.redirect("/Admin/Home/ListOder");
+    }
+    const order = await Cart.findById(orderId);
+    if (!order) {
+      req.flash("error", "Không tìm thấy đơn hàng.");
+      return res.redirect("/Admin/Home/ListOder");
+    }
+    for (var item of order.items) {
+      const variant = await ProductVariant.findById(item.variantId);
+      if (variant.stockQuantity < item.quantity) {
+        req.flash(
+          "error",
+          `Không đủ tồn kho cho sản phẩm trong đơn hàng: ${item.variantId}`
+        );
+        return res.redirect("/Admin/Home/ListOder");
+      }
+      variant.stockQuantity -= item.quantity;
+      await variant.save();
+    }
+    await Cart.findByIdAndDelete(orderId);
+    req.flash("success", "Đã xác nhận và hoàn tất đơn hàng.");
+    return res.redirect("/Admin/Home/ListOder");
+  }
+  async DeleteOrder(req, res) {
+    const orderId = req.params.id;
+    if (!orderId) {
+      req.flash("error", "ID đơn hàng không hợp lệ.");
+      return res.redirect("/Admin/Home/ListOder");
+    }
+    try {
+      const deleteOrder = await Cart.findByIdAndDelete(orderId);
+      if (!deleteOrder) {
+        req.flash("error", "Không tìm thấy đơn hàng để xóa.");
+        return res.redirect("/Admin/Home/ListOder");
+      }
+      req.flash("success", "Đã xóa đơn hàng thành công.");
+      return res.redirect("/Admin/Home/ListOder");
+    } catch (err) {
+      console.error("Lỗi khi xóa đơn hàng:", err);
+      req.flash("error", "Có lỗi xảy ra khi xóa đơn hàng.");
+      return res.redirect("/Admin/Home/ListOder");
+    }
   }
 }
 
