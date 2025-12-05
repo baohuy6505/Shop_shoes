@@ -40,7 +40,6 @@ class CartController {
       const productQuantity = parseInt(quantity) || 1;
 
       // 3. TÌM BIẾN THỂ (VARIANT)
-      // Bước này quan trọng nhất: Phải tìm ra ID của biến thể (VD: Giày Nike Size 40 Màu Đen là ID nào?)
       const variant = await ProductVariant.findOne({
         product: productId,
         size: size,

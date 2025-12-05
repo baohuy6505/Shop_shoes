@@ -1,13 +1,12 @@
-// controllers/clients/AccountController.js
 const User = require("../../models/userModel");
 
 class AccountController {
-  // [GET] Hiển thị trang đăng nhập
+  // Hiển thị trang đăng nhập
   async Login(req, res) {
     return res.render("clients/account/login");
   }
 
-  // [GET] Hiển thị trang đăng ký
+  // Hiển thị trang đăng ký
   async Register(req, res) {
     return res.render("clients/account/register"); // Bỏ .hbs đi cho chuẩn
   }
@@ -91,7 +90,7 @@ class AccountController {
     }
   }
 
-  // [GET] Đăng xuất (BẠN ĐANG THIẾU HÀM NÀY)
+  // Đăng xuất (BẠN ĐANG THIẾU HÀM NÀY)
   Logout(req, res) {
     req.session.destroy((err) => {
       if (err) {

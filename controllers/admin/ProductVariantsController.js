@@ -4,10 +4,8 @@ const ProductVariant = require("../../models/productvariantsModel");
 const Product = require("../../models/productModel");
 
 class ProductVariantController {
-  /**
-   * 1. (GET /variant) - TRANG QUẢN LÝ TỔNG HỢP
-   * Hiển thị danh sách, form Thêm, và form Sửa (nếu có editId)
-   */
+
+  //1. (GET /variant) - TRANG QUẢN LÝ TỔNG HỢP
   async manageVariantsPage(req, res) {
     try {
       const message = req.query.message || null;
@@ -59,10 +57,7 @@ class ProductVariantController {
     }
   }
 
-  /**
-   * 2. (POST /variant/create) - Xử lý form Thêm
-   * (Giữ nguyên, chỉ redirect về /variant)
-   */
+ //2. (POST /variant/create) - Xử lý form Thêm
   async createVariant(req, res) {
     try {
       const newVariant = new ProductVariant(req.body);
@@ -74,10 +69,8 @@ class ProductVariantController {
     }
   }
 
-  /**
-   * 3. (POST /variant/update/:id) - Xử lý form Sửa
-   * (Giữ nguyên, chỉ redirect về /variant)
-   */
+ //3. (POST /variant/update/:id) - Xử lý form Sửa
+ 
   async updateVariant(req, res) {
     const variantId = req.params.id;
     try {
@@ -93,10 +86,8 @@ class ProductVariantController {
     }
   }
 
-  /**
-   * 4. (POST /variant/delete/:id) - Xử lý form Xóa
-   * (Giữ nguyên, chỉ redirect về /variant)
-   */
+ //4. (POST /variant/delete/:id) - Xử lý form Xóa
+ 
   async deleteVariant(req, res) {
     try {
       await ProductVariant.findByIdAndDelete(req.params.id);
@@ -106,8 +97,6 @@ class ProductVariantController {
       res.redirect("/Admin/ProductVariant?error=" + errorMsg);
     }
   }
-
-  // KHÔNG CẦN hàm renderEditPage riêng nữa
 }
 
 module.exports = new ProductVariantController();

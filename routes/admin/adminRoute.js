@@ -7,17 +7,16 @@ const productVariantAdminRoute = require("../admin/productvariantsRoute");
 const roleAdminRoute = require("../admin/roleRoute");
 const homeAdminRoute = require("../admin/homeAdminRoute");
 const userRoute = require("./userRoute");
+const { isManagerOrAdmin } = require("../../middlewares/authMiddleware");
+
 // === Bảo vệ route admin chung ===
-//router.use(isManagerOrAdmin);
-router.get("/home", (req, res) => {
-  res.render("admin/home", { layout: "adminLayout" }); // Đảm bảo có view này
-});
-// === CÁC ROUTE XỬ LÝ FORM VÀ REDIRECT ===
+router.use(isManagerOrAdmin);  
+
 router.use("/users", userRoute);
 router.use("/Home", homeAdminRoute);
 router.use("/Category", categoryAdminRoute);
 router.use("/Product", productAdminRoute);
 router.use("/ProductVariant", productVariantAdminRoute);
-router.use("/Role", roleAdminRoute); // ✅ route quản lý quyền
+router.use("/Role", roleAdminRoute); 
 
 module.exports = router;

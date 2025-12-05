@@ -65,7 +65,7 @@ class ProductController {
                 return res.redirect("/Products");
             }
 
-            // 3. QUAN TRỌNG: Lấy tất cả biến thể (Size/Màu) của sản phẩm này
+            // 3. QUAN TRỌNG: Lấy tất cả biến thể của sản phẩm nàyd
             const variants = await ProductVariant.find({ product: id }).lean();
 
             // 4. Lọc danh sách Size duy nhất và sắp xếp tăng dần

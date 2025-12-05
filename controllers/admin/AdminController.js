@@ -128,11 +128,10 @@ class AdminController {
       listProduct: listProduct,
       listProductVariants: listProductVariants,
     };
-    return res.render("admin/admin", {
+    return res.render("admin/home", {
       layout: "adminLayout.hbs",
       viewmodel: viewmodel,
     });
-    //return res.json(viewmodel);
   }
 
   async ListOder(req, res) {
@@ -148,5 +147,4 @@ class AdminController {
     });
   }
 }
-
 module.exports = new AdminController();

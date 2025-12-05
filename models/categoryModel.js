@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 // Định nghĩa Schema cho Category
 const categorySchema = new Schema(
   {
-    // CategoryName NVARCHAR(100) NOT NULL
     categoryName: {
       type: String,
       required: [true, "Vui lòng nhập tên loại sản phẩm"],
@@ -12,7 +11,6 @@ const categorySchema = new Schema(
       unique: true,
       maxlength: 100,
     },
-    // Description NVARCHAR(255)
     description: {
       type: String,
       trim: true,
@@ -20,7 +18,6 @@ const categorySchema = new Schema(
     },
   },
   {
-    // CreatedAt DATETIME DEFAULT GETDATE()
     timestamps: true,
   }
 );

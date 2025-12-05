@@ -5,14 +5,14 @@ const cartSchema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
-      ref: 'User', // liên kết với User
+      ref: 'User', //liên kết với User
       required: true,
     },
     items: [
       {
         variantId: {
           type: Schema.Types.ObjectId,
-          ref: 'ProductVariant', // liên kết với biến thể sản phẩm
+          ref: 'ProductVariant', //liên kết với biến thể sản phẩm
           required: true,
         },
         quantity: {
@@ -33,7 +33,7 @@ const cartSchema = new Schema(
     },
   },
   {
-    timestamps: true, // tạo createdAt, updatedAt
+    timestamps: true, //tạo createdAt, updatedAt
   }
 );
 

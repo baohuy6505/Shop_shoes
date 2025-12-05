@@ -1,14 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const productController = require("../../controllers/admin/ProductController");
-const { isManagerOrAdmin } = require("../../middlewares/authMiddleware");
 const multer = require("multer");
 const { storage, imageFilter } = require("../../middlewares/uploadMiddleware");
 const upload = multer({ storage: storage, fileFilter: imageFilter });
 
-router.use(isManagerOrAdmin);
 
-// === CÁC ROUTE XỬ LÝ FORM VÀ REDIRECT ===
 // GET /product -> Hiển thị trang chính (danh sách + form)
 router.get("/", productController.renderProductPage);
 
