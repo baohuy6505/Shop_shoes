@@ -1,0 +1,101 @@
+<div class="container-fluid px-4">
+  <h1 class="mt-4">Danh sách tài khoản</h1>
+  <ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a href="/Admin/Home">Dashboard</a></li>
+    <li class="breadcrumb-item active">Users</li>
+  </ol>
+
+  {{! Hiển thị thông báo thành công }}
+  {{#if success}}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{success}}
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+  {{/if}}
+
+  {{! Hiển thị thông báo lỗi }}
+  {{#if error}}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{error}}
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+  {{/if}}
+
+  <div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <div>
+        <i class="fas fa-table me-1"></i>
+        Dữ liệu người dùng
+      </div>
+      <a href="/admin/users/create" class="btn btn-primary btn-sm">
+        <i class="fas fa-plus"></i>
+        Thêm mới
+      </a>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover" id="datatablesSimple">
+          <thead class="table-light">
+            <tr>
+              <th>Tên người dùng</th>
+              <th>Email</th>
+              <th>Quyền (Role)</th>
+              <th>Ngày tạo</th>
+              <th class="text-center">Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#if users.length}}
+              {{#each users}}
+                <tr>
+                  <td>{{this.username}}</td>
+                  <td>{{this.email}}</td>
+                  <td>
+                    {{#ifeq this.role "admin"}}
+                      <span class="badge bg-danger">Admin</span>
+                    {{/ifeq}}
+                    {{#ifeq this.role "manager"}}
+                      <span class="badge bg-warning text-dark">Manager</span>
+                    {{/ifeq}}
+                    {{#ifeq this.role "user"}}
+                      <span class="badge bg-primary">User</span>
+                    {{/ifeq}}
+                  </td>
+                  <td>{{formatDate this.createdAt}}</td>
+                  <td class="text-center">
+                    <a href="#" class="btn btn-warning btn-sm me-1" title="Sửa">
+                      <i class="fas fa-edit"></i>
+                    </a>
+                    <a
+                      href="#"
+                      class="btn btn-danger btn-sm"
+                      title="Xóa"
+                      onclick="return confirm('Bạn có chắc chắn muốn xóa user này không?')"
+                    >
+                      <i class="fas fa-trash-alt"></i>
+                    </a>
+                  </td>
+                </tr>
+              {{/each}}
+            {{else}}
+              <tr>
+                <td colspan="5" class="text-center text-muted">Chưa có tài khoản
+                  nào.</td>
+              </tr>
+            {{/if}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

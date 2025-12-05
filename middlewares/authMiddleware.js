@@ -2,11 +2,11 @@ const session = require("express-session");
 
 module.exports = {
   // checkLoginStatus: (req, res, next) => {
-  //   if (!req.session.user) { 
+  //   if (!req.session.user) {
   //     req.flash("error", "Vui lòng đăng nhập để thực hiện hành động này.");
   //     return res.redirect("/Account/Login");
   //   }
-  //   if (req.session.role === "user") { 
+  //   if (req.session.role === "user") {
   //     return next();
   //   }
   //     req.flash("error", "Bạn không có quyền truy cập trang này.");

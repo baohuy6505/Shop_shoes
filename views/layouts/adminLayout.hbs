@@ -40,7 +40,7 @@
               <span class="admin-label"> Dashboard</span>
             </a>
           </li>
-            <li class="admin-nav-item">
+          <li class="admin-nav-item">
             <a href="/Admin/Home/ListOder" class="admin-nav-link">
               <span class="admin-icon admin-order-list-icon"></span>
               <span class="admin-label">List Order</span>
@@ -70,38 +70,46 @@
 
         <div class="admin-sidebar-section">Management</div>
         <ul class="admin-nav-menu">
+          <!-- Đã cập nhật: Group Role Account thành menu đa cấp -->
           <li class="admin-nav-item">
-            <a href="/Admin/Role" class="admin-nav-link">
-              <span class="admin-icon admin-user-manager-icon"></span>
-              <span class="admin-label">Role Account</span>
+            <a
+              href="#roleAccountSubmenu"
+              data-bs-toggle="collapse"
+              class="admin-nav-link d-flex align-items-center justify-content-between"
+              role="button"
+              aria-expanded="false"
+              aria-controls="roleAccountSubmenu"
+            >
+              <div class="d-flex align-items-center">
+                <span class="admin-icon admin-user-manager-icon"></span>
+                <span class="admin-label">Tài khoản & Role</span>
+              </div>
+              <i class="fas fa-chevron-down" style="font-size: 0.8em;"></i>
             </a>
+            <div class="collapse" id="roleAccountSubmenu">
+              <ul class="admin-nav-menu ps-3">
+                <li class="admin-nav-item">
+                  <a href="/admin/users" class="admin-nav-link">
+                    <span class="admin-label">Danh sách TK</span>
+                  </a>
+                </li>
+                <li class="admin-nav-item">
+                  <a href="/admin/users/create" class="admin-nav-link">
+                    <span class="admin-label">Thêm tài khoản</span>
+                  </a>
+                </li>
+                <li class="admin-nav-item">
+                  <a href="/Admin/Role" class="admin-nav-link">
+                    <span class="admin-label">Quản lý Role</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </li>
-          <li class="admin-nav-item">
-            <a href="#" class="admin-nav-link">
-              <span class="admin-icon admin-analytics-icon"></span>
-              <span class="admin-label">Analytics</span>
-            </a>
-          </li>
-          <li class="admin-nav-item">
-            <a href="#" class="admin-nav-link">
-              <span class="admin-icon admin-savings-icon"></span>
-              <span class="admin-label">Budgeting</span>
-            </a>
-          </li>
+
         </ul>
 
         <div class="admin-sidebar-divider"></div>
-
-        {{! <div class="admin-sidebar-section">Settings</div>
-        <ul class="admin-nav-menu">
-          <li class="admin-nav-item">
-            <a href="#" class="admin-nav-link">
-              <span class="admin-icon admin-settings-icon"></span>
-              <span class="admin-label">Settings</span>
-            </a>
-          </li>
-
-        </ul> }}
 
         <div class="admin-user-profile">
           <div class="admin-user-avatar">JD</div>
@@ -142,17 +150,20 @@
       overlay.addEventListener("click", function () {
       sidebar.classList.remove("admin-active");
       overlay.classList.remove("admin-active"); }); } // --- Highlight menu đang
-      active (Đã sửa lỗi trùng lặp) --- const currentPath =
-      window.location.pathname; let hasActiveLink = false; // 1. Loại bỏ tất cả
-      class 'admin-active' cũ (tránh lỗi khi reload) links.forEach(link => {
-      link.classList.remove("admin-active"); }); // 2. Chạy qua các liên kết để
-      tìm mục khớp links.forEach((link) => { const href =
-      link.getAttribute("href"); // Nếu đã có mục active, BỎ QUA các mục còn
-      lại. // Điều này đảm bảo mục cụ thể nhất (ProductVariant) được ưu tiên. if
-      (hasActiveLink) return; // Nếu đường dẫn hiện tại bắt đầu bằng href if
-      (currentPath.startsWith(href)) { link.classList.add("admin-active");
-      hasActiveLink = true; // Đánh dấu đã active, ngăn các mục tiếp theo (ngắn
-      hơn) bị active } }); });
+      active --- const currentPath = window.location.pathname; let hasActiveLink
+      = false; // 1. Loại bỏ tất cả class 'admin-active' cũ (tránh lỗi khi
+      reload) links.forEach(link => { link.classList.remove("admin-active"); });
+      // 2. Chạy qua các liên kết để tìm mục khớp links.forEach((link) => {
+      const href = link.getAttribute("href"); if (!href || href.startsWith("#"))
+      return; // Bỏ qua các link toggle collapse if (hasActiveLink) return; //
+      Nếu đường dẫn hiện tại bắt đầu bằng href if (currentPath.startsWith(href))
+      { link.classList.add("admin-active"); hasActiveLink = true; // Mở parent
+      collapse nếu link con active const parentCollapse =
+      link.closest(".collapse"); if (parentCollapse) {
+      parentCollapse.classList.add("show"); const parentToggle =
+      document.querySelector(`[href="#${parentCollapse.id}"]`); if
+      (parentToggle) { parentToggle.classList.remove("collapsed");
+      parentToggle.setAttribute("aria-expanded", "true"); } } } }); });
     </script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

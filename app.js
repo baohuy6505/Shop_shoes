@@ -3,22 +3,22 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-var mainRoute = require("./routes/clients/mainRoute");
-var adminRoute = require("./routes/admin/adminRoute"); // thêm nếu bạn có router admin
-
-var app = express();
-
 var flash = require("connect-flash");
 var exphbs = require("express-handlebars");
 var session = require("express-session");
-const hbs = require("hbs");
+
+// Import Routes
+var mainRoute = require("./routes/clients/mainRoute");
+var adminRoute = require("./routes/admin/adminRoute");
+
+var app = express();
 
 // ====== CẤU HÌNH HANDLEBARS ======
 app.engine(
   "hbs",
   exphbs.engine({
     extname: "hbs",
-    defaultLayout: "userLayout", // layout mặc định
+    defaultLayout: "userLayout",
     layoutsDir: path.join(__dirname, "views", "layouts"),
     helpers: {
       eq: (a, b) => a === b,
@@ -47,6 +47,7 @@ app.engine(
         });
       },
       formatDate: function (date) {
+        if (!date) return "";
         if (!(date instanceof Date)) {
           date = new Date(date);
         }
@@ -54,7 +55,7 @@ app.engine(
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
-      }
+      },
     },
   })
 );
@@ -72,7 +73,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
   session({
-    secret: "chukicuatrangweb", // đổi thành chuỗi ngẫu nhiên
+    secret: "chukicuatrangweb",
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 1000 * 60 * 60 * 24 }, // 1 ngày
@@ -80,22 +81,19 @@ app.use(
 );
 
 app.use(flash());
+
+// Global variables middleware
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
-  res.locals.currentUser = req.session.user || null;
+  res.locals.currentUser = req.session.user || null; // Dùng currentUser để check login chung
+  res.locals.user = req.session.user || null; // Dùng user nếu logic cũ cần
   next();
 });
-app.use((req, res, next) => {
-    if (req.session.user) {
-        res.locals.user = req.session.user;
-    } else {
-        res.locals.user = null;
-    }
-    next();
-});
+
 // routes
 app.use("/", mainRoute);
+// Tất cả các request bắt đầu bằng /admin sẽ đi vào adminRoute
 app.use("/admin", adminRoute);
 
 // Xử lý lỗi 404
@@ -105,11 +103,11 @@ app.use(function (req, res, next) {
 
 // Xử lý lỗi chung
 app.use(function (err, req, res, next) {
-  console.error("Chi tiết lỗi:", err.message, err.stack);
+  console.error("Chi tiết lỗi:", err.message, err.stack); // Log lỗi ra console để debug
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
   res.status(err.status || 500);
-  res.render("error");
+  res.render("error"); // Cần có file views/error.hbs
 });
 
 module.exports = app;
