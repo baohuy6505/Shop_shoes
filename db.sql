@@ -1,0 +1,65 @@
+CREATE TABLE Users (
+    UserID INT IDENTITY(1,1) PRIMARY KEY,
+    Username NVARCHAR(255) NOT NULL,
+    Email NVARCHAR(255) NOT NULL UNIQUE,
+    Password NVARCHAR(255) NOT NULL, -- Lýu hash password
+    Role NVARCHAR(20) NOT NULL DEFAULT 'user',
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT CK_Users_Role CHECK (Role IN ('admin', 'manager', 'user'))
+);
+GO
+CREATE TABLE Categories (
+    CategoryID INT IDENTITY(1,1) PRIMARY KEY,
+    CategoryName NVARCHAR(100) NOT NULL UNIQUE,
+    Description NVARCHAR(255),
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME DEFAULT GETDATE()
+);
+GO
+CREATE TABLE Products (
+    ProductID INT IDENTITY(1,1) PRIMARY KEY,
+    ProductName NVARCHAR(150) NOT NULL,
+    Description NVARCHAR(MAX),
+    Price DECIMAL(18, 2) NOT NULL,
+    CategoryID INT NOT NULL,
+    ImageUrl NVARCHAR(500),
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_Products_Categories FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID),
+    CONSTRAINT CK_Products_Price CHECK (Price >= 0)
+);
+GO
+CREATE TABLE ProductVariants (
+    VariantID INT IDENTITY(1,1) PRIMARY KEY,
+    ProductID INT NOT NULL,
+    Size NVARCHAR(20) NOT NULL,
+    Color NVARCHAR(50) NOT NULL,
+    StockQuantity INT NOT NULL DEFAULT 0,
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_Variants_Products FOREIGN KEY (ProductID) REFERENCES Products(ProductID) ON DELETE CASCADE,
+    CONSTRAINT CK_Variants_Stock CHECK (StockQuantity >= 0)
+);
+GO
+CREATE TABLE Carts (
+    CartID INT IDENTITY(1,1) PRIMARY KEY,
+    UserID INT NOT NULL,
+    Status NVARCHAR(20) DEFAULT 'ACTIVE',
+    TotalPrice DECIMAL(18, 2) DEFAULT 0,
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_Carts_Users FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    CONSTRAINT CK_Carts_Status CHECK (Status IN ('ACTIVE', 'PLACED', 'CONFIRMED'))
+);
+GO
+CREATE TABLE CartItems (
+    CartItemID INT IDENTITY(1,1) PRIMARY KEY,
+    CartID INT NOT NULL,
+    VariantID INT NOT NULL, 
+    Quantity INT NOT NULL DEFAULT 1,
+    CONSTRAINT FK_CartItems_Carts FOREIGN KEY (CartID) REFERENCES Carts(CartID) ON DELETE CASCADE,
+    CONSTRAINT FK_CartItems_Variants FOREIGN KEY (VariantID) REFERENCES ProductVariants(VariantID),
+    CONSTRAINT CK_CartItems_Quantity CHECK (Quantity >= 1)
+);
+GO

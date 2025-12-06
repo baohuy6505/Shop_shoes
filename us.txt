@@ -1,0 +1,84 @@
+1. Giới thiệu tổng quan
+
+Dự án xây dựng một hệ thống website thương mại điện tử chuyên biệt cho mặt hàng Giày Dép. Hệ thống tập trung vào việc quản lý chặt chẽ các biến thể sản phẩm (Size, Màu sắc) và quy trình quản lý tồn kho theo thời gian thực thông qua cơ chế xác nhận giỏ hàng.
+
+2. Mục tiêu dự án
+
+Đối với khách hàng: Cung cấp giao diện xem sản phẩm, lựa chọn chính xác size/màu và đặt mua nhanh chóng.
+
+Đối với quản trị viên: Quản lý danh mục, sản phẩm, kiểm soát số lượng tồn kho chi tiết theo từng biến thể, và theo dõi các đơn hàng đã được xác nhận.
+
+3. Cấu trúc dữ liệu (Database Schema)
+
+Hệ thống sử dụng Mogodb atlas với noSQL với thiết kế chuẩn hóa gồm 6 bảng chính(được định nghĩa chính trong Models/..):
+
+Users: Quản lý thông tin tài khoản, phân quyền (Admin/Manager/User).
+
+Categories: Phân loại sản phẩm (Giày, Dép, ...).
+
+Products: Lưu thông tin chung của sản phẩm (Tên, Mô tả, Giá cơ bản, Ảnh đại diện).
+
+ProductVariants: Lưu chi tiết biến thể (Size, Màu) và Số lượng tồn kho (StockQuantity). Đây là bảng quan trọng nhất để quản lý kho.
+
+Carts: Đại diện cho phiên mua hàng của người dùng.
+
+CartItems: Lưu chi tiết các sản phẩm (theo Variant) mà người dùng đang chọn mua.
+// phần Carts và CartsItems là phần nhóm phát triển thêm theo sự đồng ý của giảng viên Vũ Thị Trà
+
+4. Quy trình nghiệp vụ đặc thù 
+
+Khác với các hệ thống phức tạp, dự án này tối ưu hóa quy trình đặt hàng bằng cách sử dụng trực tiếp Giỏ hàng (Cart) làm đơn hàng:
+
+Thêm vào giỏ: Khách hàng chọn Size/Màu -> Sản phẩm được thêm vào bảng CartItems. Trạng thái Cart là ACTIVE.
+
+Xác nhận mua: Khách hàng nhấn nút "Xác nhận/Thanh toán".
+
+Xử lý giao dịch (Transaction):
+
+Hệ thống kiểm tra số lượng tồn kho trong bảng ProductVariants.
+
+Nếu đủ hàng: Hệ thống tự động trừ số lượng tồn kho tương ứng.
+
+Cập nhật trạng thái Cart từ ACTIVE sang CONFIRMED.
+
+Khóa giỏ hàng này lại (Người dùng không thể sửa đổi sau khi đã xác nhận).
+
+Kết quả: Giỏ hàng trạng thái CONFIRMED được xem như một đơn hàng thành công.
+
+5. Chi tiết chức năng
+
+A. Phân hệ Khách hàng (User)
+
+Đăng ký / Đăng nhập: Tạo tài khoản để mua hàng.
+
+Xem chi tiết: Xem thông tin giày, hình ảnh, và chọn biến thể (Size/Màu) mong muốn.
+
+Quản lý Giỏ hàng:
+
+Thêm sản phẩm vào giỏ.
+
+Cập nhật số lượng, xóa sản phẩm khỏi giỏ.
+
+Xem tổng tiền tạm tính.
+
+Đặt hàng (Checkout): Thực hiện hành động xác nhận để mua hàng và trừ kho.
+
+B. Phân hệ Quản trị (Admin)
+
+Quản lý Danh mục: Thêm, sửa, xóa các loại giày dép.(gồm các bảng trong db)
+
+Quản lý Sản phẩm & Biến thể:
+
+Tạo sản phẩm mới.
+
+Định nghĩa các biến thể cho sản phẩm (Ví dụ: Giày Nikeairforce 1 -> Thêm Size 40-Đen, Size 41-Trắng).
+
+Nhập kho: Cập nhật số lượng tồn kho cho từng biến thể.
+
+Quản lý Đơn hàng (Giỏ hàng): Xem danh sách các Giỏ hàng có trạng thái CONFIRMED (tức là các đơn đã bán thành công).
+
+6. Điểm nhấn công nghệ (Technical Highlights)
+
+Database: MogoDB atlas sử dụng noSQL và chia sẻ dữ liệu nhiều người cùng truy cập được, toàn vẹn dữ liệu và phù hợp cho việc làm nhóm và dễ dàng mở rộng phát triển.
+
+Ràng buộc dữ liệu: Sử dụng chặt chẽ các khóa ngoại (Foreign Key) và ràng buộc toàn vẹn (Cascade Delete) để đảm bảo data không bị rác (Ví dụ: Xóa sản phẩm sẽ xóa luôn biến thể và xóa khỏi giỏ hàng).
