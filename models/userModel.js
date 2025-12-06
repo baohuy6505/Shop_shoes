@@ -43,5 +43,5 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-// ✅ Cách tránh lỗi OverwriteModelError:
+//Cách tránh lỗi OverwriteModelError:
 module.exports = mongoose.models.User || mongoose.model("User", userSchema);

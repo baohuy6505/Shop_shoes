@@ -3,10 +3,8 @@
 const express = require("express");
 const router = express.Router();
 const categoryController = require("../../controllers/admin/CategoryController");
-const { isManagerOrAdmin } = require("../../middlewares/authMiddleware");
 
-router.use(isManagerOrAdmin);
-// === CÁC ROUTE XỬ LÝ FORM VÀ REDIRECT ===
+
 // GET /category -> Hiển thị trang chính
 router.get("/", categoryController.renderCategoryPage);
 

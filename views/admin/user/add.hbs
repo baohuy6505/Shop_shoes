@@ -1,0 +1,60 @@
+<div class="container-fluid">
+  <h2 class="mt-4">Thêm tài khoản mới</h2>
+
+  {{! QUAN TRỌNG: action phải là /admin/users/store để khớp với Router }}
+  <form method="POST" action="/admin/users/store">
+
+    {{! Hiển thị thông báo lỗi nếu có }}
+    {{#if error}}
+      <div class="alert alert-danger">{{error}}</div>
+    {{/if}}
+
+    <div class="form-group mb-3">
+      <label for="username">Tên người dùng</label>
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        name="username"
+        required
+        placeholder="Nhập tên..."
+      />
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        required
+        placeholder="name@example.com"
+      />
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="password">Mật khẩu</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        name="password"
+        required
+      />
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="role">Phân quyền (Role)</label>
+      <select class="form-control" id="role" name="role">
+        {{! Duyệt qua mảng roles được truyền từ Controller }}
+        {{#each roles}}
+          <option value="{{this}}">{{this}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Thêm tài khoản</button>
+    <a href="/admin/users" class="btn btn-secondary">Hủy</a>
+  </form>
+</div>

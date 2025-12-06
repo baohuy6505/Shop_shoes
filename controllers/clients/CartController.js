@@ -37,6 +37,7 @@ class CartController {
       const { productId, quantity, size, color } = req.body;
       const productQuantity = parseInt(quantity) || 1;
 
+      // 3. TÌM BIẾN THỂ (VARIANT)
       const variant = await ProductVariant.findOne({
         product: productId,
         size: size,
