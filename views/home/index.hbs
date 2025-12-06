@@ -1,0 +1,78 @@
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop Shoes | Trang chủ</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="/">Shop Shoes</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav">
+            {{#if user}}
+              <li class="nav-item">
+                <span class="nav-link text-light">Xin chào,
+                  {{user.username}}</span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/logout">Đăng xuất</a>
+              </li>
+            {{else}}
+              <li class="nav-item">
+                <a class="nav-link" href="/Account/Login">Đăng nhập</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/Account/Register">Đăng ký</a>
+              </li>
+            {{/if}}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <div class="container mt-3">
+      {{#if success}}
+        <div class="alert alert-success">{{success}}</div>
+      {{/if}}
+      {{#if error}}
+        <div class="alert alert-danger">{{error}}</div>
+      {{/if}}
+    </div>
+
+    <!-- Hero / Nội dung chính -->
+    <div class="container text-center py-5">
+      <h1 class="mb-4">Chào mừng đến với Shop Shoes 👟</h1>
+      <p class="lead">Mua giày chính hãng, phong cách, trẻ trung và năng động!</p>
+      {{#unless user}}
+        <div class="mt-4">
+          <a href="/Account/Login" class="btn btn-primary me-3">Đăng nhập</a>
+          <a href="/Account/Register" class="btn btn-outline-secondary">Đăng ký</a>
+        </div>
+      {{/unless}}
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    ></script>
+  </body>
+</html>
